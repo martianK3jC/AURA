@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Sparkles, MessageSquare, AlertTriangle } from 'lucide-react';
 import TimelineCard from '../components/TimelineCard';
@@ -39,6 +38,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
         time: '35 mins', 
         badge: 'High Density', 
         badgeColor: 'orange',
+        subtext: 'Queue Time • Cam 04'
       },
       { id: '4', icon: 'shield', title: 'Security Check', status: 'upcoming', subtext: 'Calculating...' },
     ]
@@ -66,10 +66,24 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
         time: '10 mins', 
         badge: 'Low Density', 
         badgeColor: 'emerald',
-        subtext: 'Cam 04: Low Density'
+        subtext: 'Queue Time • Cam 04'
       },
-      { id: '4', icon: 'shield', title: 'Security Check', status: 'upcoming', time: '5 mins', subtext: 'Cam 08: Moving Fast' },
-      { id: '5', icon: 'door', title: 'Boarding Gate 5', status: 'upcoming', subtext: 'Open in 2 hrs' },
+      { 
+        id: '4', 
+        icon: 'shield', 
+        title: 'Security Check', 
+        status: 'upcoming', 
+        time: '5 mins', 
+        subtext: 'Queue Time • Cam 08' 
+      },
+      { 
+        id: '5', 
+        icon: 'door', 
+        title: 'Boarding Gate 5', 
+        status: 'upcoming', 
+        time: '5 mins',
+        subtext: 'Walking Time • 80m Distance' 
+      },
     ]
   };
 

@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import Layout from './components/Layout';
 import LandingScreen from './screens/LandingScreen';
@@ -5,6 +6,7 @@ import DashboardScreen from './screens/DashboardScreen';
 import MapScreen from './screens/MapScreen';
 import ChatScreen from './screens/ChatScreen';
 import ProfileScreen from './screens/ProfileScreen';
+import OperatorDashboardScreen from './screens/OperatorDashboardScreen';
 import { ScreenId } from './types';
 
 const App: React.FC = () => {
@@ -40,6 +42,8 @@ const App: React.FC = () => {
         return <ChatScreen onNavigate={handleNavigate} />;
       case 'profile':
         return <ProfileScreen onNavigate={handleNavigate} />;
+      case 'operator-dashboard':
+        return <OperatorDashboardScreen onNavigate={handleNavigate} />;
       default:
         return <LandingScreen onNavigate={handleNavigate} />;
     }

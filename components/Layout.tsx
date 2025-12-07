@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Home, Map, MessageSquare, User, Settings } from 'lucide-react';
 import { ScreenId } from '../types';
@@ -14,6 +15,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
     if (currentScreen === 'scenario-a') return ['blob-green', 'blob-blue'];
     if (currentScreen === 'scenario-b') return ['blob-red', 'blob-orange'];
     if (currentScreen === 'landing') return ['blob-violet', 'blob-indigo'];
+    if (currentScreen === 'operator-dashboard') return ['blob-blue', 'blob-cyan'];
     return ['blob-violet', 'blob-blue']; // Default
   };
 
@@ -25,6 +27,10 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
         ? 'text-violet-400 drop-shadow-[0_0_8px_rgba(139,92,246,0.5)]' 
         : 'text-slate-500 hover:text-slate-300'
     }`;
+
+  // Check if we should show the bottom navigation
+  // Hide on Landing page AND Operator Dashboard
+  const showBottomNav = currentScreen !== 'landing' && currentScreen !== 'operator-dashboard';
 
   return (
     <div className="min-h-screen bg-slate-950 text-white font-sans flex justify-center overflow-hidden">
@@ -38,7 +44,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
           {children}
         </main>
 
-        {currentScreen !== 'landing' && (
+        {showBottomNav && (
           <nav className="glass-nav fixed bottom-0 w-full max-w-md h-20 flex justify-around items-center z-50 pb-safe">
             <button onClick={() => onNavigate('scenario-b')} className={navItemClass('scenario-b')}>
               <Home size={24} />

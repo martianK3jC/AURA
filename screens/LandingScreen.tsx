@@ -1,6 +1,7 @@
+
 import React from 'react';
 import { ScreenId } from '../types';
-import { Sparkles, Plane, ArrowRight } from 'lucide-react';
+import { Sparkles, Plane, ArrowRight, ShieldCheck } from 'lucide-react';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -9,6 +10,16 @@ interface Props {
 const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-6 relative overflow-hidden z-10 pb-20">
+      
+      {/* Top Right Staff Login */}
+      <button 
+        onClick={() => onNavigate('operator-dashboard')}
+        className="absolute top-12 right-6 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 text-[10px] text-slate-400 hover:text-white hover:bg-white/10 transition-colors z-20"
+      >
+        <ShieldCheck size={12} />
+        <span>Staff Login</span>
+      </button>
+
       {/* Content */}
       <div className="z-10 flex flex-col items-center w-full max-w-sm animate-slide-up">
         

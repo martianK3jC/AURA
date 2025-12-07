@@ -1,5 +1,5 @@
 
-export type ScreenId = 'landing' | 'scenario-a' | 'scenario-b' | 'scenario-c' | 'chat' | 'profile';
+export type ScreenId = 'landing' | 'scenario-a' | 'scenario-b' | 'scenario-c' | 'chat' | 'profile' | 'operator-dashboard';
 
 export interface TimelineStep {
   id: string;
