@@ -1,0 +1,5 @@
+{
+  "name": "AURA - AI Travel Assistant",
+  "description": "An AI-powered travel assistant app that predicts airport wait times, visualizes data via heatmaps, and provides intelligent routing suggestions.",
+  "requestFramePermissions": []
+}
