@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { Sparkles, MessageSquare, AlertTriangle } from 'lucide-react';
 import TimelineCard from '../components/TimelineCard';
@@ -26,7 +27,8 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
         time: '1h 15m', 
         badge: '🔴 Accident', 
         badgeColor: 'red',
-        description: 'Fernan Bridge closure' 
+        description: 'Fernan Bridge closure',
+        isCurrent: true // User is stuck in traffic
       },
       // Inserted AI Card will be handled in map loop
       { 
@@ -45,7 +47,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
     flightStatus: 'ontime',
     totalTime: '1h 10m',
     steps: [
-      { id: '1', icon: 'home', title: 'Home - Lahug', status: 'current', time: 'Depart Now' },
+      { id: '1', icon: 'home', title: 'Home - Lahug', status: 'current', time: 'Depart Now', isCurrent: true },
       { 
         id: '2', 
         icon: 'car', 
@@ -72,7 +74,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
   };
 
   return (
-    <div className="relative pt-6 px-6 pb-20">
+    <div className="relative pt-6 px-6 pb-44">
       
       {/* Header Info */}
       <div className="mb-6 pt-2">
@@ -95,12 +97,6 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
                 >
                   B
                 </button>
-                <button 
-                  onClick={() => onNavigate('scenario-c')} 
-                  className="px-3 py-1 text-slate-400 hover:text-white rounded-full text-xs transition-colors"
-                >
-                  C
-                </button>
             </div>
         </div>
 
@@ -117,8 +113,13 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
 
         {/* Flight Card */}
         <div className={`glass-card rounded-2xl p-4 flex flex-col gap-2 ${isStress ? 'border-red-500/50' : 'border-emerald-500/30'}`}>
-          <div className="flex justify-between items-center">
-             <span className="text-lg font-semibold text-white">PR 123 to Narita (NRT)</span>
+          <div className="flex justify-between items-start">
+             <div>
+                <span className="text-lg font-semibold text-white block">PR 123</span>
+                <span className="text-sm text-slate-300 block mt-1">
+                  Cebu (MCIA) <span className="text-slate-500">→</span> Narita (NRT)
+                </span>
+             </div>
              <span className={`px-3 py-1 rounded-full text-xs font-medium ${isStress ? 'bg-red-500/20 text-red-400' : 'bg-emerald-500/20 text-emerald-400'}`}>
                 {isStress ? '⚠ Risk of Delay' : '✓ On Time'}
              </span>
@@ -182,7 +183,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
       </div>
 
       {/* Total Time Sticky Footer Content */}
-      <div className="glass-nav fixed bottom-16 left-0 right-0 max-w-md mx-auto p-4 border-t border-white/10 z-20 flex justify-between items-center">
+      <div className="glass-nav fixed bottom-20 left-0 right-0 max-w-md mx-auto p-4 border-t border-white/10 z-20 flex justify-between items-center">
          <div>
             <p className={`text-xs font-bold uppercase tracking-wider ${isStress ? 'text-orange-400 animate-pulse' : 'text-slate-400'}`}>
                 {isStress ? '⚠ Tight Schedule' : 'Total Time to Gate'}

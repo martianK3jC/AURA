@@ -13,6 +13,7 @@ export interface TimelineStep {
   subtext?: string;
   action?: () => void;
   actionLabel?: string;
+  isCurrent?: boolean; // New property to explicitly mark user location
 }
 
 export interface ScenarioData {

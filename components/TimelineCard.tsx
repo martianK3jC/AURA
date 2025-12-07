@@ -49,8 +49,16 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
       </div>
 
       {/* Content Card */}
-      <div className={`glass-card flex-1 p-4 rounded-xl ${getStatusStyles()}`}>
-        <div className="flex justify-between items-start">
+      <div className={`glass-card flex-1 p-4 rounded-xl relative overflow-hidden transition-all duration-300 ${getStatusStyles()} ${step.isCurrent ? 'scale-[1.02]' : ''}`}>
+        
+        {/* "You Are Here" Indicator */}
+        {step.isCurrent && (
+          <div className="absolute bottom-0 right-0 bg-violet-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-tl-lg shadow-lg z-20">
+            📍 YOU ARE HERE
+          </div>
+        )}
+
+        <div className="flex justify-between items-start relative z-10">
           <div>
              <h3 className={`font-medium ${step.status === 'critical' ? 'text-white' : step.status === 'completed' ? 'text-slate-300' : 'text-white'}`}>
                 {step.title}
@@ -78,12 +86,17 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
         </div>
 
         {(step.subtext || step.description) && (
-            <div className="mt-2 flex items-center gap-2">
+            <div className="mt-2 flex items-center gap-2 relative z-10">
                 {step.status === 'warning' && <span className="w-2 h-2 bg-orange-500 rounded-full" />}
                 <p className={`text-xs ${step.status === 'critical' ? 'text-red-300/80' : 'text-slate-500'}`}>
                     {step.description || step.subtext}
                 </p>
             </div>
+        )}
+        
+        {/* Subtle background pulse for current step */}
+        {step.isCurrent && (
+          <div className="absolute inset-0 bg-violet-500/5 animate-pulse z-0 pointer-events-none"></div>
         )}
       </div>
     </div>

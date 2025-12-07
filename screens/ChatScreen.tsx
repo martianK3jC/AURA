@@ -8,11 +8,11 @@ interface Props {
 
 const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
   return (
-    <div className="min-h-screen flex flex-col pb-32">
+    <div className="min-h-screen flex flex-col pb-44">
       {/* Header */}
       <div className="p-4 border-b border-white/10 bg-slate-950/90 backdrop-blur z-20 sticky top-0 pt-safe">
         <div className="flex items-center gap-3">
-          <button onClick={() => onNavigate('scenario-b')} className="text-slate-400 text-2xl hover:text-white transition-colors">
+          <button onClick={() => onNavigate('scenario-b')} className="text-slate-400 text-2xl hover:text-white transition-colors p-2 -ml-2 rounded-full hover:bg-white/5">
              <ArrowLeft size={24} />
           </button>
           <div>
@@ -72,7 +72,8 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
       </div>
 
       {/* Input Area - Fixed Sticky Footer */}
-      <div className="fixed bottom-16 left-0 right-0 max-w-md mx-auto p-4 bg-slate-950/90 backdrop-blur border-t border-white/10 z-30">
+      {/* FIXED: Changed bottom-16 to bottom-20 so it doesn't get covered by the 80px Nav Bar */}
+      <div className="fixed bottom-20 left-0 right-0 max-w-md mx-auto p-4 bg-slate-950/90 backdrop-blur border-t border-white/10 z-30">
         <div className="relative">
            <input type="text" placeholder="Type a message..." className="w-full bg-white/5 border border-white/10 rounded-full pl-4 pr-12 py-3 text-sm text-white focus:border-violet-500 focus:outline-none placeholder:text-slate-500" />
            <button className="absolute right-1 top-1 w-10 h-10 bg-violet-600 rounded-full flex items-center justify-center shadow-lg text-sm text-white hover:scale-105 transition-transform">➤</button>
