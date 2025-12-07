@@ -8,8 +8,8 @@ import ProfileScreen from './screens/ProfileScreen';
 import { ScreenId } from './types';
 
 const App: React.FC = () => {
-  // Default to Scenario B (Stress Path) as requested for demo
-  const [currentScreen, setCurrentScreen] = useState<ScreenId>('scenario-b');
+  // Default to Landing Page as requested
+  const [currentScreen, setCurrentScreen] = useState<ScreenId>('landing');
   const [scenarioType, setScenarioType] = useState<'A' | 'B'>('B'); 
 
   // Sync scenario type with screen if navigating via internal links
