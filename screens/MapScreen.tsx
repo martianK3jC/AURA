@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ChevronUp, ChevronDown, Footprints, Maximize2, X } from 'lucide-react';
 import { ScreenId } from '../types';
@@ -114,10 +115,22 @@ const MapScreen: React.FC<Props> = ({ onNavigate }) => {
       <div className="absolute top-[268px] left-24 text-[9px] text-blue-400 font-bold bg-slate-900/70 px-2 py-0.5 rounded backdrop-blur-sm border border-blue-500/20 pointer-events-none">Main Security</div>
       <div className="absolute top-[68px] right-12 text-[9px] text-emerald-400 font-bold bg-slate-900/70 px-2 py-0.5 rounded backdrop-blur-sm border border-emerald-500/20 pointer-events-none">East Security</div>
 
-      {/* Heatmaps */}
-      <div className="absolute top-[340px] left-[80px] w-40 h-40 bg-red-500/30 rounded-full blur-3xl animate-pulse pointer-events-none"></div>
-      <div className="absolute top-[120px] right-[50px] w-24 h-24 bg-emerald-500/25 rounded-full blur-2xl pointer-events-none"></div>
-
+      {/* CONGESTION ZONES - Explicitly Labeled */}
+      
+      {/* 1. High Congestion Zone (Red) */}
+      <div className="absolute top-[340px] left-[80px] w-40 h-40 pointer-events-none z-0">
+         {/* Blob */}
+         <div className="absolute inset-0 bg-red-500/30 rounded-full blur-3xl animate-pulse"></div>
+         {/* Ring Border for definition */}
+         <div className="absolute inset-2 border-2 border-red-500/30 rounded-full border-dashed animate-spin-slow opacity-50"></div>
+         {/* Warning Label */}
+         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
+            <span className="flex items-center gap-1 text-[10px] font-bold text-red-200 bg-red-950/90 px-2 py-1 rounded border border-red-500/50 shadow-lg whitespace-nowrap backdrop-blur-md">
+               ⚠️ High Congestion
+            </span>
+         </div>
+      </div>
+      
       {/* Path SVG */}
       <svg className="absolute inset-0 w-full h-full pointer-events-none z-10" viewBox="0 0 375 600">
         <path 
