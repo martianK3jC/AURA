@@ -47,8 +47,8 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
 
   return (
     <div className="min-h-screen flex flex-col pb-44">
-      {/* Header */}
-      <div className="p-4 border-b border-white/10 bg-slate-950/90 backdrop-blur z-20 sticky top-0 pt-safe">
+      {/* Fixed Header */}
+      <div className="fixed top-0 left-0 right-0 max-w-md mx-auto p-4 border-b border-white/10 bg-slate-950/95 backdrop-blur z-30 pt-safe">
         <div className="flex items-center gap-3">
           <button onClick={() => onNavigate('scenario-b')} className="text-slate-400 text-2xl hover:text-white transition-colors p-2 -ml-2 rounded-full hover:bg-white/5">
              <ArrowLeft size={24} />
@@ -63,8 +63,8 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* Messages */}
-      <div className="flex-1 p-4 space-y-4 overflow-y-auto">
+      {/* Messages with top padding for header */}
+      <div className="flex-1 p-4 pt-24 space-y-4 overflow-y-auto">
         
         {messages.map((msg, index) => {
           if (msg.type === 'context') {

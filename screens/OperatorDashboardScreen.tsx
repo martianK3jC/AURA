@@ -24,10 +24,14 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-950 text-white p-4 pb-20 overflow-y-auto animate-slide-up">
-      
-      {/* Header Bar */}
-      <header className="flex justify-between items-center mb-6 pb-4 border-b border-white/10 sticky top-0 bg-slate-950/90 backdrop-blur z-20 pt-safe">
+
+
+    
+    <div className="min-h-screen bg-slate-950 text-white pt-24 pb-20 animate-slide-up relative">
+      {/* Fixed Header Bar */}
+
+      <div>
+      <header className="fixed top-0 left-0 right-0 max-w-md mx-auto flex justify-between items-center px-4 py-4 border-b border-white/10 bg-slate-950/95 backdrop-blur-xl z-30 pt-safe">
         <div>
           <h1 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-cyan-400 flex items-center gap-2">
             <Activity size={20} className="text-blue-400" />
@@ -53,27 +57,28 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
           <LogOut size={16} />
         </button>
       </header>
-
-      {/* KPI Cards Row */}
-      <div className="grid grid-cols-2 gap-3 mb-6">
-        <div className="glass-card p-3 rounded-xl border-l-2 border-blue-500 bg-gradient-to-br from-blue-500/5 to-transparent">
-          <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Total Pax (1hr)</p>
-          <p className="text-2xl font-bold text-white">2,450</p>
-          <p className="text-[10px] text-emerald-400 flex items-center gap-1">
-            <span className="text-xs">↑</span> 12% vs avg
-          </p>
-        </div>
-        <div className={`glass-card p-3 rounded-xl border-l-2 ${systemStatus === 'nominal' ? 'border-emerald-500' : 'border-red-500'} bg-gradient-to-br from-orange-500/5 to-transparent`}>
-          <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Avg Wait Time</p>
-          <p className={`text-2xl font-bold ${systemStatus === 'nominal' ? 'text-white' : 'text-red-400'}`}>
-            {systemStatus === 'nominal' ? '12m' : '35m'}
-          </p>
-          <p className={`text-[10px] ${systemStatus === 'nominal' ? 'text-slate-500' : 'text-red-400'}`}>Security Check A</p>
-        </div>
+      
       </div>
 
-      <div className="grid gap-6">
-        
+      <div className="px-4 space-y-6">
+        {/* KPI Cards Row */}
+        <div className="grid grid-cols-2 gap-3">
+          <div className="glass-card p-3 rounded-xl border-l-2 border-blue-500 bg-gradient-to-br from-blue-500/5 to-transparent">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Total Pax (1hr)</p>
+            <p className="text-2xl font-bold text-white">2,450</p>
+            <p className="text-[10px] text-emerald-400 flex items-center gap-1">
+              <span className="text-xs">↑</span> 12% vs avg
+            </p>
+          </div>
+          <div className={`glass-card p-3 rounded-xl border-l-2 ${systemStatus === 'nominal' ? 'border-emerald-500' : 'border-red-500'} bg-gradient-to-br from-orange-500/5 to-transparent`}>
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider mb-1">Avg Wait Time</p>
+            <p className={`text-2xl font-bold ${systemStatus === 'nominal' ? 'text-white' : 'text-red-400'}`}>
+              {systemStatus === 'nominal' ? '12m' : '35m'}
+            </p>
+            <p className={`text-[10px] ${systemStatus === 'nominal' ? 'text-slate-500' : 'text-red-400'}`}>Security Check A</p>
+          </div>
+        </div>
+
         {/* SECTION 1: PREDICTIVE HEATMAP (God View) */}
         <section className="glass-card rounded-2xl border border-white/10 overflow-hidden relative group">
           <div className="p-4 border-b border-white/5 flex justify-between items-center bg-slate-900/50">
