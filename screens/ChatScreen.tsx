@@ -47,12 +47,12 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
 
   return (
     <div className="flex flex-col h-full relative">
-      
+
       {/* Sticky Header - Stays at top of flex container */}
-      <div className="sticky top-0 z-30 p-4 border-b border-white/10 bg-slate-950/95 backdrop-blur shrink-0">
+      <div className="sticky top-0 z-30 p-4 pt-safe border-b border-white/10 bg-slate-950/95 backdrop-blur shrink-0">
         <div className="flex items-center gap-3">
           <button onClick={() => onNavigate('scenario-b')} className="text-slate-400 text-2xl hover:text-white transition-colors p-2 -ml-2 rounded-full hover:bg-white/5">
-             <ArrowLeft size={24} />
+            <ArrowLeft size={24} />
           </button>
           <div>
             <h2 className="font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-indigo-400">AURA Assistant</h2>
@@ -102,35 +102,35 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
       <div className="sticky bottom-0 z-30 p-4 bg-slate-950/90 backdrop-blur border-t border-white/10 mt-auto">
         {/* Chips - Placed here or above input? Above input looks better in flow, but sticking them here ensures visibility */}
         <div className="flex gap-2 mb-3 overflow-x-auto pb-1 scrollbar-hide">
-           <button 
-             onClick={() => handleChipClick('translate')}
-             className="whitespace-nowrap bg-white/5 border border-violet-500/30 text-violet-300 text-xs px-3 py-2 rounded-full hover:bg-violet-500/20 transition-colors"
-           >
-             Translate instructions
-           </button>
-           <button 
-             onClick={() => handleChipClick('prohibited')}
-             className="whitespace-nowrap bg-white/5 border border-violet-500/30 text-violet-300 text-xs px-3 py-2 rounded-full hover:bg-violet-500/20 transition-colors"
-           >
-             Prohibited Items?
-           </button>
-           <button 
-             onClick={() => handleChipClick('Call my driver')}
-             className="whitespace-nowrap bg-white/5 border border-violet-500/30 text-violet-300 text-xs px-3 py-2 rounded-full hover:bg-violet-500/20 transition-colors"
-           >
-             Call my driver
-           </button>
+          <button
+            onClick={() => handleChipClick('translate')}
+            className="whitespace-nowrap bg-white/5 border border-violet-500/30 text-violet-300 text-xs px-3 py-2 rounded-full hover:bg-violet-500/20 transition-colors"
+          >
+            Translate instructions
+          </button>
+          <button
+            onClick={() => handleChipClick('prohibited')}
+            className="whitespace-nowrap bg-white/5 border border-violet-500/30 text-violet-300 text-xs px-3 py-2 rounded-full hover:bg-violet-500/20 transition-colors"
+          >
+            Prohibited Items?
+          </button>
+          <button
+            onClick={() => handleChipClick('Call my driver')}
+            className="whitespace-nowrap bg-white/5 border border-violet-500/30 text-violet-300 text-xs px-3 py-2 rounded-full hover:bg-violet-500/20 transition-colors"
+          >
+            Call my driver
+          </button>
         </div>
 
         <div className="relative">
-           <input 
-             type="text" 
-             value={inputText}
-             onChange={(e) => setInputText(e.target.value)}
-             placeholder="Type a message..." 
-             className="w-full bg-white/5 border border-white/10 rounded-full pl-4 pr-12 py-3 text-sm text-white focus:border-violet-500 focus:outline-none placeholder:text-slate-500" 
-           />
-           <button className="absolute right-1 top-1 w-10 h-10 bg-violet-600 rounded-full flex items-center justify-center shadow-lg text-sm text-white hover:scale-105 transition-transform">➤</button>
+          <input
+            type="text"
+            value={inputText}
+            onChange={(e) => setInputText(e.target.value)}
+            placeholder="Type a message..."
+            className="w-full bg-white/5 border border-white/10 rounded-full pl-4 pr-12 py-3 text-sm text-white focus:border-violet-500 focus:outline-none placeholder:text-slate-500"
+          />
+          <button className="absolute right-1 top-1 w-10 h-10 bg-violet-600 rounded-full flex items-center justify-center shadow-lg text-sm text-white hover:scale-105 transition-transform">➤</button>
         </div>
       </div>
     </div>
