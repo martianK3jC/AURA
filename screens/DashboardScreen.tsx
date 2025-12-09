@@ -81,18 +81,18 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
         icon: 'door', 
         title: 'Boarding Gate 5', 
         status: 'upcoming', 
-        time: '5 mins',
+        time: '5 mins', 
         subtext: 'Walking Time • 80m Distance' 
       },
     ]
   };
 
   return (
-    <div className="relative pt-6 px-6 pb-44">
+    <div className="flex flex-col h-full relative">
       
-      {/* Header Info */}
-      <div className="mb-6 pt-2">
-        <div className="flex justify-between items-start mb-4">
+      {/* Sticky Header Info */}
+      <div className="sticky top-0 z-30 bg-slate-950/95 backdrop-blur-xl px-6 py-4 border-b border-white/5 shrink-0">
+        <div className="flex justify-between items-start mt-2">
             <div>
                 <p className="text-slate-400 text-sm">Good Morning, Traveler</p>
                 <h2 className="text-2xl font-bold text-white">Dashboard</h2>
@@ -113,7 +113,10 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
                 </button>
             </div>
         </div>
+      </div>
 
+      {/* Scrollable Content Container */}
+      <div className="flex-1 overflow-y-auto px-6 py-6">
         {/* Critical Alert Banner (Only Scenario B) */}
         {isStress && (
           <div className="bg-gradient-to-r from-red-600 to-orange-600 animate-pulse p-4 rounded-2xl mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)] flex items-start gap-3 relative z-20">
@@ -126,7 +129,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
         )}
 
         {/* Flight Card */}
-        <div className={`glass-card rounded-2xl p-4 flex flex-col gap-2 ${isStress ? 'border-red-500/50' : 'border-emerald-500/30'}`}>
+        <div className={`glass-card rounded-2xl p-4 flex flex-col gap-2 mb-6 ${isStress ? 'border-red-500/50' : 'border-emerald-500/30'}`}>
           <div className="flex justify-between items-start">
              <div>
                 <span className="text-lg font-semibold text-white block">PR 123</span>
@@ -147,57 +150,57 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
             </div>
           )}
         </div>
-      </div>
 
-      {/* Timeline */}
-      <div className="relative pl-2">
-        
-        {/* Timeline Gradient Line */}
-        <div className={`absolute left-5 top-0 bottom-0 w-0.5 rounded-full z-0 ${isStress ? 'bg-gradient-to-b from-red-500 via-orange-500 to-slate-500' : 'bg-gradient-to-b from-emerald-500 via-cyan-500 to-blue-500'}`} />
+        {/* Timeline */}
+        <div className="relative pl-2 pb-6">
+          
+          {/* Timeline Gradient Line */}
+          <div className={`absolute left-5 top-0 bottom-0 w-0.5 rounded-full z-0 ${isStress ? 'bg-gradient-to-b from-red-500 via-orange-500 to-slate-500' : 'bg-gradient-to-b from-emerald-500 via-cyan-500 to-blue-500'}`} />
 
-        <div className="space-y-6 relative z-10">
-          {data.steps.map((step, index) => (
-            <React.Fragment key={step.id}>
-              {/* Special rendering for AI Recommendation in Scenario B */}
-              {isStress && index === 2 && (
-                <div className="flex items-start gap-4 pl-8 relative animate-slide-up">
-                  {/* Timeline Node */}
-                  <div className="absolute left-0 w-10 h-10 rounded-full flex items-center justify-center z-10 bg-slate-900 border-2 border-violet-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]">
-                    <span className="text-lg">✨</span>
+          <div className="space-y-6 relative z-10">
+            {data.steps.map((step, index) => (
+              <React.Fragment key={step.id}>
+                {/* Special rendering for AI Recommendation in Scenario B */}
+                {isStress && index === 2 && (
+                  <div className="flex items-start gap-4 pl-8 relative animate-slide-up">
+                    {/* Timeline Node */}
+                    <div className="absolute left-0 w-10 h-10 rounded-full flex items-center justify-center z-10 bg-slate-900 border-2 border-violet-500 shadow-[0_0_15px_rgba(139,92,246,0.5)]">
+                      <span className="text-lg">✨</span>
+                    </div>
+
+                    <div className="flex-1 bg-gradient-to-br from-violet-600/20 to-indigo-600/20 backdrop-blur-xl border-2 border-violet-500 rounded-2xl p-5 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
+                        
+                        <div className="flex items-center gap-2 mb-3">
+                          <span className="text-xl">✨</span>
+                          <h3 className="text-violet-400 font-bold text-lg">AURA Recommendation</h3>
+                        </div>
+                        
+                        <div className="space-y-2 text-sm text-slate-200">
+                          <p>High congestion detected at Terminal 1 Drop-off.</p>
+                          <p className="font-medium text-white">Alternate Route Available:</p>
+                          <p>→ Reroute to Terminal 2 Entrance (connected via walkway)</p>
+                          <p className="text-emerald-400 font-semibold">⏱️ Time Saved: 15 minutes</p>
+                        </div>
+
+                        <button 
+                          onClick={() => onNavigate('scenario-c')}
+                          className="mt-4 w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-transform"
+                        >
+                          Update Route on Maps 🗺️
+                        </button>
+                    </div>
                   </div>
+                )}
 
-                  <div className="flex-1 bg-gradient-to-br from-violet-600/20 to-indigo-600/20 backdrop-blur-xl border-2 border-violet-500 rounded-2xl p-5 shadow-[0_0_30px_rgba(139,92,246,0.3)]">
-                      
-                      <div className="flex items-center gap-2 mb-3">
-                        <span className="text-xl">✨</span>
-                        <h3 className="text-violet-400 font-bold text-lg">AURA Recommendation</h3>
-                      </div>
-                      
-                      <div className="space-y-2 text-sm text-slate-200">
-                        <p>High congestion detected at Terminal 1 Drop-off.</p>
-                        <p className="font-medium text-white">Alternate Route Available:</p>
-                        <p>→ Reroute to Terminal 2 Entrance (connected via walkway)</p>
-                        <p className="text-emerald-400 font-semibold">⏱️ Time Saved: 15 minutes</p>
-                      </div>
-
-                      <button 
-                        onClick={() => onNavigate('scenario-c')}
-                        className="mt-4 w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-semibold py-3 px-6 rounded-xl shadow-lg flex items-center justify-center gap-2 active:scale-95 transition-transform"
-                      >
-                        Update Route on Maps 🗺️
-                      </button>
-                  </div>
-                </div>
-              )}
-
-              <TimelineCard step={step} isLast={index === data.steps.length - 1} delay={index * 0.1} />
-            </React.Fragment>
-          ))}
+                <TimelineCard step={step} isLast={index === data.steps.length - 1} delay={index * 0.1} />
+              </React.Fragment>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Total Time Sticky Footer Content */}
-      <div className="glass-nav fixed bottom-20 left-0 right-0 max-w-md mx-auto p-4 border-t border-white/10 z-20 flex justify-between items-center">
+      {/* Total Time Sticky Footer - Using sticky positioning within flex */}
+      <div className="sticky bottom-0 z-20 bg-slate-950/95 backdrop-blur-xl border-t border-white/10 p-4 flex justify-between items-center mt-auto shrink-0">
          <div>
             <p className={`text-xs font-bold uppercase tracking-wider ${isStress ? 'text-orange-400 animate-pulse' : 'text-slate-400'}`}>
                 {isStress ? '⚠ Tight Schedule' : 'Total Time to Gate'}
