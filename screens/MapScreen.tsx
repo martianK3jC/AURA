@@ -42,8 +42,8 @@ const MapScreen: React.FC<Props> = ({ onNavigate }) => {
     const newY = clientY - dragStart.y;
 
     // Constrain the offset
-    const maxDragX = 150; // Increased range
-    const maxDragY = 200;
+    const maxDragX = 80;
+    const maxDragY = 120;
 
     const constrainedX = Math.max(-maxDragX, Math.min(maxDragX, newX));
     const constrainedY = Math.max(-maxDragY, Math.min(maxDragY, newY));
@@ -61,7 +61,7 @@ const MapScreen: React.FC<Props> = ({ onNavigate }) => {
   // Map visualization component
   const MapContent = ({ draggable = false }: { draggable?: boolean }) => (
     <div
-      className="relative w-full h-full max-w-lg mx-auto aspect-[375/600] transition-transform duration-200"
+      className="relative w-[375px] h-[600px] transition-transform duration-200"
       style={{
         transform: draggable ? `translate(${mapOffset.x}px, ${mapOffset.y}px)` : 'none',
         cursor: draggable ? (isDragging ? 'grabbing' : 'grab') : 'default'

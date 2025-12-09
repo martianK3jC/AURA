@@ -1,6 +1,6 @@
 import React from 'react';
-import { Home, Car, Briefcase, Shield, Ticket, DoorOpen, AlertTriangle } from 'lucide-react';
 import { TimelineStep } from '../types';
+import GlassCard from './GlassCard';
 
 interface TimelineCardProps {
   step: TimelineStep;
@@ -21,15 +21,10 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
     }
   };
 
-  const getStatusStyles = () => {
-    switch (step.status) {
-      case 'current': return 'border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.3)] bg-emerald-500/10';
-      case 'completed': return 'border-emerald-500/30 opacity-75';
-      case 'critical': return 'border-red-500 shadow-[0_0_20px_rgba(239,68,68,0.2)]';
-      case 'warning': return 'border-orange-500/50';
-      case 'upcoming': return 'border-white/5 opacity-60';
-      default: return 'border-white/10';
-    }
+  const getVariant = () => {
+    if (step.status === 'critical') return 'critical';
+    if (step.status === 'completed' || step.status === 'current') return 'highlight';
+    return 'default';
   };
 
   const getIconContainerStyles = () => {
@@ -39,8 +34,8 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
   };
 
   return (
-    <div 
-      className="flex items-start gap-4 pl-8 relative animate-slide-up" 
+    <div
+      className="flex items-start gap-4 pl-8 relative animate-slide-up"
       style={{ animationDelay: `${delay}s` }}
     >
       {/* Icon Node */}
@@ -49,8 +44,11 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
       </div>
 
       {/* Content Card */}
-      <div className={`glass-card flex-1 p-4 rounded-xl relative overflow-hidden transition-all duration-300 ${getStatusStyles()} ${step.isCurrent ? 'scale-[1.02]' : ''}`}>
-        
+      <GlassCard
+        className={`flex-1 p-4 rounded-xl relative overflow-hidden transition-all duration-300 ${step.isCurrent ? 'scale-[1.02]' : ''}`}
+        variant={getVariant()}
+      >
+
         {/* "You Are Here" Indicator */}
         {step.isCurrent && (
           <div className="absolute bottom-0 right-0 bg-violet-600 text-white text-[10px] font-bold px-2 py-0.5 rounded-tl-lg shadow-lg z-20">
@@ -60,45 +58,43 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
 
         <div className="flex justify-between items-start relative z-10">
           <div>
-             <h3 className={`font-medium ${step.status === 'critical' ? 'text-white' : step.status === 'completed' ? 'text-slate-300' : 'text-white'}`}>
-                {step.title}
-             </h3>
-             {step.time && (
-                <p className={`text-lg font-bold mt-1 ${
-                    step.status === 'critical' ? 'text-red-400' : 
-                    step.status === 'warning' ? 'text-orange-400' : 
-                    step.status === 'current' || step.status === 'completed' ? 'text-emerald-400' : 
-                    'text-emerald-400'
+            <h3 className={`font-medium ${step.status === 'critical' ? 'text-white' : step.status === 'completed' ? 'text-slate-300' : 'text-white'}`}>
+              {step.title}
+            </h3>
+            {step.time && (
+              <p className={`text-lg font-bold mt-1 ${step.status === 'critical' ? 'text-red-400' :
+                  step.status === 'warning' ? 'text-orange-400' :
+                    step.status === 'current' || step.status === 'completed' ? 'text-emerald-400' :
+                      'text-emerald-400'
                 }`}>
-                    {step.time}
-                </p>
-             )}
+                {step.time}
+              </p>
+            )}
           </div>
           {step.badge && (
-             <span className={`px-2 py-1 rounded text-xs ${
-                step.badgeColor === 'red' ? 'bg-red-500/20 text-red-400 animate-pulse' :
+            <span className={`px-2 py-1 rounded text-xs ${step.badgeColor === 'red' ? 'bg-red-500/20 text-red-400 animate-pulse' :
                 step.badgeColor === 'orange' ? 'bg-orange-500/20 text-orange-400' :
-                'bg-emerald-500/10 text-emerald-400'
-             }`}>
-                {step.badge}
-             </span>
+                  'bg-emerald-500/10 text-emerald-400'
+              }`}>
+              {step.badge}
+            </span>
           )}
         </div>
 
         {(step.subtext || step.description) && (
-            <div className="mt-2 flex items-center gap-2 relative z-10">
-                {step.status === 'warning' && <span className="w-2 h-2 bg-orange-500 rounded-full" />}
-                <p className={`text-xs ${step.status === 'critical' ? 'text-red-300/80' : 'text-slate-500'}`}>
-                    {step.description || step.subtext}
-                </p>
-            </div>
+          <div className="mt-2 flex items-center gap-2 relative z-10">
+            {step.status === 'warning' && <span className="w-2 h-2 bg-orange-500 rounded-full" />}
+            <p className={`text-xs ${step.status === 'critical' ? 'text-red-300/80' : 'text-slate-500'}`}>
+              {step.description || step.subtext}
+            </p>
+          </div>
         )}
-        
+
         {/* Subtle background pulse for current step */}
         {step.isCurrent && (
           <div className="absolute inset-0 bg-violet-500/5 animate-pulse z-0 pointer-events-none"></div>
         )}
-      </div>
+      </GlassCard>
     </div>
   );
 };

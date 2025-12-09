@@ -55,7 +55,7 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
             <ArrowLeft size={24} />
           </button>
           <div>
-            <h2 className="font-bold text-white bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-indigo-400">AURA Assistant</h2>
+            <h2 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-indigo-400">AURA Assistant</h2>
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
               <span className="text-xs text-slate-400">Online</span>
@@ -65,7 +65,7 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
       </div>
 
       {/* Messages - Grows to fill available space */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
+      <div className="flex-1 overflow-y-auto p-4 pb-6 space-y-4">
         {messages.map((msg, index) => {
           if (msg.type === 'context') {
             return (
@@ -99,7 +99,7 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
       </div>
 
       {/* Input Area - Sticky at bottom of flex container */}
-      <div className="sticky bottom-0 z-30 p-4 bg-slate-950/90 backdrop-blur border-t border-white/10 mt-auto">
+      <div className="sticky bottom-0 z-40 p-4 pb-safe bg-slate-950/90 backdrop-blur border-t border-white/10 mt-auto mb-20 md:mb-0">
         {/* Chips - Placed here or above input? Above input looks better in flow, but sticking them here ensures visibility */}
         <div className="flex gap-2 mb-3 overflow-x-auto pb-1 scrollbar-hide">
           <button

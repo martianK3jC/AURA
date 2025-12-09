@@ -1,6 +1,7 @@
 import React from 'react';
 import { Sparkles, MessageSquare, AlertTriangle } from 'lucide-react';
 import TimelineCard from '../components/TimelineCard';
+import GlassCard from '../components/GlassCard';
 import { ScreenId, ScenarioData } from '../types';
 
 interface Props {
@@ -98,7 +99,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
             <h2 className="text-2xl font-bold text-white">Dashboard</h2>
           </div>
           {/* Demo Toggles */}
-          <div className="glass-card rounded-full p-1.5 flex gap-2">
+          <GlassCard className="rounded-full p-1.5 flex gap-2">
             <button
               onClick={() => onSetScenario('A')}
               className={`px-4 py-2 rounded-full text-sm font-bold transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center ${!isStress ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white'}`}
@@ -111,12 +112,12 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
             >
               B
             </button>
-          </div>
+          </GlassCard>
         </div>
       </div>
 
       {/* Scrollable Content Container */}
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 overflow-y-auto px-6 py-6 pb-6">
         {/* Critical Alert Banner (Only Scenario B) */}
         {isStress && (
           <div className="bg-gradient-to-r from-red-600 to-orange-600 animate-pulse p-4 rounded-2xl mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)] flex items-start gap-3 relative z-20">
@@ -129,7 +130,10 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
         )}
 
         {/* Flight Card */}
-        <div className={`glass-card rounded-2xl p-4 flex flex-col gap-2 mb-6 ${isStress ? 'border-red-500/50' : 'border-emerald-500/30'}`}>
+        <GlassCard
+          className="rounded-2xl p-4 flex flex-col gap-2 mb-6"
+          variant={isStress ? 'critical' : 'highlight'}
+        >
           <div className="flex justify-between items-start">
             <div>
               <span className="text-lg font-semibold text-white block">PR 123</span>
@@ -149,7 +153,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
               <p className="text-violet-300 text-sm">AURA AI: Conditions are optimal. Enjoy the lounge!</p>
             </div>
           )}
-        </div>
+        </GlassCard>
 
         {/* Timeline */}
         <div className="relative pl-2 pb-6">
@@ -199,8 +203,9 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
         </div>
       </div>
 
-      {/* Total Time Sticky Footer - Using sticky positioning within flex */}
-      <div className="sticky bottom-0 z-20 bg-slate-950/95 backdrop-blur-xl border-t border-white/10 p-4 flex justify-between items-center mt-auto shrink-0">
+      {/* Total Time Sticky Footer */}
+      {/* Mobile: Margin bottom 80px to clear fixed nav. Desktop: No margin. */}
+      <div className="sticky bottom-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-white/10 p-4 pb-safe flex justify-between items-center mt-auto shrink-0 mb-20 md:mb-0">
         <div>
           <p className={`text-xs font-bold uppercase tracking-wider ${isStress ? 'text-orange-400 animate-pulse' : 'text-slate-400'}`}>
             {isStress ? '⚠ Tight Schedule' : 'Total Time to Gate'}

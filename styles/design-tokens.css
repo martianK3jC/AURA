@@ -1,0 +1,51 @@
+:root {
+  /* 🎨 AURA Design System Tokens */
+
+  /* Colors - Traveler (Violet/Indigo) */
+  --aura-primary: #8b5cf6; /* violet-500 */
+  --aura-secondary: #6366f1; /* indigo-500 */
+  --aura-accent: #10b981; /* emerald-500 */
+  
+  /* Colors - Operator (Blue/Cyan) */
+  --op-primary: #3b82f6; /* blue-500 */
+  --op-secondary: #06b6d4; /* cyan-500 */
+  --op-critical: #ef4444; /* red-500 */
+  --op-warning: #f97316; /* orange-500 */
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.08);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-light: rgba(255, 255, 255, 0.15);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+  --glass-blur: 16px;
+
+  /* Spacing & Layout */
+  --header-height: 64px;
+  --nav-height: 80px;
+  --safe-top: env(safe-area-inset-top, 20px);
+  --safe-bottom: env(safe-area-inset-bottom, 20px);
+}
+
+/* Utilities */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+.text-gradient-traveler {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #a78bfa, #818cf8); /* violet-400 to indigo-400 */
+}
+
+.text-gradient-operator {
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  background-image: linear-gradient(to right, #60a5fa, #22d3ee); /* blue-400 to cyan-400 */
+}
