@@ -1,20 +1,59 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# AURA - AI Travel Assistant Wireframe
 
-# Run and deploy your AI Studio app
+A high-fidelity wireframe application designed to demonstrate and explore AI-driven travel assistance scenarios. This project serves as a visual guide and prototype for team collaboration and feature development.
 
-This contains everything you need to run your app locally.
+## 🚀 Overview
 
-View your app in AI Studio: https://ai.studio/apps/drive/1sz68EVxu1fdgUyP6Rmk2Z9HfCVpTeTX_
+AURA is a concept application for an intelligent travel assistant. This wireframe implements key user flows and interfaces to visualize how users might interact with an AI travel agent, covering scenarios from trip planning to real-time assistance.
 
-## Run Locally
+## ✨ Features
 
-**Prerequisites:**  Node.js
+- **Landing Page**: clear value proposition and entry point.
+- **Interactive Dashboard**:
+  - **Scenario A & B**: Toggle between different user states or A/B testing variations.
+- **Dynamic Map View**: Visualizing travel context and locations.
+- **Chat Interface**: Simulation of the core AI conversational experience.
+- **Operator Dashboard**: A view for human-in-the-loop support or system monitoring.
+- **Profile Management**: User settings and preferences.
 
+## 🛠️ Tech Stack
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+- **Framework**: [React](https://react.dev/)
+- **Build Tool**: [Vite](https://vitejs.dev/)
+- **Language**: [TypeScript](https://www.typescriptlang.org/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Styling**: CSS / Design Tokens
+
+## 💻 Getting Started
+
+Follow these steps to set up the project locally:
+
+1.  **Clone the repository** (if you haven't already):
+    ```bash
+    git clone <repository-url>
+    cd <project-folder>
+    ```
+
+2.  **Install dependencies**:
+    ```bash
+    npm install
+    ```
+
+3.  **Environment Setup**:
+    - Create a `.env.local` file in the root directory.
+    - Add your Gemini API key (required for some AI simulations):
+      ```env
+      GEMINI_API_KEY=your_api_key_here
+      ```
+
+4.  **Run the development server**:
+    ```bash
+    npm run dev
+    ```
+
+5.  **Open in Browser**:
+    Visit `http://localhost:3000` (or the URL shown in your terminal) to view the app.
+
+## 🤝 Collaboration
+
+This repo is intended for internal team sharing and design review. Please open an issue or pull request for any suggested changes to the flows or UI components.
