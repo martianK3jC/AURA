@@ -7,12 +7,13 @@ import MapScreen from './screens/MapScreen';
 import ChatScreen from './screens/ChatScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import OperatorDashboardScreen from './screens/OperatorDashboardScreen';
+import OnboardingScreen from './screens/OnboardingScreen';
 import { ScreenId } from './types';
 
 const App: React.FC = () => {
   // Default to Landing Page as requested
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('landing');
-  const [scenarioType, setScenarioType] = useState<'A' | 'B'>('B'); 
+  const [scenarioType, setScenarioType] = useState<'A' | 'B'>('B');
 
   // Sync scenario type with screen if navigating via internal links
   useEffect(() => {
@@ -33,6 +34,8 @@ const App: React.FC = () => {
     switch (currentScreen) {
       case 'landing':
         return <LandingScreen onNavigate={handleNavigate} />;
+      case 'onboarding':
+        return <OnboardingScreen onNavigate={handleNavigate} />;
       case 'scenario-a':
       case 'scenario-b':
         return <DashboardScreen scenarioType={scenarioType} onNavigate={handleNavigate} onSetScenario={handleSetScenario} />;
@@ -50,8 +53,8 @@ const App: React.FC = () => {
   };
 
   return (
-    <Layout 
-      currentScreen={currentScreen} 
+    <Layout
+      currentScreen={currentScreen}
       onNavigate={handleNavigate}
     >
       {renderScreen()}

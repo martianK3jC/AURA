@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { ChevronUp, ChevronDown, Footprints, Maximize2, X } from 'lucide-react';
+import { ChevronUp, ChevronDown, Footprints, Maximize2, X, Compass, ExternalLink, Map } from 'lucide-react';
 import { ScreenId } from '../types';
+import GlassCard from '../components/GlassCard';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -62,6 +63,8 @@ const MapScreen: React.FC<Props> = ({ onNavigate }) => {
   const MapContent = ({ draggable = false }: { draggable?: boolean }) => (
     <div
       className="relative w-[375px] h-[600px] transition-transform duration-200"
+      role="img"
+      aria-label="Interactive Map of Terminal 1 showing check-in, security, and gates"
       style={{
         transform: draggable ? `translate(${mapOffset.x}px, ${mapOffset.y}px)` : 'none',
         cursor: draggable ? (isDragging ? 'grabbing' : 'grab') : 'default'
@@ -115,17 +118,17 @@ const MapScreen: React.FC<Props> = ({ onNavigate }) => {
       <div className="absolute top-[268px] left-24 text-[9px] text-blue-400 font-bold bg-slate-900/70 px-2 py-0.5 rounded backdrop-blur-sm border border-blue-500/20 pointer-events-none">Main Security</div>
       <div className="absolute top-[68px] right-12 text-[9px] text-emerald-400 font-bold bg-slate-900/70 px-2 py-0.5 rounded backdrop-blur-sm border border-emerald-500/20 pointer-events-none">East Security</div>
 
-      {/* CONGESTION ZONES - Explicitly Labeled */}
+      {/* CONGESTION ZONES - Enhanced Visibility */}
 
-      {/* 1. High Congestion Zone (Red) */}
+      {/* 1. High Congestion Zone (Red) - More Prominent */}
       <div className="absolute top-[340px] left-[80px] w-40 h-40 pointer-events-none z-0">
-        {/* Blob */}
-        <div className="absolute inset-0 bg-red-500/30 rounded-full blur-3xl animate-pulse"></div>
-        {/* Ring Border for definition */}
-        <div className="absolute inset-2 border-2 border-red-500/30 rounded-full border-dashed animate-spin-slow opacity-50"></div>
-        {/* Warning Label */}
+        {/* Stronger blob */}
+        <div className="absolute inset-0 bg-red-500/50 rounded-full blur-2xl animate-pulse"></div>
+        {/* Pulsing ring for attention */}
+        <div className="absolute inset-2 border-4 border-red-500/60 rounded-full border-dashed animate-spin-slow opacity-70"></div>
+        {/* Warning Label - Larger */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-10">
-          <span className="flex items-center gap-1 text-[10px] font-bold text-red-200 bg-red-950/90 px-2 py-1 rounded border border-red-500/50 shadow-lg whitespace-nowrap backdrop-blur-md">
+          <span className="flex items-center gap-1.5 text-xs font-bold text-red-100 bg-red-900/95 px-3 py-1.5 rounded-lg border-2 border-red-500/70 shadow-lg whitespace-nowrap backdrop-blur-md animate-pulse">
             ⚠️ High Congestion
           </span>
         </div>
@@ -235,12 +238,27 @@ const MapScreen: React.FC<Props> = ({ onNavigate }) => {
               <Maximize2 size={16} className="text-white group-hover:scale-110 transition-transform" />
               <span className="text-xs text-white font-medium">Expand</span>
             </button>
+
+            {/* GOOGLE MAPS BTN */}
+            <button
+              onClick={() => window.open('https://maps.google.com', '_blank')}
+              className="absolute bottom-4 right-4 z-40 bg-white/10 hover:bg-emerald-500 backdrop-blur-sm p-2 rounded-full border border-white/20 transition-all shadow-lg text-white"
+              title="Open in Google Maps"
+              aria-label="Open location in Google Maps"
+            >
+              <Map size={16} />
+            </button>
+
+            {/* COMPASS */}
+            <div className="absolute top-14 right-4 bg-slate-800/80 backdrop-blur-sm p-2 rounded-full border border-white/10 z-40 pointer-events-none shadow-lg">
+              <Compass size={20} className="text-blue-400 rotate-45" />
+            </div>
           </div>
         </div>
 
         {/* Smart Route Found Component - Now Scrollable */}
         <div className="px-3 pb-4">
-          <div className="glass-card bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
+          <GlassCard className="bg-slate-900/95 backdrop-blur-xl rounded-2xl border border-white/10 shadow-[0_-10px_40px_rgba(0,0,0,0.5)]">
 
             {/* Header */}
             <div className="p-4 border-b border-white/5">
@@ -319,7 +337,7 @@ const MapScreen: React.FC<Props> = ({ onNavigate }) => {
                 </div>
               </div>
             </div>
-          </div>
+          </GlassCard>
         </div>
       </div>
 

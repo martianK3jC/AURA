@@ -1,13 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ScreenId } from '../types';
+import GlassCard from '../components/GlassCard';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 interface Props {
    onNavigate: (screen: ScreenId) => void;
 }
 
 const ProfileScreen: React.FC<Props> = ({ onNavigate }) => {
+   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
    return (
       <div className="flex flex-col h-full">
+         <ConfirmationModal
+            isOpen={showLogoutConfirm}
+            title="Log Out"
+            message="Are you sure you want to log out of your session? You will need to sign in again to access travel data."
+            onConfirm={() => onNavigate('landing')}
+            onCancel={() => setShowLogoutConfirm(false)}
+            confirmText="Log Out"
+            isDangerous={true}
+         />
          {/* Header */}
          <div className="bg-gradient-to-br from-violet-600/20 to-indigo-600/20 backdrop-blur-xl border-b border-white/10 p-8 pt-safe rounded-b-[2.5rem] relative overflow-hidden shrink-0">
             <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/30 rounded-full blur-3xl"></div>
@@ -23,24 +36,24 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate }) => {
          {/* Scrollable Content */}
          <div className="flex-1 overflow-y-auto p-6 pb-6">
             <div className="grid grid-cols-3 gap-3 mb-8">
-               <div className="glass-card rounded-xl p-3 text-center">
-                  <div className="text-2xl font-bold text-emerald-400">12</div>
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider">Trips</div>
-               </div>
-               <div className="glass-card rounded-xl p-3 text-center">
-                  <div className="text-2xl font-bold text-cyan-400">3.5h</div>
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider">Saved</div>
-               </div>
-               <div className="glass-card rounded-xl p-3 text-center">
-                  <div className="text-2xl font-bold text-orange-400">🔥 8</div>
-                  <div className="text-[10px] text-slate-400 uppercase tracking-wider">Streak</div>
-               </div>
+               <GlassCard className="rounded-xl p-3 md:p-4 text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-emerald-400">12</div>
+                  <div className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mt-1">Trips</div>
+               </GlassCard>
+               <GlassCard className="rounded-xl p-3 md:p-4 text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-cyan-400">3.5h</div>
+                  <div className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mt-1">Saved</div>
+               </GlassCard>
+               <GlassCard className="rounded-xl p-3 md:p-4 text-center">
+                  <div className="text-2xl md:text-3xl font-bold text-orange-400">🔥 8</div>
+                  <div className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mt-1">Streak</div>
+               </GlassCard>
             </div>
 
             {/* History */}
             <h3 className="text-slate-400 text-sm font-semibold mb-3 pl-1">Recent Flights</h3>
             <div className="space-y-3 mb-8">
-               <div className="glass-card p-4 rounded-xl flex justify-between items-center">
+               <GlassCard className="p-4 rounded-xl flex justify-between items-center">
                   <div>
                      <p className="font-semibold text-white">PR 123 • MNL-NRT</p>
                      <p className="text-xs text-slate-500">Dec 6, 2025</p>
@@ -49,8 +62,8 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate }) => {
                      <span className="block text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full mb-1 font-bold">✓ On Time</span>
                      <span className="text-[10px] text-emerald-400 font-medium">+15m saved</span>
                   </div>
-               </div>
-               <div className="glass-card p-4 rounded-xl flex justify-between items-center opacity-70">
+               </GlassCard>
+               <GlassCard className="p-4 rounded-xl flex justify-between items-center opacity-70">
                   <div>
                      <p className="font-semibold text-white">5J 567 • CEB-SIN</p>
                      <p className="text-xs text-slate-500">Nov 28, 2025</p>
@@ -58,29 +71,29 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate }) => {
                   <div className="text-right">
                      <span className="block text-[10px] text-slate-400 px-2 py-0.5 rounded-full mb-1 font-bold">✓ Completed</span>
                   </div>
-               </div>
+               </GlassCard>
             </div>
 
             {/* Settings */}
             <h3 className="text-slate-400 text-sm font-semibold mb-3 pl-1">Preferences</h3>
             <div className="space-y-2">
-               <div className="glass-card p-4 rounded-xl flex justify-between items-center">
+               <GlassCard className="p-4 rounded-xl flex justify-between items-center">
                   <div className="flex items-center gap-3">
                      <span className="text-lg">🔔</span>
                      <span className="text-sm text-white">Push Notifications</span>
                   </div>
                   <div className="w-10 h-5 bg-emerald-500 rounded-full relative"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
-               </div>
-               <div className="glass-card p-4 rounded-xl flex justify-between items-center">
+               </GlassCard>
+               <GlassCard className="p-4 rounded-xl flex justify-between items-center">
                   <div className="flex items-center gap-3">
                      <span className="text-lg">✨</span>
                      <span className="text-sm text-white">Proactive Suggestions</span>
                   </div>
                   <div className="w-10 h-5 bg-violet-600 rounded-full relative"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
-               </div>
+               </GlassCard>
             </div>
 
-            <button onClick={() => onNavigate('landing')} className="w-full mt-8 bg-red-500/10 border border-red-500/30 text-red-400 font-semibold py-3 rounded-xl hover:bg-red-500/20 transition-colors">
+            <button onClick={() => setShowLogoutConfirm(true)} className="w-full mt-8 bg-red-500/10 border border-red-500/30 text-red-400 font-semibold py-3 rounded-xl hover:bg-red-500/20 transition-colors">
                Logout
             </button>
             {/* Mobile Nav Spacer */}

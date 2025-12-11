@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ScreenId } from '../types';
+import GlassCard from '../components/GlassCard';
+import Loader from '../components/Loader';
 import { LogOut, AlertTriangle, Users, Activity, Eye, CheckCircle, Clock, ShieldAlert } from 'lucide-react';
+import ConfirmationModal from '../components/ConfirmationModal';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -9,13 +12,32 @@ interface Props {
 
 const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
   const [alerts, setAlerts] = useState([
-    { id: 1, type: 'critical', message: 'High volume predicted at Domestic Security (+20m)', location: 'Checkpoint A', status: 'pending' },
-    { id: 2, type: 'warning', message: 'Gate 5 boarding queue exceeding capacity', location: 'Gate 5', status: 'pending' },
+    { id: 1, type: 'critical', message: 'High volume predicted at Domestic Security (+20m)', location: 'Checkpoint A', time: '09:41 AM', status: 'pending' },
+    { id: 2, type: 'warning', message: 'Gate 5 boarding queue exceeding capacity', location: 'Gate 5', time: '09:38 AM', status: 'pending' },
   ]);
+
+  const [isLoading, setIsLoading] = useState(true);
+
+  React.useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 2000);
+    return () => clearTimeout(timer);
+  }, []);
 
   const [systemStatus, setSystemStatus] = useState<'nominal' | 'alert'>('nominal');
 
   const [expandedCam, setExpandedCam] = useState<number | null>(null);
+
+  // Confirmation Modal State
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    onConfirm: () => { },
+    isDangerous: false,
+    confirmText: 'Confirm'
+  });
+
+  const closeConfirm = () => setConfirmModal(prev => ({ ...prev, isOpen: false }));
 
   const handleResolve = (id: number) => {
     setAlerts(alerts.map(a => a.id === id ? { ...a, status: 'resolved' } : a));
@@ -27,6 +49,17 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
 
   return (
     <div className="flex flex-col h-full min-h-full relative">
+      {isLoading && <Loader text="Connecting to Uplink..." />}
+
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        onConfirm={confirmModal.onConfirm}
+        onCancel={closeConfirm}
+        isDangerous={confirmModal.isDangerous}
+        confirmText={confirmModal.confirmText}
+      />
 
       {/* CCTV EXPANSION MODAL OVERLAY - PORTAL TO BODY */}
       {expandedCam !== null && createPortal(
@@ -104,27 +137,28 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
       </header>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto p-4 pb-6 space-y-6 animate-slide-up">
+      <div className="flex-1 overflow-y-auto p-3 md:p-4 pb-24 md:pb-6 pb-safe space-y-4 md:space-y-6 animate-slide-up">
         {/* KPI Cards Row */}
-        <div className="grid grid-cols-2 gap-3 md:gap-4">
-          <div className="glass-card p-3 md:p-4 rounded-xl border-l-2 border-blue-500 bg-gradient-to-br from-blue-500/5 to-transparent">
-            <p className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mb-1">Total Pax (1hr)</p>
+        <div className="grid grid-cols-2 gap-4 md:gap-6">
+          <GlassCard className="p-3 md:p-4 rounded-xl border-l-2 border-blue-500 bg-gradient-to-br from-blue-500/5 to-transparent">
+            <p className="text-xs md:text-sm text-slate-400 uppercase tracking-wider mb-1">Total Pax (1hr)</p>
             <p className="text-2xl md:text-3xl font-bold text-white">2,450</p>
-            <p className="text-[10px] md:text-xs text-emerald-400 flex items-center gap-1">
-              <span className="text-xs">↑</span> 12% vs avg
+            <p className="text-xs md:text-sm text-emerald-400 flex items-center gap-1">
+              <span className="text-sm">↑</span> 12% vs avg
             </p>
-          </div>
-          <div className={`glass-card p-3 md:p-4 rounded-xl border-l-2 ${systemStatus === 'nominal' ? 'border-emerald-500' : 'border-red-500'} bg-gradient-to-br from-orange-500/5 to-transparent`}>
-            <p className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mb-1">Avg Wait Time</p>
+          </GlassCard>
+          <GlassCard className={`p-3 md:p-4 rounded-xl border-l-2 ${systemStatus === 'nominal' ? 'border-emerald-500' : 'border-red-500'} bg-gradient-to-br from-orange-500/5 to-transparent`}>
+            <p className="text-xs md:text-sm text-slate-400 uppercase tracking-wider mb-1">Avg Wait Time</p>
             <p className={`text-2xl md:text-3xl font-bold ${systemStatus === 'nominal' ? 'text-white' : 'text-red-400'}`}>
               {systemStatus === 'nominal' ? '12m' : '35m'}
             </p>
-            <p className={`text-[10px] md:text-xs ${systemStatus === 'nominal' ? 'text-slate-500' : 'text-red-400'}`}>Security Check A</p>
-          </div>
+            <p className={`text-xs md:text-sm ${systemStatus === 'nominal' ? 'text-slate-500' : 'text-red-400'}`}>Security Check A</p>
+          </GlassCard>
         </div>
 
         {/* SECTION 1: PREDICTIVE HEATMAP (God View) */}
-        <section className="glass-card rounded-2xl border border-white/10 overflow-hidden relative group">
+        {/* SECTION 1: PREDICTIVE HEATMAP (God View) */}
+        <GlassCard className="rounded-xl md:rounded-2xl border border-white/10 overflow-hidden relative group">
           <div className="p-4 border-b border-white/5 flex justify-between items-center bg-slate-900/50">
             <h2 className="font-semibold text-white flex items-center gap-2 text-sm md:text-base">
               <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse"></span>
@@ -133,7 +167,7 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
             <span className="text-[10px] bg-blue-500/20 text-blue-300 px-2 py-1 rounded border border-blue-500/30">Floor 1</span>
           </div>
 
-          <div className="relative h-64 md:h-80 lg:h-96 bg-slate-950 w-full overflow-hidden">
+          <div className="relative h-48 sm:h-64 md:h-80 lg:h-96 bg-slate-950 w-full overflow-hidden">
             {/* Base Floor Plan Grid */}
             <div className="absolute inset-0 opacity-30" style={{
               backgroundImage: 'linear-gradient(to right, #334155 1px, transparent 1px), linear-gradient(to bottom, #334155 1px, transparent 1px)',
@@ -158,9 +192,9 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
               Check-in Area B
             </div>
           </div>
-        </section>
+        </GlassCard>
 
-        <div className="grid md:grid-cols-2 gap-6">
+        <div className="flex flex-col md:grid md:grid-cols-2 gap-6">
           {/* SECTION 2: LIVE ALERTS FEED */}
           <section>
             <div className="flex justify-between items-end mb-3 px-1">
@@ -170,7 +204,7 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
 
             <div className="space-y-3">
               {systemStatus === 'alert' && !alerts.find(a => a.id === 99) && (
-                <div className="glass-card p-4 rounded-xl border-l-4 border-red-500 bg-red-500/5 animate-slide-up">
+                <GlassCard className="p-4 rounded-xl border-l-4 border-red-500 bg-red-500/5 animate-slide-up">
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center gap-2">
                       <ShieldAlert size={16} className="text-red-500 animate-pulse" />
@@ -179,40 +213,79 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
                     <span className="text-[10px] text-red-300/70">Just now</span>
                   </div>
                   <p className="text-sm text-red-100 mb-3 font-medium">Critical capacity threshold reached at Security B.</p>
-                  <button className="w-full bg-red-600 hover:bg-red-500 text-white text-xs py-2 rounded-lg transition-colors shadow-lg shadow-red-900/20 font-bold">
+                  <button
+                    onClick={() => {
+                      setConfirmModal({
+                        isOpen: true,
+                        title: 'Initiate Crowd Control?',
+                        message: '⚠️ This will lock down the terminal and dispatch all available security units. This action cannot be undone immediately.',
+                        confirmText: 'INITIATE PROTOCOL',
+                        isDangerous: true,
+                        onConfirm: () => {
+                          window.alert('Protocol Initiated. Security teams dispatched.');
+                          closeConfirm();
+                        }
+                      });
+                    }}
+                    className="w-full bg-red-600 hover:bg-red-500 text-white text-xs py-2 rounded-lg transition-colors shadow-lg shadow-red-900/20 font-bold"
+                  >
                     INITIATE CROWD CONTROL PROTOCOL
                   </button>
-                </div>
+                </GlassCard>
               )}
 
               {alerts.map(alert => (
-                <div key={alert.id} className={`glass-card p-4 rounded-xl border-l-4 transition-all duration-300 ${alert.status === 'resolved' ? 'border-emerald-500 opacity-60 bg-slate-900/50' : alert.type === 'critical' ? 'border-red-500 bg-slate-800/50' : 'border-orange-500 bg-slate-800/50'}`}>
+                <GlassCard key={alert.id} className={`p-4 rounded-xl border-l-4 transition-all duration-300 ${alert.status === 'resolved' ? 'border-emerald-500 opacity-60 bg-slate-900/50' : alert.type === 'critical' ? 'border-red-500 bg-slate-800/50' : 'border-orange-500 bg-slate-800/50'}`}>
                   <div className="flex justify-between items-start mb-2">
                     <div className="flex items-center gap-2">
                       {alert.status === 'resolved' ? <CheckCircle size={16} className="text-emerald-500" /> : <AlertTriangle size={16} className={alert.type === 'critical' ? 'text-red-500' : 'text-orange-500'} />}
                       <span className={`font-semibold text-sm ${alert.status === 'resolved' ? 'text-slate-400' : 'text-white'}`}>{alert.location}</span>
                     </div>
-                    <span className="text-[10px] text-slate-500">2m ago</span>
+                    <span className="text-[10px] text-slate-500">{alert.time}</span>
                   </div>
                   <p className={`text-sm mb-3 ${alert.status === 'resolved' ? 'text-slate-500 line-through' : 'text-slate-300'}`}>{alert.message}</p>
 
                   {alert.status !== 'resolved' && (
                     <div className="flex gap-2">
                       <button
-                        onClick={() => handleResolve(alert.id)}
+                        onClick={() => {
+                          setConfirmModal({
+                            isOpen: true,
+                            title: 'Acknowledge Alert',
+                            message: 'Acknowledging this alert will remove it from the active queue. Are you sure you have verified the situation?',
+                            confirmText: 'Acknowledge',
+                            isDangerous: false,
+                            onConfirm: () => {
+                              handleResolve(alert.id);
+                              closeConfirm();
+                            }
+                          });
+                        }}
                         className="flex-1 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white text-xs py-2 rounded-lg transition-colors border border-white/5 font-medium"
                       >
-                        Ignore
+                        Acknowledge
                       </button>
                       <button
-                        onClick={() => handleResolve(alert.id)}
+                        onClick={() => {
+                          setConfirmModal({
+                            isOpen: true,
+                            title: 'Deploy Staff',
+                            message: `Deploy monitoring staff to ${alert.location}? This will reallocate resources from other zones.`,
+                            confirmText: 'Deploy Staff',
+                            isDangerous: false,
+                            onConfirm: () => {
+                              handleResolve(alert.id);
+                              closeConfirm();
+                            }
+                          });
+                        }}
                         className="flex-1 bg-blue-600 hover:bg-blue-500 text-white text-xs py-2 rounded-lg transition-colors shadow-lg shadow-blue-900/20 font-medium"
                       >
                         Deploy Staff
                       </button>
                     </div>
                   )}
-                </div>
+                </GlassCard>
               ))}
             </div>
           </section>
@@ -220,11 +293,12 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
           {/* SECTION 3: CCTV AI MONITORING */}
           <section>
             <h2 className="text-sm font-semibold text-slate-400 mb-3 uppercase tracking-wider px-1">AI Vision Feeds</h2>
-            <div className="grid grid-cols-2 gap-3 lg:gap-6">
+            {/* Mobile: Horizontal Carousel | Desktop: Grid */}
+            <div className="flex md:grid md:grid-cols-2 gap-3 lg:gap-6 overflow-x-auto md:overflow-x-visible snap-x snap-mandatory md:snap-none pb-2 md:pb-0 scrollbar-hide">
 
               {/* CAM 04 */}
               <div
-                className="relative rounded-xl overflow-hidden aspect-video bg-slate-950 border border-white/10 group cursor-pointer hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all active:scale-[0.98]"
+                className="relative rounded-xl overflow-hidden aspect-video bg-slate-950 border border-white/10 group cursor-pointer hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all active:scale-[0.98] min-w-[280px] md:min-w-0 snap-center"
                 onClick={() => setExpandedCam(1)}
               >
                 <div className="absolute inset-0 flex items-center justify-center">
@@ -249,7 +323,7 @@ const OperatorDashboardScreen: React.FC<Props> = ({ onNavigate }) => {
 
               {/* CAM 08 */}
               <div
-                className="relative rounded-xl overflow-hidden aspect-video bg-slate-950 border border-white/10 group cursor-pointer hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all active:scale-[0.98]"
+                className="relative rounded-xl overflow-hidden aspect-video bg-slate-950 border border-white/10 group cursor-pointer hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/10 transition-all active:scale-[0.98] min-w-[280px] md:min-w-0 snap-center"
                 onClick={() => setExpandedCam(2)}
               >
                 <div className="absolute inset-0 flex items-center justify-center">

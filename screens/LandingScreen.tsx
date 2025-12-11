@@ -8,8 +8,20 @@ interface Props {
 }
 
 const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
+  const [flightNum, setFlightNum] = React.useState('');
+  const [error, setError] = React.useState('');
+
+  const handleStart = () => {
+    if (flightNum.toUpperCase() === 'XYZ999') {
+      setError('Flight not found. Please check your details.');
+      return;
+    }
+    setError('');
+    onNavigate('onboarding');
+  };
+
   return (
-    <div className="min-h-screen w-full flex flex-col md:flex-row relative overflow-hidden z-10 font-sans selection:bg-violet-500/30">
+    <div className="min-h-screen w-full flex flex-col md:flex-row relative overflow-x-hidden z-10 font-sans selection:bg-violet-500/30">
 
       {/* BACKGROUND ELEMENTS */}
       <div className="fixed inset-0 pointer-events-none z-0">
@@ -20,7 +32,8 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
       </div>
 
       {/* LEFT SECTION: MAIN CONTENT WRAPPER */}
-      <div className="w-full md:w-[55%] flex flex-col justify-between px-6 md:px-20 lg:px-24 py-6 md:py-12 z-20 relative h-screen">
+      {/* Changed py-12 to py-4/py-8 for better vertical fit on laptops */}
+      <div className="w-full md:w-[55%] flex flex-col justify-between px-6 md:px-16 lg:px-20 py-4 md:py-8 xl:py-12 z-20 relative min-h-screen md:h-screen md:min-h-0">
 
         {/* TOP: HEADER (Logo) - Flex Block */}
         <div className="flex justify-between items-center w-full grow-0 shrink-0 h-14">
@@ -36,43 +49,52 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
           <button
             onClick={() => onNavigate('operator-dashboard')}
             className="flex items-center gap-2 px-3 py-2 rounded-full bg-white/5 border border-white/10 text-xs font-medium text-slate-300 hover:text-white hover:bg-white/10 hover:border-violet-500/30 transition-all backdrop-blur-md"
+            title="AOCC Operator Access - Login to Airport Operation Control Center"
+            aria-label="Operator Dashboard Login"
           >
-            <ShieldCheck size={14} />
+            <ShieldCheck size={14} aria-hidden="true" />
             <span className="hidden sm:inline">Operator</span>
           </button>
         </div>
 
         {/* MIDDLE: HERO CONTENT (Centered Vertically) */}
-        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left py-4 md:py-10">
+        {/* Added h-full and justifying to ensure it takes available space but doesn't overflow */}
+        <div className="flex-1 flex flex-col justify-center items-center md:items-start text-center md:text-left py-2">
 
-          <div className="animate-slide-up space-y-4 md:space-y-8 max-w-lg md:max-w-none flex flex-col items-center md:items-start">
+          <div className="animate-slide-up space-y-3 md:space-y-5 lg:space-y-6 max-w-lg md:max-w-none flex flex-col items-center md:items-start">
 
             {/* Mobile Hero Visual (The Logo/Orb) - As requested */}
-            <div className="md:hidden w-32 h-32 rounded-full bg-gradient-to-br from-violet-500/20 to-indigo-900/40 backdrop-blur-3xl border border-white/10 shadow-2xl shadow-violet-900/50 flex items-center justify-center animate-float-slow mb-2 relative">
-              <div className="absolute inset-0 bg-violet-400/10 rounded-full animate-pulse-slow"></div>
-              <Sparkles size={48} className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]" />
+            <div className="md:hidden relative w-32 h-32 mb-2 animate-float-subtle">
+              {/* Orbiting rings - outer container */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute w-[200px] h-[200px] border border-white/5 rounded-full animate-spin-slower"></div>
+                <div className="absolute w-[164px] h-[164px] border border-white/5 rounded-full animate-reverse-spin"></div>
+              </div>
 
-              {/* Orbiting particles (Scaled down) */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border border-white/5 rounded-full animate-spin-slower"></div>
+              {/* Main orb */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-violet-500/20 to-indigo-900/40 backdrop-blur-3xl border border-white/10 shadow-2xl shadow-violet-900/50 flex items-center justify-center animate-float-slow">
+                <div className="absolute inset-0 bg-violet-400/10 rounded-full animate-pulse-slow"></div>
+                <Sparkles size={48} className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.5)] relative z-10" />
+              </div>
             </div>
 
             {/* Badge - HIDDEN ON MOBILE */}
-            <div className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 backdrop-blur-md w-fit mx-auto md:mx-0">
+            <div title="AURA uses Gemini Vertex AI to predict traffic and crowd levels." className="hidden md:inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-violet-500/10 border border-violet-500/20 backdrop-blur-md w-fit mx-auto md:mx-0 cursor-help transition-colors hover:bg-violet-500/20">
               <Sparkles size={12} className="text-violet-400" />
               <span className="text-violet-200 text-[10px] font-bold tracking-widest uppercase">
                 Powered by Vertex AI
               </span>
             </div>
 
-            {/* Hero Headline */}
-            <h1 className="text-3xl sm:text-6xl lg:text-7xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-2xl text-center md:text-left">
+            {/* Hero Headline - Reduced size for better desktop fit */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-bold text-white tracking-tight leading-[1.1] drop-shadow-2xl text-center md:text-left">
               Travel without <br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-violet-400 via-fuchsia-400 to-indigo-400 animate-gradient-x">Turbulence.</span>
             </h1>
 
             {/* Subtext */}
-            <p className="text-slate-400 text-sm md:text-lg leading-relaxed max-w-xs md:max-w-lg text-center md:text-left">
-              Your personal airport traffic controller. Real-time foresight for a seamless journey.
+            <p className="text-slate-400 text-sm md:text-base leading-relaxed max-w-xs md:max-w-lg text-center md:text-left">
+              Predictive AI that sees bottlenecks before they happen. Your journey, optimized.
             </p>
 
             {/* Action Area */}
@@ -80,27 +102,39 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
               {/* Input Field */}
               <div className="relative group">
                 <div className="absolute inset-0 bg-violet-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-                <div className="relative bg-white/5 border border-white/10 rounded-2xl p-1 flex items-center backdrop-blur-xl focus-within:bg-white/10 focus-within:border-violet-500/50 transition-all">
+                <div className={`relative bg-white/5 border ${error ? 'border-red-500 animate-shake' : 'border-white/10'} rounded-2xl p-1 flex items-center backdrop-blur-xl focus-within:bg-white/10 focus-within:border-violet-500/50 transition-all`}>
                   <div className="pl-4 text-slate-400">✈️</div>
                   <input
                     type="text"
-                    placeholder="Flight Number"
+                    value={flightNum}
+                    onChange={(e) => {
+                      setFlightNum(e.target.value);
+                      if (error) setError('');
+                    }}
+                    placeholder="e.g., PR 123 or 5J 567"
                     className="w-full bg-transparent border-none text-white px-4 py-3 placeholder:text-slate-500 focus:outline-none focus:ring-0 text-base md:text-lg text-center md:text-left"
+                    aria-label="Enter Flight Number"
                   />
                 </div>
+                {error && <p className="text-red-400 text-xs ml-2 mt-1 font-medium">{error}</p>}
               </div>
 
               {/* Primary Button */}
               <button
-                onClick={() => onNavigate('scenario-b')}
-                className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold py-3 md:py-4 rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.2)] hover:shadow-[0_0_40px_rgba(139,92,246,0.4)] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group border-t border-white/20"
+                onClick={handleStart}
+                className="w-full bg-gradient-to-r from-violet-600 to-indigo-600 text-white font-bold py-3 md:py-3.5 rounded-xl shadow-[0_0_20px_rgba(139,92,246,0.2)] hover:shadow-[0_0_40px_rgba(139,92,246,0.4)] active:scale-[0.98] transition-all flex items-center justify-center gap-3 group border-t border-white/20"
+                aria-label="Start Journey"
               >
                 <span className="text-base md:text-lg">Start Journey</span>
-                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
+                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} aria-hidden="true" />
               </button>
 
               {/* Guest Link */}
-              <button onClick={() => onNavigate('scenario-b')} className="text-slate-500 text-xs md:text-sm hover:text-white transition-colors py-2 font-medium">
+              <button
+                onClick={() => onNavigate('scenario-b')}
+                className="text-slate-500 text-xs md:text-sm hover:text-white transition-colors py-2 font-medium"
+                aria-label="Continue as Guest"
+              >
                 Continue as Guest
               </button>
             </div>
@@ -124,14 +158,20 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
           <div className="absolute left-[-100px] top-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-violet-600/20 rounded-full blur-[100px] animate-pulse-slow"></div>
 
           <div className="relative z-10 ml-[-50px] group">
-            <div className="w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] rounded-full bg-gradient-to-br from-violet-500/20 to-indigo-900/40 backdrop-blur-3xl border border-white/10 shadow-2xl shadow-violet-900/50 flex items-center justify-center animate-float-slow">
-              <div className="absolute inset-0 bg-violet-400/10 rounded-full animate-pulse-slow"></div>
-              <Sparkles size={120} className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]" />
-            </div>
+            {/* Outer container for rings - desktop */}
+            <div className="relative w-[300px] h-[300px] lg:w-[400px] lg:h-[400px] animate-float-subtle">
+              {/* Orbiting particles - centered */}
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="absolute w-[460px] h-[460px] lg:w-[580px] lg:h-[580px] border border-white/5 rounded-full animate-spin-slower"></div>
+                <div className="absolute w-[380px] h-[380px] lg:w-[490px] lg:h-[490px] border border-white/5 rounded-full animate-reverse-spin"></div>
+              </div>
 
-            {/* Orbiting particles */}
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[140%] h-[140%] border border-white/5 rounded-full animate-spin-slower"></div>
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] border border-white/5 rounded-full animate-reverse-spin"></div>
+              {/* Main orb */}
+              <div className="absolute inset-0 rounded-full bg-gradient-to-br from-violet-500/20 to-indigo-900/40 backdrop-blur-3xl border border-white/10 shadow-2xl shadow-violet-900/50 flex items-center justify-center animate-float-slow">
+                <div className="absolute inset-0 bg-violet-400/10 rounded-full animate-pulse-slow"></div>
+                <Sparkles size={120} className="text-white/80 drop-shadow-[0_0_30px_rgba(255,255,255,0.5)] relative z-10" />
+              </div>
+            </div>
           </div>
 
         </div>

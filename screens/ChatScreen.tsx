@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, PhoneCall } from 'lucide-react';
 import { ScreenId } from '../types';
+import GlassCard from '../components/GlassCard';
 
 interface Props {
   onNavigate: (screen: ScreenId) => void;
@@ -12,6 +13,7 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
     { id: 2, type: 'ai', text: "Hi! I'm AURA. I noticed a significant delay on your route to the airport due to an accident on Fernan Bridge. How can I help?" }
   ]);
   const [inputText, setInputText] = useState('');
+  const [isTyping, setIsTyping] = useState(false);
 
   // Handle Quick Chips
   const handleChipClick = (action: string) => {
@@ -37,12 +39,14 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
     ]);
 
     // Simulate AI delay
+    setIsTyping(true);
     setTimeout(() => {
+      setIsTyping(false);
       setMessages(prev => [
         ...prev,
         { id: userMsgId + 1, type: 'ai', text: aiResponse }
       ]);
-    }, 600);
+    }, 1500);
   };
 
   return (
@@ -51,8 +55,8 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
       {/* Sticky Header - Stays at top of flex container */}
       <div className="sticky top-0 z-30 p-4 pt-safe border-b border-white/10 bg-slate-950/95 backdrop-blur shrink-0">
         <div className="flex items-center gap-3">
-          <button onClick={() => onNavigate('scenario-b')} className="text-slate-400 text-2xl hover:text-white transition-colors p-2 -ml-2 rounded-full hover:bg-white/5">
-            <ArrowLeft size={24} />
+          <button onClick={() => onNavigate('scenario-b')} className="text-slate-400 text-2xl hover:text-white transition-colors p-2 -ml-2 rounded-full hover:bg-white/5" aria-label="Go Back">
+            <ArrowLeft size={24} aria-hidden="true" />
           </button>
           <div>
             <h2 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-violet-400 to-indigo-400">AURA Assistant</h2>
@@ -61,6 +65,17 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
               <span className="text-xs text-slate-400">Online</span>
             </div>
           </div>
+          <div className="flex-1"></div>
+
+          {/* Emergency / Support Call */}
+          <button
+            onClick={() => window.alert('Calling Airport Support Services...')}
+            className="p-2 text-slate-400 hover:text-red-400 hover:bg-white/5 rounded-full transition-colors"
+            title="Emergency Help"
+            aria-label="Call Support"
+          >
+            <PhoneCall size={20} aria-hidden="true" />
+          </button>
         </div>
       </div>
 
@@ -69,10 +84,13 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
         {messages.map((msg, index) => {
           if (msg.type === 'context') {
             return (
-              <div key={msg.id} className="bg-slate-900 border border-white/10 rounded-lg p-3 mb-4 text-xs text-slate-400 flex justify-between items-center">
-                <span>{msg.text}</span>
-                <span className="text-orange-400 font-bold">⚠ {msg.priority}</span>
-              </div>
+              <GlassCard key={msg.id} className="rounded-lg p-3 mb-4 text-xs flex justify-between items-center border border-orange-500/30 bg-orange-500/5">
+                <span className="text-slate-300">{msg.text}</span>
+                <span className="text-orange-400 font-bold flex items-center gap-1">
+                  <span className="w-2 h-2 rounded-full bg-orange-400 animate-pulse"></span>
+                  {msg.priority}
+                </span>
+              </GlassCard>
             );
           }
           if (msg.type === 'ai') {
@@ -96,6 +114,18 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
           }
           return null;
         })}
+
+        {/* Typing Indicator */}
+        {isTyping && (
+          <div className="flex gap-3 max-w-[85%] animate-slide-up">
+            <div className="w-8 h-8 rounded-full bg-violet-600/30 flex items-center justify-center border border-violet-500/30 shrink-0 text-white">✨</div>
+            <div className="bg-white/5 border border-white/10 rounded-2xl rounded-tl-sm p-4 flex items-center gap-1.5 h-[54px] w-16 justify-center">
+              <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+              <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+              <span className="w-1.5 h-1.5 bg-slate-400 rounded-full animate-bounce"></span>
+            </div>
+          </div>
+        )}
       </div>
 
       {/* Input Area - Sticky at bottom of flex container */}
@@ -129,8 +159,9 @@ const ChatScreen: React.FC<Props> = ({ onNavigate }) => {
             onChange={(e) => setInputText(e.target.value)}
             placeholder="Type a message..."
             className="w-full bg-white/5 border border-white/10 rounded-full pl-4 pr-12 py-3 text-sm text-white focus:border-violet-500 focus:outline-none placeholder:text-slate-500"
+            aria-label="Message Input"
           />
-          <button className="absolute right-1 top-1 w-10 h-10 bg-violet-600 rounded-full flex items-center justify-center shadow-lg text-sm text-white hover:scale-105 transition-transform">➤</button>
+          <button className="absolute right-1 top-1 w-10 h-10 bg-violet-600 rounded-full flex items-center justify-center shadow-lg text-sm text-white hover:scale-105 transition-transform" aria-label="Send Message">➤</button>
         </div>
       </div>
     </div>
