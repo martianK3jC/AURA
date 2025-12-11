@@ -21,6 +21,9 @@
             'spin-slow': 'spin 15s linear infinite',
             'reverse-spin': 'spin 20s linear infinite reverse',
             'float': 'float 6s ease-in-out infinite',
+            'float-slow': 'float 8s ease-in-out infinite',
+            'float-subtle': 'float-subtle 8s ease-in-out infinite',
+            'spin-slower': 'spin 30s linear infinite',
           },
           keyframes: {
             blob: {
@@ -35,7 +38,11 @@
             },
             float: {
               '0%, 100%': { transform: 'translateY(0)' },
-              '50%': { transform: 'translateY(-20px)' },
+              '50%': { transform: 'translateY(-2px)' },
+            },
+            'float-subtle': {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-10px)' },
             }
           }
         }

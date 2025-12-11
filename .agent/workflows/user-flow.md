@@ -42,7 +42,13 @@ This workflow defines the smooth user journey through the AURA app wireframe for
 ```
 Timeline Item → Tap "Update Route" → Map Screen (with route highlighted)
 Timeline Item → Tap FAB Chat button → Chat Screen (with context pre-loaded)
+Profile → Tap "Recent Flights" → Dashboard (Historical View)
 ```
+
+**Recent Improvements (Phase 3):**
+- Timeline cards prevented from compressing on mobile (`min-height`)
+- "YOU ARE HERE" badge positioned to avoid overlap with labels
+- GlassCard styling unified across all dashboard elements
 
 ---
 
@@ -59,12 +65,14 @@ Timeline Item → Tap FAB Chat button → Chat Screen (with context pre-loaded)
 4. **Step-by-Step Directions:** Clear walking instructions
 5. **Stats:** Time saved, walking distance, confidence level
 
-**Action:** User mentally confirms or returns to dashboard
+**Action:** User mentally confirms or returns to dashboard with "Back to Timeline" button.
 
 **Improvement Needed:**
 - Add "Start Navigation" button that sends route to phone's native map
 - Haptic feedback when dragging map
 - Real-time position tracking on map (simulation)
+- "YOU ARE HERE" indicator visibility (Completed Phase 3)
+- Congestion zone pulse animation (Completed Phase 3)
 
 ---
 

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Sparkles, MessageSquare, AlertTriangle } from 'lucide-react';
+import React, { useState } from 'react';
+import { Sparkles, MessageSquare, AlertTriangle, PhoneCall } from 'lucide-react';
 import TimelineCard from '../components/TimelineCard';
 import GlassCard from '../components/GlassCard';
 import { ScreenId, ScenarioData } from '../types';
@@ -91,28 +91,29 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
   return (
     <div className="flex flex-col h-full relative">
 
-      {/* Sticky Header Info */}
-      <div className="sticky top-0 z-30 bg-slate-950/95 backdrop-blur-xl px-6 py-4 pt-safe border-b border-white/5 shrink-0">
-        <div className="flex justify-between items-start mt-2">
+      {/* Sticky Header Info - RESTRUCTURED FOR HERO NUMBER */}
+      <div className="sticky top-0 z-30 bg-slate-950/95 backdrop-blur-xl px-6 py-4 pt-safe border-b border-white/5 shrink-0 transition-all">
+        <div className="flex justify-between items-start">
           <div>
-            <p className="text-slate-400 text-sm">Good Morning, Traveler</p>
-            <h2 className="text-2xl font-bold text-white">Dashboard</h2>
+            <div className="flex items-center gap-2 mb-1">
+              <span className={`text-xs font-bold uppercase tracking-wider ${isStress ? 'text-orange-400 animate-pulse' : 'text-slate-400'}`}>
+                {isStress ? '⚠ Tight Schedule' : 'Total Time to Gate'}
+              </span>
+            </div>
+            <h2 className={`text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${isStress ? 'from-orange-400 to-red-400' : 'from-emerald-400 to-cyan-400'}`}>
+              {data.totalTime}
+            </h2>
           </div>
-          {/* Demo Toggles */}
-          <GlassCard className="rounded-full p-1.5 flex gap-2">
-            <button
-              onClick={() => onSetScenario('A')}
-              className={`px-4 py-2 rounded-full text-sm font-bold transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center ${!isStress ? 'bg-emerald-500 text-white' : 'text-slate-400 hover:text-white'}`}
-            >
-              A
-            </button>
-            <button
-              onClick={() => onSetScenario('B')}
-              className={`px-4 py-2 rounded-full text-sm font-bold transition-colors min-w-[44px] min-h-[44px] flex items-center justify-center ${isStress ? 'bg-orange-500 text-white' : 'text-slate-400 hover:text-white'}`}
-            >
-              B
-            </button>
-          </GlassCard>
+
+          <div className="flex gap-2">
+
+
+            {/* Demo Toggles - Compact */}
+            <GlassCard className="rounded-full p-1 flex gap-1">
+              <button aria-label="Switch to Scenario A" onClick={() => onSetScenario('A')} className={`w-9 h-9 rounded-full text-xs font-bold ${!isStress ? 'bg-emerald-500 text-white' : 'text-slate-500'}`}>A</button>
+              <button aria-label="Switch to Scenario B" onClick={() => onSetScenario('B')} className={`w-9 h-9 rounded-full text-xs font-bold ${isStress ? 'bg-orange-500 text-white' : 'text-slate-500'}`}>B</button>
+            </GlassCard>
+          </div>
         </div>
       </div>
 
@@ -203,21 +204,16 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
         </div>
       </div>
 
-      {/* Total Time Sticky Footer */}
-      {/* Mobile: Margin bottom 80px to clear fixed nav. Desktop: No margin. */}
-      <div className="sticky bottom-0 z-40 bg-slate-950/95 backdrop-blur-xl border-t border-white/10 p-4 pb-safe flex justify-between items-center mt-auto shrink-0 mb-20 md:mb-0">
-        <div>
-          <p className={`text-xs font-bold uppercase tracking-wider ${isStress ? 'text-orange-400 animate-pulse' : 'text-slate-400'}`}>
-            {isStress ? '⚠ Tight Schedule' : 'Total Time to Gate'}
-          </p>
-          <p className={`text-3xl font-bold ${isStress ? 'text-orange-400' : 'text-emerald-400'}`}>{data.totalTime}</p>
-        </div>
-        {/* FAB */}
+      {/* Floating Chat Button (Bottom Right) */}
+      <div className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50">
         <button
           onClick={() => onNavigate('chat')}
-          className="w-12 h-12 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-full shadow-[0_0_20px_rgba(139,92,246,0.5)] flex items-center justify-center text-white hover:scale-105 transition-transform"
+          className="w-14 h-14 bg-gradient-to-br from-violet-600 to-indigo-600 rounded-full shadow-[0_0_30px_rgba(139,92,246,0.6)] flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all text-3xl"
+          aria-label="Open AI Assistant and Emergency Help"
         >
-          <MessageSquare size={20} />
+          <MessageSquare size={24} aria-hidden="true" />
+          {/* Unread badge */}
+          <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-red-500 border-2 border-slate-900"></span>
         </button>
       </div>
 
