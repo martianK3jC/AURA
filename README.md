@@ -39,7 +39,7 @@ Follow these steps to set up the project locally:
     npm install
     ```
 
-3.  **Environment Setup**:
+3.  **Environment Setup**: (optional)
     - Create a `.env.local` file in the root directory.
     - Add your Gemini API key (required for some AI simulations):
       ```env
