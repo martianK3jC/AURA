@@ -1,10 +1,10 @@
-# AURA - AI Travel Assistant Wireframe
+# AURA (AI-Powered Unified Resource & Assistance)
 
-A high-fidelity wireframe application designed to demonstrate and explore AI-driven travel assistance scenarios. This project serves as a visual guide and prototype for team collaboration and feature development.
+A high-fidelity wireframe application demonstrating a predictive intelligence platform for airport operators and travelers. This project visualizes AI-driven travel assistance, real-time crowd management, and seamless passenger journeys.
 
 ## 🚀 Overview
 
-AURA is a concept application for an intelligent travel assistant. This wireframe implements key user flows and interfaces to visualize how users might interact with an AI travel agent, covering scenarios from trip planning to real-time assistance.
+AURA (**A**I-**P**owered **U**nified **R**esource & **A**ssistance) is a concept application for an intelligent airport ecosystem. It connects travelers with real-time data while empowering operators with predictive AOCC capabilities.
 
 ## ✨ Features
 

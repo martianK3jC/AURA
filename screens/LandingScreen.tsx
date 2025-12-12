@@ -37,7 +37,7 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
 
         {/* TOP: HEADER (Logo) - Flex Block */}
         <div className="flex justify-between items-center w-full grow-0 shrink-0 h-14">
-          <div className="flex items-center gap-2 md:gap-3">
+          <div className="flex items-center gap-2 md:gap-3" title="AI-Powered Unified Resource & Assistance">
             <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 shadow-lg shadow-violet-500/30 flex items-center justify-center">
               <Sparkles className="text-white fill-white/20" size={20} />
             </div>
@@ -145,7 +145,7 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
         <div className="hidden md:flex w-full flex-col md:flex-row items-center justify-center md:justify-start gap-4 md:gap-6 text-[10px] text-slate-600 font-medium uppercase tracking-wider shrink-0">
           <span className="flex items-center gap-1"><Globe size={12} /> MCIA Navigator (v2.0.4)</span>
           <span className="hidden md:inline w-1 h-1 bg-slate-700 rounded-full"></span>
-          <span className="flex items-center gap-1"><Activity size={12} /> AOCC Predictive Layer</span>
+          <span className="flex items-center gap-1"><Activity size={12} /> AI-Powered Unified Resource & Assistance</span>
         </div>
 
       </div>
