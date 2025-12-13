@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import { ScreenId } from '../types';
-import { Sparkles, ArrowRight, Plane, User, ChevronRight } from 'lucide-react';
+import { ArrowRight, Plane, User, ChevronRight } from 'lucide-react';
+import auraLogo from '../img/aura_logo.png';
 
 interface Props {
     onNavigate: (screen: ScreenId, context?: TravelerContext) => void;
@@ -134,10 +135,7 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
                 {/* Header */}
                 <div className="text-center mb-8">
                     <div className="flex justify-center mb-4">
-                        <div className="relative w-16 h-16 rounded-full bg-gradient-to-br from-red-600 to-rose-700 border border-white/20 shadow-2xl shadow-red-500/30 flex items-center justify-center animate-float-slow">
-                            <div className="absolute inset-0 bg-yellow-400/10 rounded-full animate-pulse-slow"></div>
-                            <Sparkles className="text-white relative z-10" fill="white" size={28} />
-                        </div>
+                        <img src={auraLogo} alt="AURA Logo" className="w-20 h-20 rounded-3xl object-contain drop-shadow-2xl animate-float-slow" />
                     </div>
                     <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to AURA</h1>
                     <p className="text-gray-600 text-sm">Your AI Travel Companion</p>

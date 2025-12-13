@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { Home, Map, MessageSquare, User, Sparkles, LogOut, LayoutDashboard, ChevronLeft, ChevronRight, Menu, X } from 'lucide-react';
 import { ScreenId } from '../types';
 import ConfirmationModal from './ConfirmationModal';
+import auraLogo from '../img/aura_logo.png';
+
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -136,9 +138,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
 
           {/* Logo Area */}
           <div className={`mb-8 flex items-center gap-2 transition-all duration-300 ${isCollapsed ? 'justify-center px-0' : 'px-2'}`}>
-            <div className={`w-9 h-9 rounded-lg flex items-center justify-center shrink-0 shadow-lg transition-all duration-200 ${isOperator ? 'bg-gradient-to-br from-red-600 to-rose-700' : 'bg-gradient-to-br from-red-600 to-rose-600'}`}>
-              <Sparkles size={18} className="text-white" />
-            </div>
+            <img src={auraLogo} alt="AURA Logo" className="w-9 h-9 rounded-xl object-contain shadow-lg" />
             <h1 className={`text-xl font-bold tracking-tight whitespace-nowrap overflow-hidden transition-all duration-300 ${isCollapsed ? 'w-0 opacity-0' : 'w-auto opacity-100'} ${isOperator ? 'text-white' : 'text-neutral-900'}`}>AURA</h1>
           </div>
 

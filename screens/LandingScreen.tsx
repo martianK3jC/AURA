@@ -8,6 +8,7 @@ interface Props {
 }
 
 import DisasterAlertModal from '../components/DisasterAlertModal';
+import auraLogo from '../img/aura_logo.png';
 
 const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
   const [isAnimated, setIsAnimated] = useState(false);
@@ -57,9 +58,7 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
         {/* Header */}
         <div className="flex justify-between items-center">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 to-rose-700 flex items-center justify-center shadow-lg shadow-red-500/20">
-              <Sparkles className="text-white" size={20} />
-            </div>
+            <img src={auraLogo} alt="AURA Logo" className="w-10 h-10 rounded-2xl object-contain shadow-lg shadow-red-500/20" />
             <div>
               <h1 className="text-xl font-bold tracking-tight text-neutral-900">AURA</h1>
               <p className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">Unified Assistant</p>
