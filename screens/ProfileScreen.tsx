@@ -1,14 +1,20 @@
 import React, { useState } from 'react';
-import { ScreenId } from '../types';
+import { ScreenId, TravelerContext } from '../types';
 import GlassCard from '../components/GlassCard';
 import ConfirmationModal from '../components/ConfirmationModal';
+import { User, Flame } from 'lucide-react';
 
 interface Props {
    onNavigate: (screen: ScreenId) => void;
+   travelerContext?: TravelerContext;
 }
 
-const ProfileScreen: React.FC<Props> = ({ onNavigate }) => {
+const ProfileScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
+   // Extract user info
+   const userName = travelerContext?.userName || 'Traveler';
+   const userEmail = `${userName.toLowerCase().replace(/\s+/g, '.')}@aura.app`;
 
    return (
       <div className="flex flex-col h-full">
@@ -21,83 +27,92 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate }) => {
             confirmText="Log Out"
             isDangerous={true}
          />
-         {/* Header */}
-         <div className="bg-gradient-to-br from-violet-600/20 to-indigo-600/20 backdrop-blur-xl border-b border-white/10 p-8 pt-safe rounded-b-[2.5rem] relative overflow-hidden shrink-0">
-            <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/30 rounded-full blur-3xl"></div>
-
-            <div className="relative z-10 flex flex-col items-center">
-               <div className="w-24 h-24 bg-gradient-to-br from-violet-500 to-indigo-600 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(139,92,246,0.4)] text-4xl mb-4 border-4 border-slate-950 text-white">👤</div>
-               <h2 className="text-2xl font-bold text-white">Traveler</h2>
-               <p className="text-slate-400 text-sm mb-2">traveler@aura.app</p>
-               <span className="bg-violet-500/20 text-violet-300 px-4 py-1 rounded-full text-xs border border-violet-500/30 font-medium">✨ AURA Member</span>
-            </div>
-         </div>
-
          {/* Scrollable Content */}
-         <div className="flex-1 overflow-y-auto p-6 pb-6">
-            <div className="grid grid-cols-3 gap-3 mb-8">
-               <GlassCard className="rounded-xl p-3 md:p-4 text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-emerald-400">12</div>
-                  <div className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mt-1">Trips</div>
-               </GlassCard>
-               <GlassCard className="rounded-xl p-3 md:p-4 text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-cyan-400">3.5h</div>
-                  <div className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mt-1">Saved</div>
-               </GlassCard>
-               <GlassCard className="rounded-xl p-3 md:p-4 text-center">
-                  <div className="text-2xl md:text-3xl font-bold text-orange-400">🔥 8</div>
-                  <div className="text-[10px] md:text-xs text-slate-400 uppercase tracking-wider mt-1">Streak</div>
-               </GlassCard>
+         <div className="flex-1 overflow-y-auto pb-6">
+
+            {/* Profile Card - Now Scrollable */}
+            <div className="bg-gradient-to-br from-rose-800 to-red-900 rounded-b-[2.5rem] p-6 pt-safe mb-6 text-white shadow-xl relative overflow-hidden">
+               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
+               <div className="relative z-10 flex flex-col items-center">
+                  <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-3 border-2 border-white/30 shadow-inner">
+                     <User size={40} className="text-white" />
+                  </div>
+                  <h2 className="text-xl font-bold mb-1 tracking-tight">{userName}</h2>
+                  <p className="text-white/80 text-sm mb-3 font-medium">{userEmail}</p>
+                  <span className="bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-900 text-xs font-bold px-4 py-1.5 rounded-full border border-yellow-200/50 shadow-lg">
+                     ✨ AURA Member
+                  </span>
+               </div>
             </div>
 
-            {/* History */}
-            <h3 className="text-slate-400 text-sm font-semibold mb-3 pl-1">Recent Flights</h3>
-            <div className="space-y-3 mb-8">
-               <GlassCard className="p-4 rounded-xl flex justify-between items-center">
-                  <div>
-                     <p className="font-semibold text-white">PR 123 • MNL-NRT</p>
-                     <p className="text-xs text-slate-500">Dec 6, 2025</p>
+            <div className="max-w-7xl mx-auto px-10 md:px-16">
+               <div className="grid grid-cols-3 gap-3 mb-6">
+                  <div className="bg-white border border-neutral-200 rounded-xl p-4 text-center shadow-sm">
+                     <div className="text-2xl font-bold text-red-600 mb-1">12</div>
+                     <div className="text-xs text-neutral-600 uppercase tracking-wide font-medium">Trips</div>
                   </div>
-                  <div className="text-right">
-                     <span className="block text-[10px] bg-emerald-500/20 text-emerald-400 px-2 py-0.5 rounded-full mb-1 font-bold">✓ On Time</span>
-                     <span className="text-[10px] text-emerald-400 font-medium">+15m saved</span>
+                  <div className="bg-white border border-neutral-200 rounded-xl p-4 text-center shadow-sm">
+                     <div className="text-2xl font-bold text-emerald-600 mb-1">3.5h</div>
+                     <div className="text-xs text-neutral-600 uppercase tracking-wide font-medium">Saved</div>
                   </div>
-               </GlassCard>
-               <GlassCard className="p-4 rounded-xl flex justify-between items-center opacity-70">
-                  <div>
-                     <p className="font-semibold text-white">5J 567 • CEB-SIN</p>
-                     <p className="text-xs text-slate-500">Nov 28, 2025</p>
+                  <div className="bg-white border border-neutral-200 rounded-xl p-4 text-center shadow-sm">
+                     <div className="text-2xl font-bold text-amber-500 mb-1 flex items-center justify-center gap-1">
+                        <Flame size={20} fill="currentColor" />
+                        <span>8</span>
+                     </div>
+                     <div className="text-xs text-neutral-600 uppercase tracking-wide font-medium">Streak</div>
                   </div>
-                  <div className="text-right">
-                     <span className="block text-[10px] text-slate-400 px-2 py-0.5 rounded-full mb-1 font-bold">✓ Completed</span>
-                  </div>
-               </GlassCard>
-            </div>
+               </div>
 
-            {/* Settings */}
-            <h3 className="text-slate-400 text-sm font-semibold mb-3 pl-1">Preferences</h3>
-            <div className="space-y-2">
-               <GlassCard className="p-4 rounded-xl flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                     <span className="text-lg">🔔</span>
-                     <span className="text-sm text-white">Push Notifications</span>
+               <div className="mb-6">
+                  <h3 className="text-sm font-semibold text-neutral-700 mb-3 uppercase tracking-wide">Recent Flights</h3>
+                  <div className="space-y-3">
+                     <div className="bg-white border border-neutral-200 rounded-xl p-4 shadow-sm">
+                        <div className="flex justify-between items-start mb-2">
+                           <div>
+                              <div className="font-bold text-neutral-900">PR 123 • MNL-NRT</div>
+                              <div className="text-xs text-neutral-500 mt-1">Dec 5, 2025</div>
+                           </div>
+                           <span className="bg-green-100 text-green-700 border border-green-300 text-xs font-bold px-2 py-1 rounded-full">✓ On Time</span>
+                        </div>
+                        <div className="text-xs text-green-600 font-medium">+15m saved</div>
+                     </div>
+                     <div className="bg-white border border-neutral-200 rounded-xl p-4 shadow-sm opacity-60">
+                        <div className="flex justify-between items-start mb-2">
+                           <div>
+                              <div className="font-bold text-neutral-900">CEB 456 • CEB-MNL</div>
+                              <div className="text-xs text-neutral-500 mt-1">Nov 28, 2025</div>
+                           </div>
+                           <span className="bg-neutral-100 text-neutral-600 text-xs font-medium px-2 py-1 rounded-full border border-neutral-300">✓ Completed</span>
+                        </div>
+                     </div>
                   </div>
-                  <div className="w-10 h-5 bg-emerald-500 rounded-full relative"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
-               </GlassCard>
-               <GlassCard className="p-4 rounded-xl flex justify-between items-center">
-                  <div className="flex items-center gap-3">
-                     <span className="text-lg">✨</span>
-                     <span className="text-sm text-white">Proactive Suggestions</span>
-                  </div>
-                  <div className="w-10 h-5 bg-violet-600 rounded-full relative"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full"></div></div>
-               </GlassCard>
-            </div>
+               </div>
+               {/* Settings */}
+               <h3 className="text-stone-500 text-sm font-semibold mb-3 pl-1">Preferences</h3>
+               <div className="space-y-2">
+                  <GlassCard className="p-4 rounded-xl flex justify-between items-center bg-white/80 border border-neutral-100">
+                     <div className="flex items-center gap-3">
+                        <span className="text-lg">🔔</span>
+                        <span className="text-sm font-medium text-neutral-900">Push Notifications</span>
+                     </div>
+                     <div className="w-10 h-5 bg-red-500 rounded-full relative shadow-inner"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full shadow-sm"></div></div>
+                  </GlassCard>
+                  <GlassCard className="p-4 rounded-xl flex justify-between items-center bg-white/80 border border-neutral-100">
+                     <div className="flex items-center gap-3">
+                        <span className="text-lg">✨</span>
+                        <span className="text-sm font-medium text-neutral-900">Proactive Suggestions</span>
+                     </div>
+                     <div className="w-10 h-5 bg-red-500 rounded-full relative shadow-inner"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full shadow-sm"></div></div>
+                  </GlassCard>
+               </div>
 
-            <button onClick={() => setShowLogoutConfirm(true)} className="w-full mt-8 bg-red-500/10 border border-red-500/30 text-red-400 font-semibold py-3 rounded-xl hover:bg-red-500/20 transition-colors">
-               Logout
-            </button>
-            {/* Mobile Nav Spacer */}
-            <div className="h-20 md:hidden"></div>
+               <button onClick={() => setShowLogoutConfirm(true)} className="w-full mt-8 bg-red-50 border border-red-200 text-red-600 font-semibold py-3 rounded-xl hover:bg-red-100 transition-colors">
+                  Logout
+               </button>
+               {/* Mobile Nav Spacer */}
+               <div className="h-20 md:hidden"></div>
+            </div>
          </div>
       </div>
    );

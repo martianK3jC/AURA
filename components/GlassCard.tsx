@@ -3,7 +3,16 @@ import React from 'react';
 interface GlassCardProps {
     children: React.ReactNode;
     className?: string;
-    variant?: 'default' | 'highlight' | 'critical' | 'dark';
+    /**
+     * Visual variant following Tropical Modern design system
+     * - default: Clean white card with subtle shadow
+     * - elevated: White card with stronger shadow
+     * - highlight: Warm orange-to-yellow gradient background
+     * - success: Green tinted background
+     * - warning: Amber tinted background
+     * - error: Red tinted background
+     */
+    variant?: 'default' | 'elevated' | 'highlight' | 'success' | 'warning' | 'error';
     onClick?: () => void;
 }
 
@@ -13,18 +22,35 @@ const GlassCard: React.FC<GlassCardProps> = ({
     variant = 'default',
     onClick
 }) => {
-    const baseStyles = "relative overflow-hidden backdrop-blur-xl transition-all duration-300 border";
+    const isClickable = !!onClick;
 
     const variants = {
-        default: "bg-white/[0.03] border-white/10 hover:bg-white/[0.06] hover:border-white/20",
-        highlight: "bg-violet-500/10 border-violet-500/20 hover:bg-violet-500/20 hover:border-violet-500/40 shadow-[0_0_20px_rgba(139,92,246,0.1)]",
-        critical: "bg-red-500/10 border-red-500/20 hover:bg-red-500/20 hover:border-red-500/40 shadow-[0_0_20px_rgba(239,68,68,0.1)]",
-        dark: "bg-slate-950/40 border-white/5 hover:bg-slate-950/60"
+        // Solid white cards with better contrast - No transparency issues
+        default: 'bg-white border-gray-200 shadow-md hover:shadow-lg',
+        elevated: 'bg-white border-gray-200 shadow-xl shadow-neutral-200/60',
+
+        // Warm highlight (for current/active states) - Solid with glow
+        highlight: 'bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-300 shadow-lg shadow-orange-500/20',
+
+        // Semantic states - Solid backgrounds for clarity
+        success: 'bg-emerald-50 border-emerald-300 shadow-md shadow-emerald-500/15',
+        warning: 'bg-amber-50 border-amber-300 shadow-md shadow-amber-500/15',
+        error: 'bg-red-50 border-red-300 shadow-md shadow-red-500/15',
     };
 
     return (
         <div
-            className={`${baseStyles} ${variants[variant]} ${className} ${onClick ? 'cursor-pointer active:scale-[0.98]' : ''}`}
+            className={`
+        ${variants[variant]}
+        border
+        rounded-2xl
+        transition-all
+        duration-300
+        ease-out
+        backdrop-blur-xl
+        ${isClickable ? 'cursor-pointer hover:-translate-y-1 hover:shadow-xl' : ''}
+        ${className}
+      `}
             onClick={onClick}
         >
             {children}

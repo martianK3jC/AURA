@@ -1,57 +1,240 @@
+/* ================================================ */
+/* 🌺 AURA - OFFICIAL MCIA DESIGN SYSTEM */
+/* Mactan-Cebu International Airport Brand Colors */
+/* Updated: 2025-12-13 for Hackathon Demo */
+/* ================================================ */
+
+/* ================================================ */
+
 :root {
-  /* 🎨 AURA Design System Tokens */
+  /* ================================================ */
+  /* OFFICIAL MCIA BRAND COLORS */
+  /* Based on MCIA Logo & Marketing Materials */
+  /* ================================================ */
 
-  /* Colors - Traveler (Violet/Indigo) */
-  --aura-primary: #8b5cf6;
-  /* violet-500 */
-  --aura-secondary: #6366f1;
-  /* indigo-500 */
-  --aura-accent: #10b981;
-  /* emerald-500 */
+  --mcia-red: #D32F2F;
+  /* Primary brand color - MCIA Flower Red */
+  --mcia-gold: #FFC107;
+  /* Accent color - MCIA Flower Yellow/Gold */
+  --mcia-orange: #FF6F00;
+  /* Energy color - MCIA Sunset Orange */
+  --mcia-coral: #FF8A65;
+  /* Warm accent - Sunset sky */
+  --mcia-teal: #00897B;
+  /* Modern accent - Airport glass */
+  --mcia-red-dark: #C62828;
+  /* Darker red for urgent states */
+  --mcia-red-light: #EF5350;
+  /* Lighter red for backgrounds */
 
-  /* Colors - Operator (Blue/Cyan) */
-  --op-primary: #3b82f6;
-  /* blue-500 */
-  --op-secondary: #06b6d4;
-  /* cyan-500 */
-  --op-critical: #ef4444;
-  /* red-500 */
-  --op-warning: #f97316;
-  /* orange-500 */
+  /* ================================================ */
+  /* PASSENGER APP COLORS (Light Mode) */
+  /* Warm & Welcoming Design */
+  /* ================================================ */
 
-  /* Glassmorphism */
-  --glass-bg: rgba(255, 255, 255, 0.03);
-  --glass-bg-hover: rgba(255, 255, 255, 0.08);
-  --glass-border: rgba(255, 255, 255, 0.08);
-  --glass-border-light: rgba(255, 255, 255, 0.15);
-  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-  --glass-blur: 16px;
+  --passenger-bg: #FFFFFF;
+  /* Pure white background */
+  --passenger-surface: #FFF8F0;
+  /* Warm cream surface */
+  --passenger-card: #FFFFFF;
+  /* Pure white cards */
+  --passenger-border: #FFE0B2;
+  /* Warm peach borders */
 
-  /* Spacing & Layout */
-  --header-height: 64px;
-  --nav-height: 80px;
+  /* PASSENGER TEXT */
+  --passenger-text-primary: #1A1A1A;
+  /* Warm black */
+  --passenger-text-secondary: #6B7280;
+  /* Gray */
+  --passenger-text-tertiary: #9CA3AF;
+  /* Light gray */
+
+  /* ================================================ */
+  /* OPERATOR DASHBOARD COLORS (Dark Mode) */
+  /* Professional Control Center */
+  /* ================================================ */
+
+  --operator-bg: #0F0F0F;
+  /* True black for OLED */
+  --operator-surface: #1A1A1A;
+  /* Elevated cards */
+  --operator-panel: #242424;
+  /* Sub-panels */
+  --operator-border: #333333;
+  /* Subtle borders */
+
+  /* OPERATOR TEXT */
+  --operator-text-primary: #F5F5F5;
+  /* Off-white */
+  --operator-text-secondary: #9E9E9E;
+  /* Medium gray */
+  --operator-text-data: #FFFFFF;
+  /* Pure white for metrics */
+
+  /* ================================================ */
+  /* SEMANTIC COLORS (Both Modes) */
+  /* ================================================ */
+
+  --color-success: #00A651;
+  /* MCIA Green - On time */
+  --color-success-light: #00E676;
+  /* Bright green for dark mode */
+  --color-warning: #FF6F00;
+  /* MCIA Orange - Delays */
+  --color-warning-light: #FFD54F;
+  /* Bright yellow for dark mode */
+  --color-error: #C62828;
+  /* MCIA Dark Red - Critical */
+  --color-error-light: #FF1744;
+  /* Bright red for dark mode */
+  --color-info: #00897B;
+  /* MCIA Teal - Informational */
+
+  /* HEATMAP COLORS (Operator) */
+  --heatmap-low: #4CAF50;
+  /* Green - Calm */
+  --heatmap-medium: #FFEB3B;
+  /* Yellow - Attention */
+  --heatmap-high: #FF9800;
+  /* Orange - Concern */
+  --heatmap-critical: #F44336;
+  /* Red - Action needed */
+
+  /* ================================================ */
+  /* NEUTRAL GRAYSCALE */
+  /* ================================================ */
+
+  --neutral-50: #FAFAFA;
+  --neutral-100: #F5F5F5;
+  --neutral-200: #E5E5E5;
+  --neutral-300: #D4D4D4;
+  --neutral-400: #A3A3A3;
+  --neutral-500: #737373;
+  --neutral-600: #525252;
+  --neutral-700: #404040;
+  --neutral-800: #262626;
+  --neutral-900: #171717;
+  --neutral-950: #0A0A0A;
+
+  /* ================================================ */
+  /* TYPOGRAPHY SYSTEM */
+  /* Outfit for Headings, Inter for UI */
+  /* ================================================ */
+
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-display: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'Courier New', 'Monaco', monospace;
+
+  /* FONT SIZES */
+  --font-xs: 12px;
+  --font-sm: 14px;
+  --font-base: 16px;
+  --font-lg: 18px;
+  --font-xl: 20px;
+  --font-2xl: 24px;
+  --font-3xl: 28px;
+  --font-4xl: 32px;
+
+  /* LINE HEIGHTS */
+  --line-tight: 1.25;
+  --line-snug: 1.375;
+  --line-normal: 1.5;
+  --line-relaxed: 1.625;
+  --line-loose: 2;
+
+  /* FONT WEIGHTS */
+  --font-regular: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+
+  /* TRANSITIONS */
+  --transition-fast: 150ms ease-out;
+  --transition-base: 200ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  /* PREMIUM GLASS SYSTEM */
+  --glass-bg: rgba(255, 255, 255, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.6);
+  --glass-blur: 20px;
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+
+  /* SAFE AREA */
   --safe-top: env(safe-area-inset-top, 20px);
   --safe-bottom: env(safe-area-inset-bottom, 20px);
-
-  /* Blob Animation Controls - Responsive sizing for better balance */
-  --blob-size-mobile: 350px;
-  --blob-size-desktop: 400px;
-  --blob-offset-mobile: -75px;
-  --blob-offset-desktop: -100px;
-  --blob-opacity-mobile: 0.15;
-  --blob-opacity-desktop: 0.25;
-
-  /* Operator Dashboard Spacing System */
-  --op-grid-gap-mobile: 1rem;
-  /* 16px */
-  --op-grid-gap-desktop: 1.5rem;
-  /* 24px */
-  --op-card-padding-mobile: 1rem;
-  --op-card-padding-desktop: 1.5rem;
+  --header-height: 64px;
 }
 
-/* Utilities */
-.glass-panel {
+/* ================================================ */
+/* 🌑 DARK MODE (OPERATOR ONLY) */
+/* ================================================ */
+[data-mode="operator"],
+.dark-mode {
+  /* DARK NEUTRALS */
+  --neutral-900: #0A0A0A;
+  /* Pure dark background */
+  --neutral-800: #1A1A1A;
+  /* Card surfaces */
+  --neutral-700: #2A2A2A;
+  /* Elevated surfaces */
+  --neutral-600: #3F3F3F;
+  /* Borders */
+  --neutral-500: #525252;
+  /* Muted text */
+  --neutral-400: #737373;
+  /* Secondary text */
+  --neutral-300: #A3A3A3;
+  /* Body text */
+  --neutral-200: #D4D4D4;
+  /* Strong text */
+  --neutral-100: #E5E5E5;
+  /* Headings */
+  --neutral-50: #FAFAFA;
+  /* Lightest text */
+
+  /* BRIGHTER ACCENTS ON DARK */
+  --mcia-orange: #FFA500;
+  --mcia-yellow: #FFD700;
+  --mcia-red: #FF6B6B;
+
+  /* SURFACES (DARK) */
+  --surface-primary: var(--neutral-800);
+  --surface-secondary: var(--neutral-900);
+  --surface-elevated: var(--neutral-700);
+
+  /* TEXT (DARK) */
+  --text-primary: #FFFFFF;
+  --text-secondary: var(--neutral-200);
+  --text-tertiary: var(--neutral-400);
+  --text-disabled: var(--neutral-500);
+  --text-inverse: var(--neutral-900);
+
+  /* BORDERS (DARK) */
+  --border-default: var(--neutral-700);
+  --border-subtle: var(--neutral-800);
+  --border-strong: var(--neutral-600);
+  --border-focus: var(--mcia-orange);
+
+  /* GLASSMORPHISM (DARK) */
+  --glass-bg: rgba(26, 26, 26, 0.8);
+  --glass-border: rgba(63, 63, 63, 0.5);
+  --glass-blur: 16px;
+
+  /* SHADOWS (DARK) */
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.6);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.6);
+}
+
+/* ================================================ */
+/* UTILITY CLASSES */
+/* ================================================ */
+
+/* Glass Effect */
+.glass-card {
   background: var(--glass-bg);
   backdrop-filter: blur(var(--glass-blur));
   -webkit-backdrop-filter: blur(var(--glass-blur));
@@ -59,18 +242,441 @@
   box-shadow: var(--glass-shadow);
 }
 
-.text-gradient-traveler {
+/* Typography Utilities */
+.text-gradient-mcia {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, #a78bfa, #818cf8);
-  /* violet-400 to indigo-400 */
+  background-image: linear-gradient(135deg, #FB8500 0%, #E63946 100%);
 }
 
-.text-gradient-operator {
+.text-gradient-success {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
-  background-image: linear-gradient(to right, #60a5fa, #22d3ee);
-  /* blue-400 to cyan-400 */
+  background-image: linear-gradient(135deg, #10B981 0%, #22C55E 100%);
+}
+
+/* Component Classes */
+.btn-primary {
+  background: linear-gradient(to right, #FB8500, #E63946);
+  color: white;
+  font-weight: 600;
+  padding: 12px 24px;
+  border-radius: 12px;
+  transition: all 200ms ease-out;
+}
+
+/* ================================================ */
+/* OFFICIAL MCIA BUTTON SYSTEM */
+/* Per Task.txt Specifications */
+/* ================================================ */
+
+/* PRIMARY BUTTON - MCIA Red */
+.btn-primary,
+.mcia-btn-primary {
+  background: var(--mcia-red);
+  color: #FFFFFF;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  border: none;
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+  transition: all 200ms ease-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-primary:hover,
+.mcia-btn-primary:hover {
+  background: var(--mcia-red-dark);
+  box-shadow: 0 6px 16px rgba(211, 47, 47, 0.4);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active,
+.mcia-btn-primary:active {
+  background: #B71C1C;
+  transform: translateY(0);
+}
+
+/* SECONDARY BUTTON - MCIA Gold */
+.btn-secondary,
+.mcia-btn-secondary {
+  background: var(--mcia-gold);
+  color: #1A1A1A;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  border: none;
+  box-shadow: 0 2px 8px rgba(255, 193, 7, 0.3);
+  transition: all 200ms ease-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-secondary:hover,
+.mcia-btn-secondary:hover {
+  background: #FFB300;
+  box-shadow: 0 4px 12px rgba(255, 193, 7, 0.4);
+  transform: translateY(-1px);
+}
+
+/* TERTIARY BUTTON - Outline */
+.btn-tertiary,
+.mcia-btn-outline {
+  background: transparent;
+  color: var(--mcia-red);
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  border: 2px solid var(--mcia-red);
+  transition: all 200ms ease-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-tertiary:hover,
+.mcia-btn-outline:hover {
+  background: rgba(211, 47, 47, 0.1);
+  border-color: var(--mcia-red-dark);
+}
+
+/* DANGER BUTTON - Deep Red */
+.btn-danger,
+.mcia-btn-danger {
+  background: var(--mcia-red-dark);
+  color: #FFFFFF;
+  height: 48px;
+  padding: 0 24px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: var(--font-family);
+  border: none;
+  box-shadow: 0 4px 12px rgba(198, 40, 40, 0.3);
+  transition: all 200ms ease-out;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-danger:hover {
+  background: #B71C1C;
+  box-shadow: 0 6px 16px rgba(198, 40, 40, 0.4);
+}
+
+/* DESKTOP SIZES */
+@media (min-width: 768px) {
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-tertiary,
+  .btn-danger {
+    height: 56px;
+    padding: 0 32px;
+  }
+}
+
+/* ================================================ */
+/* BADGE SYSTEM - MCIA Colors */
+/* ================================================ */
+
+.badge-success,
+.mcia-badge-success {
+  background: #E8F5E9;
+  color: #1B5E20;
+  border: 1px solid #00A651;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-family);
+}
+
+.badge-warning,
+.mcia-badge-warning {
+  background: #FFF3E0;
+  color: #E65100;
+  border: 1px solid var(--mcia-orange);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-family);
+}
+
+.badge-error,
+.mcia-badge-error {
+  background: #FFEBEE;
+  color: #C62828;
+  border: 1px solid var(--mcia-red);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-family);
+}
+
+.badge-info,
+.mcia-badge-info {
+  background: #E0F2F1;
+  color: #004D40;
+  border: 1px solid var(--mcia-teal);
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-family);
+}
+
+/* ================================================ */
+/* TYPOGRAPHY HELPERS */
+/* ================================================ */
+
+body {
+  font-family: var(--font-family);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  font-weight: var(--font-bold);
+  letter-spacing: -0.01em;
+}
+
+.font-display {
+  font-family: var(--font-family);
+  font-weight: var(--font-extrabold);
+  letter-spacing: -0.02em;
+}
+
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* ================================================ */
+/* LOADING ANIMATIONS */
+/* ================================================ */
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite linear;
+}
+
+/* ================================================ */
+/* MCIA GRADIENT UTILITIES */
+/* ================================================ */
+
+.bg-gradient-mcia {
+  background: linear-gradient(135deg, var(--mcia-red) 0%, var(--mcia-orange) 100%);
+}
+
+.bg-gradient-mcia-gold {
+  background: linear-gradient(135deg, var(--mcia-gold) 0%, var(--mcia-orange) 100%);
+}
+
+.text-gradient-mcia {
+  background: linear-gradient(135deg, var(--mcia-red) 0%, var(--mcia-orange) 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* ================================================ */
+/* SPACING UTILITIES */
+/* ================================================ */
+
+.space-1 {
+  margin: 4px;
+}
+
+.space-2 {
+  margin: 8px;
+}
+
+.space-3 {
+  margin: 12px;
+}
+
+.space-4 {
+  margin: 16px;
+}
+
+.space-6 {
+  margin: 24px;
+}
+
+.space-8 {
+  margin: 32px;
+}
+
+.gap-1 {
+  gap: 4px;
+}
+
+.gap-2 {
+  gap: 8px;
+}
+
+.gap-3 {
+  gap: 12px;
+}
+
+.gap-4 {
+  gap: 16px;
+}
+
+.gap-6 {
+  gap: 24px;
+}
+
+/* ================================================ */
+/* ANIMATION UTILITIES */
+/* ================================================ */
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.5s ease-out forwards;
+}
+
+.animate-scale-in {
+  animation: scale-in 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+}
+
+/* Stagger Delays */
+.delay-0 {
+  animation-delay: 0ms;
+}
+
+.delay-100 {
+  animation-delay: 100ms;
+}
+
+.delay-200 {
+  animation-delay: 200ms;
+}
+
+.delay-300 {
+  animation-delay: 300ms;
+}
+
+.delay-400 {
+  animation-delay: 400ms;
+}
+
+.delay-500 {
+  animation-delay: 500ms;
+}
+
+.delay-75 {
+  animation-delay: 75ms;
+}
+
+.delay-150 {
+  animation-delay: 150ms;
+}
+
+/* ================================================ */
+/* FLOWER ANIMATIONS - MCIA Inspired */
+/* ================================================ */
+
+@keyframes spin-slower {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes reverse-spin {
+  from {
+    transform: rotate(360deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
+.animate-spin-slower {
+  animation: spin-slower 120s linear infinite;
+}
+
+.animate-reverse-spin {
+  animation: reverse-spin 150s linear infinite;
 }

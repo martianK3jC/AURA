@@ -21,21 +21,23 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
     }
   };
 
-  const getVariant = () => {
-    if (step.status === 'critical') return 'critical';
-    if (step.status === 'completed' || step.status === 'current') return 'highlight';
-    return 'default';
+  const getVariant = (): 'default' | 'elevated' | 'highlight' | 'success' | 'warning' | 'error' => {
+    if (step.status === 'critical') return 'error';
+    if (step.status === 'warning') return 'warning';
+    if (step.status === 'current') return 'highlight'; // Warm orange-yellow gradient
+    if (step.status === 'completed') return 'success';
+    return 'default'; // Clean white for upcoming
   };
 
   const getIconContainerStyles = () => {
-    if (step.status === 'critical') return 'bg-slate-900 border-2 border-red-500';
-    if (step.status === 'completed' || step.status === 'current') return 'bg-slate-800 border-2 border-emerald-500 shadow-[0_0_15px_rgba(16,185,129,0.5)]';
-    return 'bg-slate-900 border-2 border-slate-600';
+    if (step.status === 'critical') return 'bg-white border-2 border-red-500 shadow-sm';
+    if (step.status === 'completed' || step.status === 'current') return 'bg-white border-2 border-red-600 shadow-[0_0_15px_rgba(220,38,38,0.3)]';
+    return 'bg-white border-2 border-stone-300';
   };
 
   return (
     <div
-      className="flex items-start gap-4 pl-8 relative animate-slide-up"
+      className="flex items-start gap-5 pl-12 relative animate-slide-up"
       style={{ animationDelay: `${delay}s` }}
     >
       {/* Icon Node */}
@@ -45,14 +47,14 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
 
       {/* Content Card */}
       <GlassCard
-        className={`flex-1 p-4 rounded-xl relative overflow-hidden transition-all duration-300 min-h-[100px] hover:scale-[1.02] active:scale-[0.98] cursor-pointer ${step.isCurrent ? 'scale-[1.02] ring-2 ring-violet-500/50 ring-offset-2 ring-offset-slate-950' : ''
+        className={`flex-1 p-5 rounded-xl relative overflow-hidden transition-all duration-300 min-h-[120px] hover:scale-[1.02] active:scale-[0.98] cursor-pointer focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 ${step.isCurrent ? 'scale-[1.02] ring-2 ring-red-500/50 ring-offset-2 ring-offset-neutral-50' : ''
           }`}
         variant={getVariant()}
       >
 
         {/* "You Are Here" Indicator - Fixed positioning */}
         {step.isCurrent && (
-          <div className="absolute bottom-2 right-2 bg-gradient-to-r from-violet-600 to-indigo-600 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-[0_0_15px_rgba(139,92,246,0.5)] z-30 animate-pulse flex items-center gap-1 border border-violet-400">
+          <div className="absolute bottom-2 right-2 bg-gradient-to-r from-red-600 to-red-700 text-white text-[10px] sm:text-xs font-bold px-2 sm:px-3 py-1 sm:py-1.5 rounded-full shadow-[0_0_15px_rgba(220,38,38,0.5)] z-30 animate-pulse flex items-center gap-1 border border-red-300">
             <span className="text-xs">📍</span>
             <span className="hidden sm:inline">YOU ARE HERE</span>
             <span className="sm:hidden">HERE</span>
@@ -61,25 +63,25 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
 
         <div className="flex justify-between items-start relative z-10 gap-2">
           <div className="flex-1 min-w-0">
-            <h3 className={`font-medium text-sm sm:text-base truncate ${step.status === 'critical' ? 'text-white' :
-              step.status === 'completed' ? 'text-slate-300' : 'text-white'
+            <h3 className={`font-bold text-sm sm:text-base truncate ${step.status === 'critical' ? 'text-red-900' :
+              step.status === 'completed' ? 'text-stone-400' : 'text-[var(--aura-text-primary)]'
               }`}>
               {step.title}
             </h3>
             {step.time && (
-              <p className={`text-lg sm:text-xl font-bold mt-1 ${step.status === 'critical' ? 'text-red-400' :
-                step.status === 'warning' ? 'text-orange-400' :
-                  step.status === 'current' || step.status === 'completed' ? 'text-emerald-400' :
-                    'text-emerald-400'
+              <p className={`text-lg sm:text-xl font-bold mt-1 ${step.status === 'critical' ? 'text-red-600' :
+                step.status === 'warning' ? 'text-orange-600' :
+                  step.status === 'current' || step.status === 'completed' ? 'text-green-600' :
+                    'text-stone-800'
                 }`}>
                 {step.time}
               </p>
             )}
           </div>
           {step.badge && (
-            <span className={`px-2 py-1 rounded text-xs whitespace-nowrap flex-shrink-0 ${step.badgeColor === 'red' ? 'bg-red-500/20 text-red-400 animate-pulse' :
-              step.badgeColor === 'orange' ? 'bg-orange-500/20 text-orange-400' :
-                'bg-emerald-500/10 text-emerald-400'
+            <span className={`px-2 py-1 rounded text-xs whitespace-nowrap flex-shrink-0 font-medium ${step.badgeColor === 'red' ? 'bg-red-100 text-red-700 animate-pulse' :
+              step.badgeColor === 'orange' ? 'bg-orange-100 text-orange-700' :
+                'bg-emerald-100 text-emerald-700'
               }`}>
               {step.badge}
             </span>
@@ -97,7 +99,7 @@ const TimelineCard: React.FC<TimelineCardProps> = ({ step, isLast, delay = 0 }) 
 
         {/* Subtle background pulse for current step */}
         {step.isCurrent && (
-          <div className="absolute inset-0 bg-violet-500/5 animate-pulse z-0 pointer-events-none"></div>
+          <div className="absolute inset-0 bg-red-500/5 animate-pulse z-0 pointer-events-none"></div>
         )}
       </GlassCard>
     </div>

@@ -1,0 +1,884 @@
+# AURA - AI-Powered Unified Resource Assistant
+## Comprehensive Project Specification & Task Document
+
+---
+
+## 📋 PROJECT OVERVIEW
+
+**Product Name:** AURA (AI-Powered Unified Resource Assistant)  
+**Client:** Mactan-Cebu International Airport (MCIA)  
+**Project Type:** Hackathon Prototype / MVP  
+**Target Users:** Airport Passengers & AOCC Operators  
+
+### Mission Statement
+Transform MCIA from reactive operations to predictive intelligence, reducing passenger anxiety and operational bottlenecks through AI-powered foresight.
+
+---
+
+## 🎯 CORE REQUIREMENTS
+
+### Functional Requirements
+
+#### 1. MCIA Navigator App (Passenger Interface)
+- [ ] Flight number input & automatic data retrieval
+- [ ] Real-time travel timeline generation
+- [ ] Transportation mode selection with ETA recalculation
+- [ ] Drop-off zone optimization recommendations
+- [ ] Pre-arrival dining/lounge booking suggestions
+- [ ] Live queue wait time displays (Check-in, Security, Immigration)
+- [ ] AR-based wayfinding (optional enhancement)
+- [ ] Restaurant recommendations with walk times
+- [ ] Boarding alerts with dynamic gate updates
+- [ ] Delay notifications with adjusted timelines
+- [ ] Gate change instant alerts with re-routing
+- [ ] Multi-language support (EN, Tagalog, Cebuano minimum)
+
+#### 2. AOCC Predictive Dashboard (Operator Interface)
+- [ ] Live airport heatmap with occupancy analytics
+- [ ] 30-60 minute predictive queue forecasting
+- [ ] Color-coded alert system (Green/Yellow/Orange/Red)
+- [ ] Staff deployment recommendations
+- [ ] One-tap action acceptance for AI suggestions
+- [ ] Auto-logging for shift reports
+- [ ] Historical data visualization
+- [ ] Disaster protocol activation
+- [ ] Real-time camera feed integration display
+- [ ] Multi-zone monitoring (Domestic/International/Gates)
+
+### Non-Functional Requirements
+
+#### Performance
+- App load time: < 2 seconds
+- Real-time data refresh: Every 30 seconds
+- Push notification delivery: < 5 seconds latency
+- Dashboard data refresh: Every 15 seconds
+- AR navigation frame rate: Minimum 30fps
+
+#### Security
+- Secure API authentication (OAuth 2.0)
+- Encrypted data transmission (TLS 1.3)
+- Role-based access control (RBAC)
+- Passenger data anonymization
+- GDPR/Privacy compliance
+
+#### Scalability
+- Support 10,000+ concurrent passenger users
+- Handle 50+ simultaneous operator sessions
+- Vertex AI API rate limit management
+- Graceful degradation if AI service unavailable
+
+---
+
+## 🎨 UI/UX DESIGN SYSTEM
+
+### Design Philosophy
+**"Calm Confidence Through Clarity"**  
+- Minimize cognitive load
+- Prioritize essential information
+- Use color to communicate urgency
+- Design for stressed users (passengers) and alert users (operators)
+
+### Color Palette
+
+#### MCIA Brand Colors (Official - Based on Logo & Marketing)
+```
+Primary Red:    #D32F2F (MCIA Flower Red - main brand color)
+Accent Gold:    #FFC107 (MCIA Flower Yellow - warmth & hospitality)
+Sunset Orange:  #FF6F00 (MCIA Flower Orange - energy)
+Warm Coral:     #FF8A65 (Sunset sky - welcoming)
+Deep Teal:      #00897B (Airport glass - modern)
+Success Green:  #00A651 (Status indicator)
+Alert Red:      #C62828 (Darker red for urgency)
+Neutral Gray:   #6B7280 (Text secondary)
+```
+
+#### Passenger App (Light Mode - Warm & Welcoming)
+```
+Background:     #FFFFFF (Pure white)
+Surface:        #FFF8F0 (Warm cream - softer than stark white)
+Card Background:#FFFFFF (Pure white cards on cream)
+Text Primary:   #1A1A1A (Warm black)
+Text Secondary: #6B7280 (Gray)
+Accent Primary: #D32F2F (MCIA Red for CTAs)
+Accent Secondary:#FFC107 (Gold for highlights)
+Success:        #00A651 (Green for on-time)
+Warning:        #FF6F00 (Orange for delays)
+Critical:       #C62828 (Deep red for urgent)
+Border Light:   #FFE0B2 (Warm peach for subtle borders)
+```
+
+#### Operator Dashboard (Dark Mode - Professional Control)
+```
+Background:     #0F0F0F (True black for OLED contrast)
+Surface:        #1A1A1A (Elevated cards)
+Panel:          #242424 (Sub-panels)
+Text Primary:   #F5F5F5 (Off-white)
+Text Secondary: #9E9E9E (Medium gray)
+Accent Primary: #FF6F00 (MCIA Orange - high visibility)
+Accent Secondary:#FFC107 (Gold for highlights)
+Success:        #00E676 (Bright green - high contrast)
+Warning:        #FFD54F (Bright yellow)
+Critical:       #FF1744 (Bright red - urgent)
+Heatmap Low:    #4CAF50 (Green - calm)
+Heatmap Medium: #FFEB3B (Yellow - attention)
+Heatmap High:   #FF9800 (Orange - concern)
+Heatmap Critical: #F44336 (Red - action needed)
+Border:         #333333 (Subtle dark borders)
+```
+
+### Typography
+
+#### Passenger App
+```
+Font Family: 'Inter' (Primary), 'SF Pro Display' (iOS), 'Roboto' (Android)
+Headings (H1): 28px, Bold, #111827
+Headings (H2): 24px, Semibold, #111827
+Body Text:     16px, Regular, #374151
+Small Text:    14px, Regular, #6B7280
+Button Text:   16px, Semibold, #FFFFFF
+```
+
+#### Operator Dashboard
+```
+Font Family: 'Inter' (Primary), 'Courier New' (Data/Numbers)
+Headings (H1): 32px, Bold, #F1F5F9
+Headings (H2): 24px, Semibold, #F1F5F9
+Body Text:     15px, Regular, #CBD5E1
+Data/Metrics:  18px, Mono, #F1F5F9 (Numbers stand out)
+Alert Text:    16px, Semibold, #EF4444
+```
+
+### Spacing & Layout
+
+#### Grid System
+- **Base Unit:** 8px (all spacing multiples of 8)
+- **Mobile:** 16px side padding
+- **Tablet:** 24px side padding
+- **Desktop:** 32px side padding
+- **Max Container Width:** 1400px (Dashboard), 600px (Passenger App)
+
+#### Component Spacing
+```
+Extra Small (xs): 8px   - Icon padding
+Small (sm):       16px  - Card internal padding
+Medium (md):      24px  - Section spacing
+Large (lg):       32px  - Major section breaks
+Extra Large (xl): 48px  - Page-level spacing
+```
+
+### Component Library
+
+#### Buttons
+```
+Primary (CTA):
+- Background: #D32F2F (MCIA Red)
+- Text: #FFFFFF
+- Height: 48px (mobile), 56px (desktop)
+- Border Radius: 12px (friendly, not sharp)
+- Hover: #C62828 (Darker red)
+- Active: #B71C1C
+- Shadow: 0 4px 12px rgba(211, 47, 47, 0.3)
+
+Secondary:
+- Background: #FFC107 (MCIA Gold)
+- Text: #1A1A1A (Dark text for contrast)
+- Height: 48px
+- Border Radius: 12px
+- Hover: #FFB300
+- Shadow: 0 2px 8px rgba(255, 193, 7, 0.3)
+
+Tertiary (Outline):
+- Background: Transparent
+- Border: 2px solid #D32F2F
+- Text: #D32F2F
+- Height: 48px
+- Border Radius: 12px
+
+Danger:
+- Background: #C62828 (Deep red)
+- Text: #FFFFFF
+- Used for critical actions
+```
+
+#### Cards
+```
+Passenger App:
+- Background: #FFFFFF (Pure white)
+- Border: 1px solid #FFE0B2 (Warm peach border)
+- Border Radius: 16px (Friendly, modern)
+- Shadow: 0 2px 8px rgba(211, 47, 47, 0.08) (Subtle red tint)
+- Padding: 20px
+- Hover: Shadow increases to 0 4px 16px rgba(211, 47, 47, 0.12)
+
+Flight Status Card (Special):
+- Background: Linear gradient from #FFF8F0 to #FFFFFF
+- Border: 2px solid #FFC107 (Gold accent)
+- Icon Background: #D32F2F with white icon
+- Border Radius: 20px
+
+Operator Dashboard:
+- Background: #1A1A1A (Dark elevated)
+- Border: 1px solid #333333
+- Border Radius: 12px (Slightly less rounded for professional look)
+- Shadow: 0 4px 12px rgba(0, 0, 0, 0.5)
+- Padding: 24px
+- Hover: Border changes to #FF6F00 (Orange accent)
+```
+
+#### Status Indicators
+```
+Circle Badge:
+- Size: 14px diameter (slightly larger for visibility)
+- Green (#00A651): On-time / Normal
+- Yellow (#FFC107): Minor delay / Attention
+- Orange (#FF6F00): Delayed / Warning
+- Red (#C62828): Critical / Urgent
+- Gray (#9E9E9E): Unknown / Inactive
+- Border: 2px solid white (passenger) or black (operator) for contrast
+
+Pulse Animation (for critical alerts):
+- Scale from 1.0 to 1.2
+- Opacity from 1.0 to 0
+- Duration: 2s infinite
+
+Alert Banner:
+- Height: Auto (min 64px for touch targets)
+- Icon: 28px on left (lucide-react icons)
+- Text: 15px regular
+- Close button: 20px on right
+- Padding: 16px
+- Border-left: 4px solid status color
+- Background colors:
+  - Success: #E8F5E9 (light green) with #00A651 text
+  - Warning: #FFF8E1 (light yellow) with #FF6F00 text
+  - Critical: #FFEBEE (light red) with #C62828 text
+```
+
+---
+
+## 📱 RESPONSIVE BREAKPOINTS
+
+### Device Targets
+```
+Mobile (Portrait):  320px - 479px
+Mobile (Landscape): 480px - 767px
+Tablet (Portrait):  768px - 1023px
+Tablet (Landscape): 1024px - 1279px
+Desktop:            1280px - 1920px
+Large Desktop:      1920px+
+```
+
+### Passenger App Breakpoints
+```css
+/* Mobile-first approach */
+.container {
+  padding: 16px; /* Mobile default */
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 24px; /* Tablet */
+    max-width: 720px;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 1024px) {
+  .container {
+    max-width: 600px; /* Keep narrow for focus */
+  }
+}
+```
+
+### Operator Dashboard Breakpoints
+```css
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Mobile: stack */
+  gap: 16px;
+}
+
+@media (min-width: 1024px) {
+  .dashboard-grid {
+    grid-template-columns: 300px 1fr; /* Sidebar + main */
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .dashboard-grid {
+    grid-template-columns: 300px 1fr 350px; /* Sidebar + main + alerts */
+  }
+}
+```
+
+---
+
+## 🏗️ INFORMATION ARCHITECTURE
+
+### Passenger App Navigation Structure
+
+```
+MCIA Navigator App
+│
+├── 🏠 Home / Dashboard
+│   ├── Flight Summary Card
+│   ├── Current Status Timeline
+│   └── Quick Actions (Wayfinding, Dining, Help)
+│
+├── 🚗 Travel Planning
+│   ├── Transportation Mode Selection
+│   ├── ETA Calculator
+│   ├── Drop-off Recommendations
+│   └── Pre-arrival Booking
+│
+├── 🗺️ Wayfinding
+│   ├── AR Navigation (if supported)
+│   ├── 2D Map View
+│   ├── Step-by-step Directions
+│   └── Nearby Facilities
+│
+├── 🍽️ Dining & Shopping
+│   ├── Restaurant List (with filters)
+│   ├── Walking Time Calculator
+│   ├── Dining Time Estimator
+│   └── Pre-order Options
+│
+├── ⏱️ Queue Times
+│   ├── Live Wait Times Display
+│   ├── Historical Trends
+│   └── Best Time Suggestions
+│
+├── ✈️ Flight Info
+│   ├── Real-time Status
+│   ├── Gate Information
+│   ├── Boarding Alerts
+│   └── Delay Notifications
+│
+└── 💬 Help & Support
+    ├── AI Chatbot
+    ├── FAQs
+    ├── Emergency Contacts
+    └── Feedback
+```
+
+### Operator Dashboard Structure
+
+```
+AOCC Predictive Dashboard
+│
+├── 📊 Overview
+│   ├── Airport Heatmap (Main View)
+│   ├── Current Capacity Metrics
+│   ├── Active Alerts Panel
+│   └── Quick Stats Cards
+│
+├── 📈 Predictive Analytics
+│   ├── 30-60 min Forecasts
+│   ├── Queue Predictions
+│   ├── Congestion Hotspots
+│   └── Trend Graphs
+│
+├── 👥 Resource Management
+│   ├── Staff Deployment Map
+│   ├── Lane Status Grid
+│   ├── Recommendation Queue
+│   └── Action History
+│
+├── 📹 Surveillance
+│   ├── Live Camera Feeds (Grid)
+│   ├── AI Vision Analytics
+│   ├── Occupancy Counters
+│   └── Incident Detection
+│
+├── 🛫 Flight Operations
+│   ├── Departure Board
+│   ├── Arrival Board
+│   ├── Gate Assignments
+│   └── Delay Management
+│
+├── 🚨 Alerts & Actions
+│   ├── Priority Queue
+│   ├── Action Recommendations
+│   ├── One-tap Approvals
+│   └── Escalation Protocols
+│
+└── 📝 Reports & Logs
+    ├── Shift Summary
+    ├── Incident Reports
+    ├── Performance Metrics
+    └── Export Data
+```
+
+---
+
+## 🎯 USER PERSONAS & SCENARIOS
+
+### Primary Persona: Anna (Passenger)
+
+**Demographics:**
+- Age: 28
+- Occupation: Marketing Manager
+- Tech Comfort: High
+- Travel Frequency: 3-4 times/year
+- Device: iPhone (iOS)
+
+**Goals:**
+- ✅ Know exactly when to leave for airport
+- ✅ Avoid missing flight due to queues
+- ✅ Maximize free time for dining/shopping
+- ✅ Reduce travel anxiety
+
+**Pain Points:**
+- ❌ Uncertainty about wait times
+- ❌ Fear of getting lost in airport
+- ❌ Anxiety about gate changes
+- ❌ Wasted time sitting at gate
+
+**Usage Context:**
+- Pre-flight: Hotel room (Wi-Fi)
+- In-transit: Car/Grab (Mobile data)
+- At airport: MCIA Wi-Fi (stable)
+- Language: English (primary)
+
+### Secondary Persona: David (AOCC Operator)
+
+**Demographics:**
+- Age: 35
+- Role: AOCC Duty Manager
+- Experience: 8 years in airport ops
+- Shift: Rotating (8-hour shifts)
+- Device: Desktop workstation + tablet
+
+**Goals:**
+- ✅ Prevent bottlenecks before they happen
+- ✅ Optimize staff deployment
+- ✅ Respond to crises quickly
+- ✅ Maintain smooth operations
+
+**Pain Points:**
+- ❌ Reactive instead of proactive
+- ❌ Overwhelming data with no insights
+- ❌ Delayed awareness of issues
+- ❌ Manual coordination with teams
+
+**Usage Context:**
+- Environment: AOCC control room (multi-monitor)
+- Duration: 8-hour continuous monitoring
+- Stress Level: High during peak hours
+- Decision Speed: Seconds to minutes
+
+---
+
+## ✅ VALIDATION & ACCEPTANCE CRITERIA
+
+### Passenger App Validation
+
+#### Functional Tests
+- [ ] Flight number search returns accurate data within 2 seconds
+- [ ] Queue wait times update every 30 seconds
+- [ ] Push notifications arrive within 5 seconds of trigger
+- [ ] AR navigation maintains 30fps
+- [ ] Gate change alerts display within 10 seconds
+- [ ] Dining recommendations show accurate walk times
+- [ ] Wayfinding provides turn-by-turn directions
+- [ ] Multi-language switching works instantly
+
+#### UX Tests
+- [ ] New user can complete first journey without tutorial
+- [ ] Average task completion time < 30 seconds
+- [ ] User can find any feature within 3 taps
+- [ ] Text remains readable in direct sunlight (high contrast)
+- [ ] App works offline with cached data (graceful degradation)
+- [ ] No scroll required to see critical info on home screen
+
+### Operator Dashboard Validation
+
+#### Functional Tests
+- [ ] Heatmap updates every 15 seconds
+- [ ] Predictions display 30-60 min window accurately
+- [ ] One-tap action sends commands within 2 seconds
+- [ ] Alert system triggers at correct thresholds
+- [ ] Staff app receives assignments within 5 seconds
+- [ ] Dashboard displays 16 camera feeds simultaneously
+- [ ] Historical data loads within 3 seconds
+
+#### UX Tests
+- [ ] Operator can identify critical alert within 5 seconds
+- [ ] Action approval requires exactly 1 click
+- [ ] Most critical info visible without scrolling
+- [ ] Color-coded urgency is immediately obvious
+- [ ] Dashboard usable on 1920x1080 and 2560x1440 screens
+- [ ] Night shift operators report no eye strain (dark mode)
+
+---
+
+## 🚫 DESIGN CONSTRAINTS & RULES
+
+### What AI Must ALWAYS Remember
+
+#### General Rules
+1. **Mobile-first design** - Design for smallest screen first
+2. **One primary action per screen** - Avoid decision paralysis
+3. **Accessibility is mandatory** - WCAG 2.1 AA minimum
+4. **Performance over features** - Fast > Feature-rich
+5. **User ignorance assumption** - No assumption of prior knowledge
+6. **Consistent naming** - Same term everywhere (e.g., "Gate" not "Boarding Gate" sometimes)
+
+#### Passenger App Rules
+1. **Maximum 3 taps to any feature** - Deep navigation = lost users
+2. **Critical info above the fold** - Flight status, queue times always visible
+3. **No login required for basic features** - Reduce friction
+4. **Green = good, red = urgent** - Universal color meaning
+5. **Font size minimum 16px** - Stressed users need readability
+6. **Avoid jargon** - "Security checkpoint" not "STCP"
+7. **Always show time remaining** - "15 minutes until boarding" not "Boards at 3:45pm"
+8. **Location permission must be optional** - Core features work without
+
+#### Operator Dashboard Rules
+1. **Alerts must be dismissible** - Avoid notification fatigue
+2. **Actions require confirmation** - Prevent accidental deployment
+3. **Use progressive disclosure** - Hide complexity until needed
+4. **Numbers must use monospace font** - Easier to scan
+5. **Red alerts blink slowly (1s interval)** - Urgent but not seizure-inducing
+6. **Historical data uses relative time** - "20 min ago" not "14:32"
+7. **Predictions show confidence level** - "85% confident" transparency
+8. **Every auto-action must be reviewable** - Audit trail mandatory
+
+### What AI Must NEVER Do
+
+#### Passenger App Prohibitions
+- ❌ **Never auto-play videos/sounds** - Startling in public spaces
+- ❌ **Never require account creation upfront** - Friction kills adoption
+- ❌ **Never show more than 5 items in a list** - Use "Show more" instead
+- ❌ **Never use carousel for critical info** - Users don't swipe
+- ❌ **Never hide navigation in hamburger menu** - Make navigation obvious
+- ❌ **Never use ambiguous icons without labels** - "What does this mean?"
+- ❌ **Never display technical errors** - Show "Try again" instead
+- ❌ **Never use pure red/green for status alone** - Color blind users exist
+
+#### Operator Dashboard Prohibitions
+- ❌ **Never auto-dismiss critical alerts** - Operator must acknowledge
+- ❌ **Never show predictions without data source** - Transparency required
+- ❌ **Never use light text on light bg** - Dark mode contrast rules
+- ❌ **Never block urgent alerts with modals** - Always accessible
+- ❌ **Never show raw API errors** - Log them, show user-friendly message
+- ❌ **Never use animation > 0.5s** - Operators need speed
+- ❌ **Never require horizontal scrolling** - All info should fit viewport
+- ❌ **Never use auto-refresh without visual indicator** - Operators need to know when data changes
+
+---
+
+## 🎨 WIREFRAME SPECIFICATIONS
+
+### Passenger App - Key Screens
+
+#### 1. Home Screen (Dashboard)
+```
+┌─────────────────────────────┐
+│ [MCIA Logo]    [Profile] [?]│
+├─────────────────────────────┤
+│                             │
+│  ✈️ Flight PR235             │
+│  Manila → Cebu              │
+│  ⏰ Boarding: 3:45 PM        │
+│  🚪 Gate: 12                 │
+│  🟢 On Time                  │
+│                             │
+├─────────────────────────────┤
+│                             │
+│  Your Journey Timeline      │
+│  ────●────●────●────○       │
+│   Check  Sec  Gate Board    │
+│    ✓     ✓    📍    ⏱️      │
+│                             │
+│  Walking time to gate: 8min │
+│                             │
+├─────────────────────────────┤
+│                             │
+│  🔍 Wayfinding              │
+│  🍽️ Dining                  │
+│  ⏱️ Queue Times              │
+│  💬 Ask AURA                │
+│                             │
+└─────────────────────────────┘
+```
+
+#### 2. Queue Times Screen
+```
+┌─────────────────────────────┐
+│ ← Queue Times               │
+├─────────────────────────────┤
+│                             │
+│  Domestic Security          │
+│  🟢 7 minutes wait           │
+│  ───────●────── 40% busy    │
+│  [View on Map]              │
+│                             │
+├─────────────────────────────┤
+│                             │
+│  Check-in Counter           │
+│  🟢 5 minutes wait           │
+│  ────●───────── 30% busy    │
+│  [View on Map]              │
+│                             │
+├─────────────────────────────┤
+│                             │
+│  International Immigration  │
+│  🟡 15 minutes wait          │
+│  ──────────●─── 65% busy    │
+│  [View on Map]              │
+│                             │
+├─────────────────────────────┤
+│                             │
+│  ℹ️ Updated 30 seconds ago   │
+│                             │
+└─────────────────────────────┘
+```
+
+### Operator Dashboard - Key Screens
+
+#### 1. Main Overview
+```
+┌──────────────────────────────────────────────────────────────┐
+│ [AOCC Logo] Overview                    [Profile] [Settings] │
+├────────────┬─────────────────────────────────┬───────────────┤
+│            │                                 │               │
+│ 📊 Metrics │   🗺️ Airport Heatmap            │ 🚨 Alerts (3) │
+│            │                                 │               │
+│ Capacity   │     [Visual Heatmap]           │ 🔴 HIGH       │
+│ ●●●●○ 75%  │     Color-coded zones          │ Intl Security │
+│            │     Click zones for details    │ +28% capacity │
+│ Flights    │                                 │ [Deploy Staff]│
+│ Departing  │   Legend:                      │               │
+│ 🛫 42      │   🟢 Normal  🟡 Busy           │ 🟡 MEDIUM     │
+│            │   🟠 High    🔴 Critical       │ Gate 12       │
+│ Staff      │                                 │ Crowd forming │
+│ On Duty    │   Predictive Window: 45 min    │ [View Camera] │
+│ 👤 38/42   │                                 │               │
+│            │                                 │ 🟢 LOW        │
+│            │                                 │ Baggage Claim │
+│            │                                 │ Normal flow   │
+│            │                                 │               │
+└────────────┴─────────────────────────────────┴───────────────┘
+```
+
+#### 2. Alert Detail Modal
+```
+┌─────────────────────────────────────┐
+│ 🔴 Critical Alert                   │
+├─────────────────────────────────────┤
+│                                     │
+│ Location: International Security    │
+│ Current: 85% capacity               │
+│ Predicted: 95% in 20 minutes        │
+│                                     │
+│ Cause Analysis:                     │
+│ • 3 flights checking in (PR235,     │
+│   5J678, CX912)                     │
+│ • 2 security lanes currently open   │
+│ • Historical data shows 40min queue │
+│                                     │
+│ AI Recommendation:                  │
+│ ✅ Open Lane 3 immediately           │
+│ ✅ Deploy 2 additional guards        │
+│ ⚠️ Notify passengers of wait time   │
+│                                     │
+│ Confidence: 92%                     │
+│                                     │
+│ [Accept All] [Custom Action] [Dismiss]│
+│                                     │
+└─────────────────────────────────────┘
+```
+
+---
+
+## 🌐 REFERENCE WEBSITES FOR INSPIRATION
+
+### Modern App Design
+1. **Uber** (https://uber.com) - Clean travel timelines, real-time updates
+2. **Google Maps** - Wayfinding, ETA calculations, traffic integration
+3. **Waze** - Contextual alerts, community-driven updates
+4. **Flighty** (iOS) - Flight tracking, delay predictions, gate changes
+5. **Grab** (Southeast Asia) - Transportation booking, ETA accuracy
+
+### Dashboard Design
+1. **Datadog** - Monitoring dashboards, alert systems
+2. **Grafana** - Dark mode data visualization, heatmaps
+3. **Verkada** - Security camera management, AI analytics
+4. **AWS CloudWatch** - Real-time metrics, predictive graphs
+5. **Linear** (https://linear.app) - Clean dark UI, fast interactions
+
+### Airport Apps (Benchmark)
+1. **Changi Airport Singapore** - Best-in-class airport app
+2. **Heathrow Airport** - Queue time displays
+3. **Dubai International** - Wayfinding and retail integration
+4. **Schiphol Amsterdam** - Predictive wait times
+5. **Hong Kong Intl** - AR navigation features
+
+### Design Systems
+1. **Material Design 3** (Google) - Component library
+2. **Ant Design** (Alibaba) - Enterprise dashboard components
+3. **Tailwind UI** - Modern utility-first examples
+4. **Shadcn UI** - Clean React components
+5. **Apple HIG** (Human Interface Guidelines) - iOS best practices
+
+---
+
+## 🔧 TECHNICAL SPECIFICATIONS
+
+### Frontend Stack (Recommended)
+```
+Framework: React (Web) / React Native (Mobile)
+Styling: Tailwind CSS + CSS Modules
+State Management: Zustand or React Context
+Routing: React Router
+Data Fetching: TanStack Query (React Query)
+Maps: Google Maps API / Mapbox
+Charts: Recharts or Chart.js
+Icons: Lucide React
+Animations: Framer Motion
+```
+
+### Backend Integration Points
+```
+1. Flight Data: AIDX (Aviation Info Data Exchange)
+2. AI Processing: Google Vertex AI Studio
+3. Computer Vision: Vertex AI Vision (occupancy analytics)
+4. Traffic Data: External APIs (Google Maps, Waze)
+5. Weather: OpenWeather or PAGASA API
+6. Internal: MCIA AOCC Database
+7. Notifications: Firebase Cloud Messaging (FCM)
+```
+
+### API Response Time SLAs
+```
+Critical (Flight Status, Alerts):     < 1 second
+High Priority (Queue Times):          < 2 seconds
+Standard (Recommendations):           < 3 seconds
+Low Priority (Historical Data):       < 5 seconds
+```
+
+---
+
+## 📊 SUCCESS METRICS
+
+### Passenger App KPIs
+- **User Adoption:** 30% of monthly passengers within 6 months
+- **Task Completion:** 90% of users complete journey without help
+- **Anxiety Reduction:** 40% decrease in customer service inquiries
+- **Dwell Time:** 25% increase in retail area visits
+- **App Rating:** Minimum 4.5/5.0 stars
+
+### Operator Dashboard KPIs
+- **Prediction Accuracy:** 85%+ for 30-min forecasts
+- **Response Time:** 50% reduction in bottleneck formation
+- **Staff Efficiency:** 20% improvement in deployment optimization
+- **Incident Prevention:** 60% of predicted issues prevented
+- **User Satisfaction:** 90%+ operator approval rating
+
+---
+
+## 📅 DEVELOPMENT PHASES
+
+### Phase 1: MVP (Hackathon Prototype)
+**Timeline:** Current  
+**Scope:**
+- [ ] Passenger app: Home, Queue Times, Wayfinding (2D)
+- [ ] Operator dashboard: Overview, Alerts, Basic heatmap
+- [ ] Core AI integration: Queue prediction, basic recommendations
+- [ ] Mock data + 2-3 real API integrations
+
+### Phase 2: Beta Launch
+**Timeline:** 3 months post-hackathon  
+**Scope:**
+- [ ] Full AIDX integration
+- [ ] Camera feed integration (3-5 zones)
+- [ ] AR navigation
+- [ ] Multi-language support
+- [ ] Staff mobile app
+- [ ] Beta testing with 500 passengers
+
+### Phase 3: Production
+**Timeline:** 6 months post-hackathon  
+**Scope:**
+- [ ] Airport-wide deployment
+- [ ] Full camera coverage (20+ zones)
+- [ ] Advanced AI features (generative recommendations)
+- [ ] Business analytics dashboard
+- [ ] Integration with retail partners
+
+---
+
+## 🎓 DESIGN PRINCIPLES SUMMARY
+
+### For Passenger Experience
+1. **Anticipate Anxiety** - Answer questions before they're asked
+2. **Progressive Disclosure** - Show only what's needed now
+3. **Consistency is Comfort** - Same patterns throughout
+4. **Speed Over Beauty** - Fast loading > fancy animations
+5. **Forgiveness Over Prevention** - Easy undo, hard to break
+
+### For Operator Experience
+1. **Glanceable Intelligence** - Understand status in 5 seconds
+2. **Action Over Analysis** - Recommend solutions, not just data
+3. **Trust Through Transparency** - Show AI reasoning
+4. **Calm Technology** - Alert only when necessary
+5. **Audit Everything** - Every action logged and reviewable
+
+---
+
+## 📞 SUPPORT & DOCUMENTATION
+
+### User Support Channels
+- **In-App:** AI chatbot (24/7)
+- **Phone:** MCIA Hotline (+63 32 494 0000)
+- **Email:** support@mcia-aura.ph
+- **FAQs:** Embedded in app
+
+### Operator Training
+- **Initial Training:** 4-hour hands-on workshop
+- **Documentation:** Video tutorials + PDF manual
+- **Support:** 24/7 tech support hotline
+- **Updates:** Monthly feature training sessions
+
+---
+
+## ✅ FINAL CHECKLIST BEFORE DEVELOPMENT
+
+- [ ] All user flows validated with stakeholders
+- [ ] Color palette tested for accessibility (contrast ratios)
+- [ ] Wireframes approved by UX team
+- [ ] Technical feasibility confirmed (Vertex AI access)
+- [ ] API documentation reviewed
+- [ ] Security requirements defined
+- [ ] Privacy policy drafted
+- [ ] Performance benchmarks set
+- [ ] Testing scenarios documented
+- [ ] Rollback plan prepared
+
+---
+
+**Document Version:** 1.0  
+**Last Updated:** December 13, 2025  
+**Maintained By:** AURA Development Team  
+**Review Cycle:** Weekly during development
+
+---
+
+## 🚀 NEXT STEPS
+
+1. **Review this specification** with your team
+2. **Create wireframe mockups** based on specifications above
+3. **Set up development environment** (React + Tailwind)
+4. **Build component library** following design system
+5. **Implement user flows** starting with highest priority screens
+6. **Integrate Vertex AI** for predictive features
+7. **Conduct user testing** with 10-15 passengers/operators
+8. **Iterate based on feedback**
+9. **Prepare hackathon demo** (focus on wow moments)
+10. **Document everything** for handoff to MCIA
+
+---
+
+**Remember:** This is a living document. Update it as requirements evolve, but always maintain the core principles of clarity, simplicity, and user-centered design.
