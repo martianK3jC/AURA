@@ -96,7 +96,7 @@ const ArrivalDashboardScreen: React.FC<Props> = ({ onNavigate, travelerContext }
     const flightNumber = travelerContext?.flightNumber || 'Your Flight';
 
     return (
-        <div className="h-full min-h-screen bg-gradient-to-br from-slate-50 via-white to-orange-50/20 overflow-y-auto pb-32 relative">
+        <div className="h-full min-h-screen bg-gradient-to-br from-orange-50/10 via-white to-orange-50/30 overflow-y-auto pb-32 relative">
             {/* Decorative Background Pattern */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-32 right-16 w-80 h-80 bg-yellow-200/8 rounded-full blur-3xl"></div>
@@ -104,7 +104,7 @@ const ArrivalDashboardScreen: React.FC<Props> = ({ onNavigate, travelerContext }
             </div>
 
             {/* Header - Warm Yellow/Orange for Arrival */}
-            <div className={`sticky top-0 bg-gradient-to-br from-yellow-500 to-orange-600 text-white px-6 pt-8 pb-10 shadow-xl transition-all duration-300 ease-out relative z-50 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
+            <div className={`sticky top-0 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white px-6 pt-8 pb-10 shadow-xl transition-all duration-300 ease-out relative z-50 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
                 }`}>
                 <div className="max-w-2xl mx-auto">
                     {/* Welcome Message */}
@@ -166,7 +166,7 @@ const ArrivalDashboardScreen: React.FC<Props> = ({ onNavigate, travelerContext }
                                             <div className="flex items-center justify-between mb-1">
                                                 <h3 className={`font-bold text-lg ${isCurrent ? 'text-red-900' : 'text-gray-900'}`}>{step.title}</h3>
                                                 {step.waitTime && isCurrent && (
-                                                    <span className="text-xs font-bold text-amber-700 bg-amber-100 px-3 py-1 rounded-full border border-amber-200">
+                                                    <span className="text-xs font-bold text-amber-700 bg-amber-100/80 px-3 py-1 rounded-full border border-amber-200/50">
                                                         {step.waitTime} min wait
                                                     </span>
                                                 )}

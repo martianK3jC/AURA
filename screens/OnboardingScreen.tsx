@@ -89,9 +89,9 @@ const OnboardingScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
             {/* Travel Direction Badge */}
             {travelerContext && (
                 <div className="absolute top-6 left-6 z-50">
-                    <div className={`px-4 py-2 rounded-full text-sm font-bold border-2 backdrop-blur-md ${isArrival
-                        ? 'bg-yellow-100/80 border-yellow-400 text-yellow-700'
-                        : 'bg-purple-100/80 border-purple-400 text-purple-700'
+                    <div className={`px-4 py-2 rounded-full text-xs font-bold border backdrop-blur-md uppercase tracking-wide flex items-center gap-2 shadow-sm ${isArrival
+                        ? 'bg-amber-100/90 border-amber-300 text-amber-800'
+                        : 'bg-red-50/90 border-red-200 text-red-700'
                         }`}>
                         {isArrival ? '🛬 Arrival' : '🛫 Departure'}
                     </div>
@@ -101,7 +101,7 @@ const OnboardingScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
             {/* Skip Button */}
             <button
                 onClick={handleSkip}
-                className="absolute top-6 right-6 text-stone-500 hover:text-[var(--aura-text-primary)] font-medium text-sm flex items-center gap-1 z-50 p-2 rounded-full hover:bg-black/5 active:scale-95 transition-all"
+                className="absolute top-6 right-6 text-stone-500 hover:text-red-600 font-medium text-sm flex items-center gap-1 z-50 p-2 rounded-full hover:bg-red-50 active:scale-95 transition-all"
             >
                 Skip <ArrowRight size={14} />
             </button>
@@ -114,10 +114,10 @@ const OnboardingScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
 
                 {/* Personalized Greeting */}
                 {travelerContext && step === 0 && (
-                    <div className="mb-4 text-center animate-fade-in">
-                        <div className="inline-flex items-center gap-2 bg-white/60 backdrop-blur-md border border-gray-200 rounded-full px-4 py-2 shadow-sm">
-                            <User size={16} className="text-red-600" />
-                            <span className="text-sm font-semibold text-gray-700">
+                    <div className="mb-6 text-center animate-fade-in">
+                        <div className="inline-flex items-center gap-2 bg-white/80 backdrop-blur-md border border-red-100 rounded-full pl-3 pr-4 py-1.5 shadow-sm shadow-red-100/50">
+                            <User size={14} className="text-red-600" />
+                            <span className="text-sm font-bold text-gray-800">
                                 {userName}
                             </span>
                         </div>
@@ -125,10 +125,13 @@ const OnboardingScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
                 )}
 
                 {/* Step Content with Animation */}
-                <div key={step} className="flex flex-col items-center justify-center text-center space-y-8 animate-in fade-in slide-in-from-right-8 duration-500 w-full mb-12">
-                    <div className="relative group">
-                        <div className="absolute inset-0 bg-red-500/10 rounded-full blur-xl group-hover:blur-2xl transition-all duration-500"></div>
-                        <div className="relative w-24 h-24 rounded-full bg-white/60 border border-stone-200 backdrop-blur-xl flex items-center justify-center shadow-2xl shadow-red-500/10">
+                <div key={step} className="flex flex-col items-center justify-center text-center space-y-6 animate-in fade-in slide-in-from-right-8 duration-500 w-full mb-12">
+                    <div className="relative group p-4">
+                        {/* Glow Effect */}
+                        <div className="absolute inset-0 bg-red-500/20 rounded-full blur-2xl group-hover:blur-3xl transition-all duration-500 opacity-50"></div>
+
+                        {/* Main Icon */}
+                        <div className={`relative w-28 h-28 rounded-full border-4 flex items-center justify-center shadow-xl shadow-red-500/10 transition-colors duration-500 ${isArrival ? 'bg-orange-50 border-orange-100' : 'bg-red-50 border-red-100'}`}>
                             {steps[step].icon}
                         </div>
                     </div>

@@ -61,7 +61,7 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
             <img src={auraLogo} alt="AURA Logo" className="w-10 h-10 rounded-2xl object-contain shadow-lg shadow-red-500/20" />
             <div>
               <h1 className="text-xl font-bold tracking-tight text-neutral-900">AURA</h1>
-              <p className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">Unified Assistant</p>
+              <p className="text-[10px] font-bold tracking-widest text-neutral-500 uppercase">Your Airport Concierge</p>
             </div>
           </div>
         </div>
@@ -79,7 +79,7 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
           </h1>
 
           <p className="text-lg md:text-2xl text-neutral-500 leading-relaxed max-w-lg mb-12 mx-auto xl:mx-0">
-            Experience the future of airport navigation. Real-time predictions, seamless routing, and personalized care.
+            Real-time predictions, seamless routing, and personalized care for a stress-free journey.
           </p>
 
           <div className="flex flex-col sm:flex-row gap-6 justify-center xl:justify-start">
@@ -139,7 +139,7 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
               </div>
               <div className="flex justify-between items-center text-sm font-bold text-neutral-600 uppercase tracking-widest px-1">
                 <span>Security Check A</span>
-                <span className="text-red-600">12 min wait</span>
+                <span className="text-emerald-600">12 min wait</span>
               </div>
             </div>
 
@@ -164,13 +164,13 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
           <span className="w-1 h-1 rounded-full bg-neutral-300"></span>
           <span className="flex items-center gap-1"><Activity size={12} /> Systems Normal</span>
 
-          {/* Safety Demo Trigger */}
-          <button
+          {/* Safety Demo Trigger - Hidden for Production */}
+          {/* <button
             onClick={() => setShowDisasterDemo(true)}
-            className="ml-auto flex items-center gap-1 text-red-400 hover:text-red-600 transition-colors"
+            className="ml-auto flex items-center gap-1 text-red-400 hover:text-red-600 transition-colors opacity-0 hover:opacity-100"
           >
-            <ShieldCheck size={12} /> Simulate Typhoon
-          </button>
+            <ShieldCheck size={12} /> Test Alert
+          </button> */}
         </div>
       </div>
 
@@ -209,7 +209,7 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
                 </div>
                 <div>
                   <p className="font-bold text-lg text-neutral-900 leading-tight">Live Route</p>
-                  <p className="text-xs text-neutral-500 font-bold uppercase tracking-wide">Optimal path found</p>
+                  <p className="text-sm text-neutral-500 font-bold uppercase tracking-wide">Optimal path found</p>
                 </div>
               </div>
               <div className="w-14 h-10 rounded-full bg-red-600 flex items-center justify-center shadow-lg shadow-red-500/30">
@@ -229,7 +229,7 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
 
             <div className="flex justify-between items-center text-xs font-bold text-neutral-600 uppercase tracking-widest px-1">
               <span>Security Check A</span>
-              <span className="text-red-600">12 min wait</span>
+              <span className="text-emerald-600">12 min wait</span>
             </div>
           </div>
 

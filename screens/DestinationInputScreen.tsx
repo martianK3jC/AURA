@@ -99,7 +99,7 @@ const DestinationInputScreen: React.FC<Props> = ({ onNavigate }) => {
     };
 
     return (
-        <div className="h-full min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-yellow-50/20 overflow-y-auto pb-32 relative">
+        <div className="h-full min-h-screen bg-gradient-to-br from-orange-50/10 via-white to-orange-50/30 overflow-y-auto pb-32 relative">
             {/* Decorative Background Pattern */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-20 right-10 w-64 h-64 bg-yellow-200/10 rounded-full blur-3xl"></div>
@@ -107,7 +107,7 @@ const DestinationInputScreen: React.FC<Props> = ({ onNavigate }) => {
             </div>
 
             {/* Header - Warm Yellow/Orange for Arrival */}
-            <div className={`bg-gradient-to-br from-yellow-500 to-orange-600 text-white px-6 pt-6 pb-8 shadow-xl transition-all duration-300 ease-out relative z-10 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
+            <div className={`bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white px-6 pt-6 pb-8 shadow-xl transition-all duration-300 ease-out relative z-10 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
                 }`}>
                 <div className="max-w-2xl mx-auto">
                     <button
@@ -155,9 +155,9 @@ const DestinationInputScreen: React.FC<Props> = ({ onNavigate }) => {
                             <button
                                 key={region}
                                 onClick={() => setSelectedRegion(region)}
-                                className={`px-4 py-2 rounded-full font-semibold text-sm whitespace-nowrap transition-all ${selectedRegion === region
-                                    ? 'bg-orange-600 text-white shadow-lg'
-                                    : 'bg-white text-gray-700 border border-gray-300 hover:border-orange-500'
+                                className={`px-5 py-2.5 rounded-full font-bold text-sm whitespace-nowrap transition-all shadow-sm ${selectedRegion === region
+                                    ? 'bg-gradient-to-r from-orange-500 to-amber-500 text-white shadow-orange-500/30'
+                                    : 'bg-white text-gray-500 hover:text-gray-900 border border-transparent hover:border-gray-200'
                                     }`}
                             >
                                 {region}
@@ -195,7 +195,7 @@ const DestinationInputScreen: React.FC<Props> = ({ onNavigate }) => {
                                     >
                                         <div className="flex items-start gap-4">
                                             {/* Icon */}
-                                            <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${isSelected ? 'bg-orange-600 text-white' : 'bg-gray-100 text-gray-600'
+                                            <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center ${isSelected ? 'bg-orange-600 text-white' : 'bg-slate-100 text-slate-500'
                                                 }`}>
                                                 <Icon size={24} />
                                             </div>

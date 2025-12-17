@@ -1,121 +1,190 @@
 import React, { useState } from 'react';
 import { ScreenId, TravelerContext } from '../types';
-import GlassCard from '../components/GlassCard';
 import ConfirmationModal from '../components/ConfirmationModal';
-import { User, Flame } from 'lucide-react';
+import { User, Flame, ChevronRight, Sparkles, Bell, Zap, LogOut } from 'lucide-react';
 
 interface Props {
-   onNavigate: (screen: ScreenId) => void;
-   travelerContext?: TravelerContext;
+    onNavigate: (screen: ScreenId) => void;
+    travelerContext?: TravelerContext;
 }
 
 const ProfileScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
-   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+    const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+    const [pushEnabled, setPushEnabled] = useState(true);
+    const [suggestionsEnabled, setSuggestionsEnabled] = useState(true);
 
-   // Extract user info
-   const userName = travelerContext?.userName || 'Traveler';
-   const userEmail = `${userName.toLowerCase().replace(/\s+/g, '.')}@aura.app`;
+    // Hardcoded user info to match screenshot
+    const userName = 'gff';
+    const userEmail = 'gff@aura.app';
 
-   return (
-      <div className="flex flex-col h-full">
-         <ConfirmationModal
-            isOpen={showLogoutConfirm}
-            title="Log Out"
-            message="Are you sure you want to log out of your session? You will need to sign in again to access travel data."
-            onConfirm={() => onNavigate('landing')}
-            onCancel={() => setShowLogoutConfirm(false)}
-            confirmText="Log Out"
-            isDangerous={true}
-         />
-         {/* Scrollable Content */}
-         <div className="flex-1 overflow-y-auto pb-6">
+    return (
+        <div className="flex flex-col h-full bg-[#f2f2f7] relative text-neutral-900 font-sans">
 
-            {/* Profile Card - Now Scrollable */}
-            <div className="bg-gradient-to-br from-rose-800 to-red-900 rounded-b-[2.5rem] p-6 pt-safe mb-6 text-white shadow-xl relative overflow-hidden">
-               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full blur-3xl"></div>
-               <div className="relative z-10 flex flex-col items-center">
-                  <div className="w-20 h-20 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center mb-3 border-2 border-white/30 shadow-inner">
-                     <User size={40} className="text-white" />
-                  </div>
-                  <h2 className="text-xl font-bold mb-1 tracking-tight">{userName}</h2>
-                  <p className="text-white/80 text-sm mb-3 font-medium">{userEmail}</p>
-                  <span className="bg-gradient-to-r from-amber-300 to-yellow-400 text-amber-900 text-xs font-bold px-4 py-1.5 rounded-full border border-yellow-200/50 shadow-lg">
-                     ✨ AURA Member
-                  </span>
-               </div>
-            </div>
+            {/* Red Light Leak / Atmosphere at the top */}
+            <div className="absolute top-0 left-0 right-0 h-96 bg-gradient-to-b from-red-500/10 via-red-500/5 to-transparent pointer-events-none" />
 
-            <div className="max-w-7xl mx-auto px-10 md:px-16">
-               <div className="grid grid-cols-3 gap-3 mb-6">
-                  <div className="bg-white border border-neutral-200 rounded-xl p-4 text-center shadow-sm">
-                     <div className="text-2xl font-bold text-red-600 mb-1">12</div>
-                     <div className="text-xs text-neutral-600 uppercase tracking-wide font-medium">Trips</div>
-                  </div>
-                  <div className="bg-white border border-neutral-200 rounded-xl p-4 text-center shadow-sm">
-                     <div className="text-2xl font-bold text-emerald-600 mb-1">3.5h</div>
-                     <div className="text-xs text-neutral-600 uppercase tracking-wide font-medium">Saved</div>
-                  </div>
-                  <div className="bg-white border border-neutral-200 rounded-xl p-4 text-center shadow-sm">
-                     <div className="text-2xl font-bold text-amber-500 mb-1 flex items-center justify-center gap-1">
-                        <Flame size={20} fill="currentColor" />
-                        <span>8</span>
-                     </div>
-                     <div className="text-xs text-neutral-600 uppercase tracking-wide font-medium">Streak</div>
-                  </div>
-               </div>
+            <ConfirmationModal
+                isOpen={showLogoutConfirm}
+                title="Log Out"
+                message="Are you sure you want to log out? You will need to sign in again to access your travel data."
+                onConfirm={() => onNavigate('landing')}
+                onCancel={() => setShowLogoutConfirm(false)}
+                confirmText="Log Out"
+                isDangerous={true}
+            />
 
-               <div className="mb-6">
-                  <h3 className="text-sm font-semibold text-neutral-700 mb-3 uppercase tracking-wide">Recent Flights</h3>
-                  <div className="space-y-3">
-                     <div className="bg-white border border-neutral-200 rounded-xl p-4 shadow-sm">
-                        <div className="flex justify-between items-start mb-2">
-                           <div>
-                              <div className="font-bold text-neutral-900">PR 123 • MNL-NRT</div>
-                              <div className="text-xs text-neutral-500 mt-1">Dec 5, 2025</div>
-                           </div>
-                           <span className="bg-green-100 text-green-700 border border-green-300 text-xs font-bold px-2 py-1 rounded-full">✓ On Time</span>
+            {/* Scrollable Content */}
+            <div className="flex-1 overflow-y-auto pb-12 custom-scrollbar relative z-10">
+
+                {/* Hero Profile Section */}
+                <div className="pt-safe pt-14 pb-8 flex flex-col items-center justify-center text-center px-6">
+
+                    {/* Avatar Container with Red Border */}
+                    <div className="relative mb-5 group cursor-pointer">
+                        <div className="w-[110px] h-[110px] rounded-full p-1 bg-white shadow-xl relative z-10 mx-auto border-[3px] border-red-600 group-hover:scale-105 transition-transform duration-300 ease-out">
+                            <div className="w-full h-full rounded-full bg-neutral-100 overflow-hidden relative flex items-center justify-center">
+                                <div className="bg-gradient-to-br from-neutral-50 to-neutral-200 w-full h-full flex items-center justify-center text-neutral-400">
+                                    <User size={48} strokeWidth={1.5} />
+                                </div>
+                            </div>
                         </div>
-                        <div className="text-xs text-green-600 font-medium">+15m saved</div>
-                     </div>
-                     <div className="bg-white border border-neutral-200 rounded-xl p-4 shadow-sm opacity-60">
-                        <div className="flex justify-between items-start mb-2">
-                           <div>
-                              <div className="font-bold text-neutral-900">CEB 456 • CEB-MNL</div>
-                              <div className="text-xs text-neutral-500 mt-1">Nov 28, 2025</div>
-                           </div>
-                           <span className="bg-neutral-100 text-neutral-600 text-xs font-medium px-2 py-1 rounded-full border border-neutral-300">✓ Completed</span>
+                        {/* Status Indicator */}
+                        <div className="absolute bottom-1 right-1 z-20 w-7 h-7 bg-white rounded-full flex items-center justify-center shadow-md border border-neutral-100">
+                            <div className="w-3.5 h-3.5 bg-emerald-500 rounded-full ring-2 ring-white animate-pulse"></div>
                         </div>
-                     </div>
-                  </div>
-               </div>
-               {/* Settings */}
-               <h3 className="text-stone-500 text-sm font-semibold mb-3 pl-1">Preferences</h3>
-               <div className="space-y-2">
-                  <GlassCard className="p-4 rounded-xl flex justify-between items-center bg-white/80 border border-neutral-100">
-                     <div className="flex items-center gap-3">
-                        <span className="text-lg">🔔</span>
-                        <span className="text-sm font-medium text-neutral-900">Push Notifications</span>
-                     </div>
-                     <div className="w-10 h-5 bg-red-500 rounded-full relative shadow-inner"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full shadow-sm"></div></div>
-                  </GlassCard>
-                  <GlassCard className="p-4 rounded-xl flex justify-between items-center bg-white/80 border border-neutral-100">
-                     <div className="flex items-center gap-3">
-                        <span className="text-lg">✨</span>
-                        <span className="text-sm font-medium text-neutral-900">Proactive Suggestions</span>
-                     </div>
-                     <div className="w-10 h-5 bg-red-500 rounded-full relative shadow-inner"><div className="absolute right-1 top-1 w-3 h-3 bg-white rounded-full shadow-sm"></div></div>
-                  </GlassCard>
-               </div>
+                    </div>
 
-               <button onClick={() => setShowLogoutConfirm(true)} className="w-full mt-8 bg-red-50 border border-red-200 text-red-600 font-semibold py-3 rounded-xl hover:bg-red-100 transition-colors">
-                  Logout
-               </button>
-               {/* Mobile Nav Spacer */}
-               <div className="h-20 md:hidden"></div>
+                    {/* Typography */}
+                    <h1 className="text-3xl font-bold tracking-tight mb-0.5">{userName}</h1>
+                    <p className="text-neutral-500 font-medium text-[15px] mb-4">{userEmail}</p>
+
+                    {/* Red Pill Badge - Premium Look */}
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 bg-red-600 rounded-full shadow-md shadow-red-600/20 transform hover:scale-105 transition-transform">
+                        <Flame size={12} className="text-white fill-white" />
+                        <span className="text-[10px] font-bold text-white tracking-widest uppercase">Member</span>
+                    </div>
+                </div>
+
+
+                {/* Content Container */}
+                <div className="max-w-xl mx-auto px-5 space-y-8">
+
+                    {/* Stats Row - Clean White Cards with Red Accents */}
+                    <div className="grid grid-cols-3 gap-3">
+                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex flex-col items-center justify-center gap-1 group hover:border-red-200 transition-colors">
+                            <span className="text-2xl font-bold text-neutral-900 tracking-tight group-hover:text-red-600 transition-colors">12</span>
+                            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Trips</span>
+                        </div>
+                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex flex-col items-center justify-center gap-1 group hover:border-red-200 transition-colors">
+                            <span className="text-2xl font-bold text-neutral-900 tracking-tight group-hover:text-red-600 transition-colors">3.5<span className="text-sm font-semibold text-neutral-400 ml-0.5">h</span></span>
+                            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Saved</span>
+                        </div>
+                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex flex-col items-center justify-center gap-1 group hover:border-red-200 transition-colors">
+                            <div className="flex items-center gap-1 text-red-500">
+                                <Flame size={18} fill="currentColor" />
+                                <span className="text-2xl font-bold text-neutral-900 tracking-tight">8</span>
+                            </div>
+                            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Streak</span>
+                        </div>
+                    </div>
+
+
+                    {/* Section: Recent Activity */}
+                    <div>
+                        <div className="flex items-center justify-between px-1 mb-2">
+                            <h3 className="text-[13px] font-bold text-neutral-400 uppercase tracking-widest pl-1">Recent Activity</h3>
+                            <button className="text-red-600 text-[11px] font-bold hover:text-red-700 transition-colors bg-red-50 px-2 py-1 rounded-md">View All</button>
+                        </div>
+
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-200/60 divide-y divide-neutral-100">
+                            {/* List Item 1 */}
+                            <button className="w-full p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors group text-left">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center text-xs font-bold text-neutral-600 group-hover:bg-red-50 group-hover:text-red-600 transition-colors">
+                                        PR
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-neutral-900 text-[15px]">MNL <span className="text-neutral-300 mx-1">→</span> NRT</div>
+                                        <div className="text-xs text-neutral-500 font-medium mt-0.5">Dec 5 • Flight PR123</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <span className="inline-flex items-center px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-bold rounded-md border border-emerald-100">On Time</span>
+                                    <ChevronRight size={16} className="text-neutral-300 group-hover:text-red-400 transition-colors" />
+                                </div>
+                            </button>
+
+                            {/* List Item 2 */}
+                            <button className="w-full p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors group text-left">
+                                <div className="flex items-center gap-4">
+                                    <div className="w-10 h-10 rounded-xl bg-neutral-100 flex items-center justify-center text-xs font-bold text-neutral-600 group-hover:bg-red-50 group-hover:text-red-600 transition-colors">
+                                        CEB
+                                    </div>
+                                    <div>
+                                        <div className="font-bold text-neutral-900 text-[15px]">CEB <span className="text-neutral-300 mx-1">→</span> MNL</div>
+                                        <div className="text-xs text-neutral-500 font-medium mt-0.5">Nov 28 • Flight 5J456</div>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3">
+                                    <ChevronRight size={16} className="text-neutral-300 group-hover:text-red-400 transition-colors" />
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+
+
+                    {/* Section: Settings */}
+                    <div>
+                        <h3 className="text-[13px] font-bold text-neutral-400 uppercase tracking-widest px-1 mb-2">Settings</h3>
+
+                        <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-200/60 divide-y divide-neutral-100">
+                            {/* Push Toggle */}
+                            <div className="p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors">
+                                <div className="flex items-center gap-3.5">
+                                    <div className="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center text-white shadow-sm shadow-red-500/30">
+                                        <Bell size={16} fill="currentColor" />
+                                    </div>
+                                    <span className="font-medium text-neutral-900 text-[15px]">Push Notifications</span>
+                                </div>
+                                <button
+                                    onClick={() => setPushEnabled(!pushEnabled)}
+                                    className={`w-11 h-[22px] rounded-full transition-colors duration-300 focus:outline-none shadow-inner relative ${pushEnabled ? 'bg-red-600' : 'bg-neutral-200'}`}
+                                >
+                                    <div className={`absolute top-[2px] w-[18px] h-[18px] bg-white rounded-full shadow-sm transform transition-transform duration-300 ${pushEnabled ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}></div>
+                                </button>
+                            </div>
+
+                            {/* Suggestions Toggle */}
+                            <div className="p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors">
+                                <div className="flex items-center gap-3.5">
+                                    <div className="w-8 h-8 rounded-lg bg-red-400 flex items-center justify-center text-white shadow-sm shadow-red-400/30">
+                                        <Zap size={16} fill="currentColor" />
+                                    </div>
+                                    <span className="font-medium text-neutral-900 text-[15px]">Proactive Suggestions</span>
+                                </div>
+                                <button
+                                    onClick={() => setSuggestionsEnabled(!suggestionsEnabled)}
+                                    className={`w-11 h-[22px] rounded-full transition-colors duration-300 focus:outline-none shadow-inner relative ${suggestionsEnabled ? 'bg-red-600' : 'bg-neutral-200'}`}
+                                >
+                                    <div className={`absolute top-[2px] w-[18px] h-[18px] bg-white rounded-full shadow-sm transform transition-transform duration-300 ${suggestionsEnabled ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}></div>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    {/* Logout Action - More subtle but accessible */}
+                    <button
+                        onClick={() => setShowLogoutConfirm(true)}
+                        className="w-full bg-white border border-neutral-200 py-3.5 text-red-600 font-semibold text-[15px] hover:bg-red-50 rounded-2xl transition-colors shadow-sm flex items-center justify-center gap-2 mb-8"
+                    >
+                        <LogOut size={18} />
+                        Log Out
+                    </button>
+
+                </div>
             </div>
-         </div>
-      </div>
-   );
+        </div>
+    );
 };
 
 export default ProfileScreen;

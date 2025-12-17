@@ -25,9 +25,9 @@ const GlassCard: React.FC<GlassCardProps> = ({
     const isClickable = !!onClick;
 
     const variants = {
-        // Solid white cards with better contrast - No transparency issues
-        default: 'bg-white border-gray-200 shadow-md hover:shadow-lg',
-        elevated: 'bg-white border-gray-200 shadow-xl shadow-neutral-200/60',
+        // True Glass Effect - Semi-transparent white with blur
+        default: 'bg-white/70 backdrop-blur-xl border-white/50 border shadow-lg shadow-neutral-500/5 hover:bg-white/80',
+        elevated: 'bg-white/80 backdrop-blur-2xl border-white/60 border shadow-xl shadow-neutral-500/10',
 
         // Warm highlight (for current/active states) - Solid with glow
         highlight: 'bg-gradient-to-br from-orange-50 to-yellow-50 border-orange-300 shadow-lg shadow-orange-500/20',

@@ -1,0 +1,53 @@
+/* ================================================ */
+/* JOURNEY SEMANTICS (Added 2025-12-17) */
+/* Implements UX Audit Recommendations */
+/* ================================================ */
+
+/* ARRIVAL - Warm & Welcoming */
+.theme-arrival-bg {
+    background: linear-gradient(135deg, #FFF8E1 0%, #FFF3E0 100%);
+}
+
+.theme-arrival-card {
+    background: linear-gradient(135deg, #FFFDE7 0%, #FFF8E1 100%);
+    border-color: #FFE082;
+}
+
+.theme-arrival-text {
+    color: #F57F17;
+}
+
+.theme-arrival-border {
+    border-color: #FBC02D;
+}
+
+/* DEPARTURE - Professional & Safe (Blue/Slate) */
+.theme-departure-bg {
+    background: linear-gradient(135deg, #F8FAFC 0%, #EFF6FF 100%);
+}
+
+.theme-departure-card {
+    background: linear-gradient(135deg, #F1F5F9 0%, #DBEAFE 100%);
+    border-color: #93C5FD;
+}
+
+.theme-departure-text {
+    color: #2563EB;
+}
+
+.theme-departure-border {
+    border-color: #3B82F6;
+}
+
+/* PRIMARY BRAND CTA (Always Red) */
+.btn-brand-primary {
+    background: linear-gradient(to right, #DC2626, #BE123C);
+    /* red-600 to rose-700 */
+    color: white;
+    font-weight: 700;
+    box-shadow: 0 10px 15px -3px rgba(220, 38, 38, 0.3);
+}
+
+.btn-brand-primary:hover {
+    box-shadow: 0 20px 25px -5px rgba(220, 38, 38, 0.4);
+}

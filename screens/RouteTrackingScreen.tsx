@@ -97,7 +97,7 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
     };
 
     return (
-        <div className="h-full min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-yellow-50/20 overflow-y-auto pb-32 relative">
+        <div className="h-full min-h-screen bg-gradient-to-br from-orange-50/10 via-white to-orange-50/30 overflow-y-auto pb-32 relative">
             {/* Decorative Background Pattern */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-20 right-10 w-64 h-64 bg-yellow-200/10 rounded-full blur-3xl"></div>
@@ -105,7 +105,7 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
             </div>
 
             {/* Header - Warm Yellow/Orange for Arrival */}
-            <div className={`sticky top-0 w-full z-20 bg-gradient-to-br from-yellow-500 to-orange-600 text-white px-6 pt-6 pb-6 shadow-xl transition-all duration-300 ease-out ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
+            <div className={`sticky top-0 w-full z-20 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white px-6 pt-6 pb-6 shadow-xl transition-all duration-300 ease-out ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
                 }`}>
                 <div className="max-w-2xl mx-auto">
                     <button
@@ -151,7 +151,7 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
                     }`}>
                     <GlassCard className="p-6 bg-gradient-to-br from-white to-orange-50/30 border border-orange-100 relative group">
 
-                        {/* 2x Speed Simulation Button - Hidden trigger usually, but visible for demo */}
+                        {/* 2x Speed Simulation Button */}
                         <button
                             onClick={() => {
                                 setCurrentETA(0);
@@ -204,15 +204,13 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
                     </GlassCard>
                 </div>
 
-                {/* Map Placeholder */}
+                {/* Map Visualization */}
                 <div className={`mb-6 transition-all duration-300 ease-out delay-150 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
                     }`}>
                     <div className="relative bg-orange-50/50 rounded-2xl h-64 overflow-hidden border border-orange-200 shadow-lg">
-                        {/* Map Background Pattern (Abstract Roads/Water) */}
+                        {/* Map Background Pattern */}
                         <div className="absolute inset-0 opacity-20">
-                            {/* Water (Mactan Channel) */}
                             <div className="absolute top-0 right-0 w-1/2 h-full bg-blue-200 blur-3xl transform translate-x-10"></div>
-                            {/* Grid/Roads */}
                             <svg className="w-full h-full" width="100%" height="100%">
                                 <pattern id="grid" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
                                     <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#94a3b8" strokeWidth="0.5" />
@@ -245,7 +243,6 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
 
                                 {/* Start Point (Airport) */}
                                 <circle cx="50" cy="200" r="6" fill="#f59e0b" stroke="white" strokeWidth="2" />
-
                                 {/* End Point (Destination) */}
                                 <circle cx="350" cy="50" r="6" fill="#dc2626" stroke="white" strokeWidth="2" />
 
@@ -261,9 +258,8 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
                             <div
                                 className="absolute w-8 h-8 -ml-4 -mt-4 transition-all duration-[3000ms] linear z-10"
                                 style={{
-                                    left: `${50 + (300 * progress / 100)}px`, // Approximate linear movement X
-                                    top: `${200 - (150 * progress / 100)}px`  // Approximate linear movement Y
-                                    // Note: Real path is curved, but linear approx is okay for this abstract view or I'd need complex path logic
+                                    left: `${50 + (300 * progress / 100)}px`,
+                                    top: `${200 - (150 * progress / 100)}px`
                                 }}
                             >
                                 <div className="relative">
@@ -271,7 +267,6 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
                                     <div className="relative bg-white p-1.5 rounded-full shadow-md border-2 border-orange-500">
                                         <Navigation size={14} className="text-orange-600 transform rotate-45" />
                                     </div>
-                                    {/* Tooltip */}
                                     <div className="absolute -top-8 left-1/2 -translate-x-1/2 bg-gray-900 text-white text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap">
                                         {currentETA} min
                                     </div>
@@ -319,55 +314,7 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
                     </GlassCard>
                 </div>
 
-                {/* Route Timeline */}
-                <div className={`mb-6 transition-all duration-300 ease-out delay-250 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
-                    }`}>
-                    <h2 className="text-lg font-bold text-gray-900 mb-3">Route Progress</h2>
-                    <div className="space-y-3">
-                        {routeStops.map((stop, index) => {
-                            const isCurrent = stop.status === 'current';
-                            const isCompleted = stop.status === 'completed';
 
-                            return (
-                                <div key={index} className="relative">
-                                    {/* Connector Line */}
-                                    {index < routeStops.length - 1 && (
-                                        <div className={`absolute left-[23px] top-12 w-0.5 h-12 ${isCompleted ? 'bg-amber-400' : 'bg-gray-300'
-                                            }`}></div>
-                                    )}
-
-                                    <div className={`flex items-start gap-3 ${isCurrent ? 'bg-orange-50 p-3 rounded-xl' : ''}`}>
-                                        <div className={`flex-shrink-0 w-12 h-12 rounded-full flex items-center justify-center border-2 ${isCompleted ? 'bg-amber-500 border-amber-500' :
-                                            isCurrent ? 'bg-white border-orange-500' :
-                                                'bg-white border-gray-300'
-                                            }`}>
-                                            {isCompleted ? (
-                                                <CheckCircle2 size={24} className="text-white" />
-                                            ) : isCurrent ? (
-                                                <Navigation size={24} className="text-orange-600" />
-                                            ) : (
-                                                <MapPin size={24} className="text-gray-400" />
-                                            )}
-                                        </div>
-
-                                        <div className="flex-1">
-                                            <h3 className={`font-bold ${isCurrent ? 'text-orange-700' : 'text-gray-900'}`}>
-                                                {stop.name}
-                                            </h3>
-                                            <p className="text-sm text-gray-600">{stop.time}</p>
-                                            {isCurrent && (
-                                                <p className="text-xs text-orange-600 font-semibold mt-1 flex items-center gap-1">
-                                                    <div className="w-2 h-2 bg-orange-600 rounded-full animate-pulse"></div>
-                                                    Passing through now
-                                                </p>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                </div>
 
                 {/* En-Route Suggestions */}
                 <div className={`mb-6 transition-all duration-300 ease-out delay-300 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
@@ -401,99 +348,106 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
                     </div>
                 </div>
 
-                {/* Safety Banner */}
-                <div className={`transition-all duration-300 ease-out delay-350 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
+
+
+                {/* Safe Ride Guaranteed Banner */}
+                <div className={`mb-6 transition-all duration-300 ease-out delay-350 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
                     }`}>
-                    <div className="bg-green-50 border border-green-200 rounded-xl p-4">
-                        <div className="flex items-start gap-3">
-                            <CheckCircle2 size={20} className="text-green-600 flex-shrink-0 mt-0.5" />
-                            <div>
-                                <h4 className="font-semibold text-green-900 mb-1">Safe Ride Guaranteed</h4>
-                                <p className="text-sm text-green-800">Your journey is tracked and insured. Share your ETA with family via SMS.</p>
-                            </div>
+                    <div className="bg-green-50/50 border border-green-200 rounded-xl p-4 flex items-start gap-3">
+                        <div className="mt-0.5 text-green-600">
+                            <CheckCircle2 size={20} />
+                        </div>
+                        <div>
+                            <h4 className="font-bold text-green-900 text-sm">Safe Ride Guaranteed</h4>
+                            <p className="text-xs text-green-800 leading-relaxed mt-0.5">Your journey is tracked and insured. Share your ETA with family via SMS.</p>
                         </div>
                     </div>
                 </div>
 
-                {/* Emergency Help Section (Static Position) */}
-                <div className={`mt-8 mb-6 transition-all duration-300 ease-out delay-500 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
+                {/* Emergency Assistance Button */}
+                <div className={`transition-all duration-300 ease-out delay-500 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'}`}>
                     <button
                         onClick={() => setShowEmergencyModal(true)}
-                        className="w-full bg-red-50 border border-red-200 hover:bg-red-100 text-red-700 font-bold py-4 rounded-xl flex items-center justify-center gap-3 transition-all"
+                        className="w-full bg-red-50 border border-red-100 hover:bg-red-100 text-red-700 font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition-all"
                     >
-                        <AlertCircle size={24} className="text-red-600" />
+                        <AlertCircle size={20} className="text-red-600" />
                         <span>Emergency Assistance</span>
                     </button>
-                    <p className="text-center text-xs text-red-400 mt-2">Only use in case of emergency. Location will be shared.</p>
+                    <p className="text-center text-[10px] text-red-400 mt-2">Only use in case of emergency. Location will be shared.</p>
                 </div>
             </div>
 
             {/* Arrival Confirmation Modal (when ETA = 0) */}
-            {currentETA === 0 && (
-                <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-6 z-50 animate-fade-in">
-                    <GlassCard className="max-w-md w-full p-8 text-center">
-                        <div className="bg-gradient-to-br from-green-500 to-emerald-600 rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4">
-                            <CheckCircle2 size={48} className="text-white" />
+            {
+                currentETA === 0 && (
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 z-50 animate-fade-in">
+                        <div className="bg-white/95 backdrop-blur-xl rounded-[2rem] p-8 max-w-sm w-full shadow-2xl scale-100 animate-slide-up text-center">
+                            <div className="bg-[#00D66C] rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6 shadow-green-500/20 shadow-xl border-4 border-white">
+                                <CheckCircle2 size={48} className="text-white stroke-[3]" />
+                            </div>
+                            <h2 className="text-3xl font-black text-gray-900 mb-2 tracking-tight">You've Arrived!</h2>
+                            <p className="text-lg text-gray-500 mb-8 font-medium">Welcome to {destination.name}</p>
+
+                            <button
+                                onClick={() => onNavigate('profile')}
+                                className="w-full bg-gradient-to-r from-red-600 to-rose-600 text-white font-bold text-lg py-4 rounded-2xl shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transform hover:scale-[1.02] active:scale-[0.98] transition-all"
+                            >
+                                Complete Journey
+                            </button>
                         </div>
-                        <h2 className="text-2xl font-bold text-gray-900 mb-2">You've Arrived!</h2>
-                        <p className="text-gray-600 mb-6">Welcome to {destination.name}</p>
-                        <button
-                            onClick={() => onNavigate('profile')}
-                            className="w-full bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transition-all border-t border-white/20"
-                        >
-                            Complete Journey
-                        </button>
-                    </GlassCard>
-                </div>
-            )}
+                    </div>
+                )
+            }
 
             {/* Emergency Modal */}
-            {showEmergencyModal && (
-                <div className="fixed inset-0 bg-red-900/80 backdrop-blur-sm flex items-center justify-center p-6 z-50 animate-fade-in">
-                    <GlassCard className="max-w-md w-full p-6 text-center border-red-500/50 relative overflow-hidden">
-                        <div className="absolute inset-0 bg-red-500/10 animate-pulse"></div>
-                        <div className="relative z-10">
-                            <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30">
-                                <AlertCircle size={48} className="text-red-600" />
-                            </div>
-                            <h2 className="text-2xl font-black text-red-700 mb-2 uppercase tracking-wide">Emergency Help</h2>
-                            <p className="text-gray-700 mb-6 font-medium">
-                                Do you need immediate assistance? Your location will be shared with our 24/7 Response Team.
-                            </p>
-
-                            <div className="bg-white/80 rounded-xl p-4 mb-6 border border-red-200">
-                                <div className="flex justify-between items-center mb-2 border-b border-red-100 pb-2">
-                                    <span className="text-sm font-bold text-gray-500">HOTLINE</span>
-                                    <span className="text-lg font-black text-red-600">+63 123 456 7890</span>
+            {
+                showEmergencyModal && (
+                    <div className="fixed inset-0 bg-red-900/80 backdrop-blur-sm flex items-center justify-center p-6 z-50 animate-fade-in">
+                        <GlassCard className="max-w-md w-full p-6 text-center border-red-500/50 relative overflow-hidden">
+                            <div className="absolute inset-0 bg-red-500/10 animate-pulse"></div>
+                            <div className="relative z-10">
+                                <div className="bg-white rounded-full w-20 h-20 flex items-center justify-center mx-auto mb-4 shadow-lg shadow-red-500/30">
+                                    <AlertCircle size={48} className="text-red-600" />
                                 </div>
-                                <div className="flex justify-between items-center">
-                                    <span className="text-sm font-bold text-gray-500">LOCATION</span>
-                                    <span className="text-sm font-bold text-gray-800">{currentLocation}</span>
+                                <h2 className="text-2xl font-black text-red-700 mb-2 uppercase tracking-wide">Emergency Help</h2>
+                                <p className="text-gray-700 mb-6 font-medium">
+                                    Do you need immediate assistance? Your location will be shared with our 24/7 Response Team.
+                                </p>
+
+                                <div className="bg-white/80 rounded-xl p-4 mb-6 border border-red-200">
+                                    <div className="flex justify-between items-center mb-2 border-b border-red-100 pb-2">
+                                        <span className="text-sm font-bold text-gray-500">HOTLINE</span>
+                                        <span className="text-lg font-black text-red-600">+63 123 456 7890</span>
+                                    </div>
+                                    <div className="flex justify-between items-center">
+                                        <span className="text-sm font-bold text-gray-500">LOCATION</span>
+                                        <span className="text-sm font-bold text-gray-800">{currentLocation}</span>
+                                    </div>
+                                </div>
+
+                                <div className="grid grid-cols-1 gap-3">
+                                    <button
+                                        onClick={() => {
+                                            alert("Calling 911..."); // Simulate call
+                                            setShowEmergencyModal(false);
+                                        }}
+                                        className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-500/30 transition-all flex items-center justify-center gap-2"
+                                    >
+                                        <Phone size={20} />
+                                        <span>Call Emergency Services</span>
+                                    </button>
+                                    <button
+                                        onClick={() => setShowEmergencyModal(false)}
+                                        className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-xl transition-colors"
+                                    >
+                                        Cancel
+                                    </button>
                                 </div>
                             </div>
-
-                            <div className="grid grid-cols-1 gap-3">
-                                <button
-                                    onClick={() => {
-                                        alert("Calling 911..."); // Simulate call
-                                        setShowEmergencyModal(false);
-                                    }}
-                                    className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-500/30 transition-all flex items-center justify-center gap-2"
-                                >
-                                    <Phone size={20} />
-                                    <span>Call Emergency Services</span>
-                                </button>
-                                <button
-                                    onClick={() => setShowEmergencyModal(false)}
-                                    className="w-full bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold py-3 rounded-xl transition-colors"
-                                >
-                                    Cancel
-                                </button>
-                            </div>
-                        </div>
-                    </GlassCard>
-                </div>
-            )}
+                        </GlassCard>
+                    </div>
+                )
+            }
 
             {/* CSS Animations */}
             <style>{`
@@ -523,7 +477,7 @@ const RouteTrackingScreen: React.FC<Props> = ({ onNavigate }) => {
           animation: pulse-slow 3s ease-in-out infinite;
         }
       `}</style>
-        </div>
+        </div >
     );
 };
 

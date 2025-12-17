@@ -3,6 +3,7 @@ import { Sparkles, MessageSquare, AlertTriangle, PhoneCall, LogOut, User, Home, 
 import Toast from '../components/Toast';
 import TimelineCard from '../components/TimelineCard';
 import GlassCard from '../components/GlassCard';
+import FlightDetailsModal from '../components/FlightDetailsModal'; // NEW
 import { ScreenId, ScenarioData, TravelerContext } from '../types';
 
 interface Props {
@@ -16,6 +17,7 @@ interface Props {
 const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScenario, onLogout, travelerContext }) => {
   const isStress = scenarioType === 'B';
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' | 'error' } | null>(null);
+  const [showFlightModal, setShowFlightModal] = useState(false); // NEW
 
   const showToast = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'success') => {
     setToast({ message, type });
@@ -285,8 +287,9 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
 
           {/* Smart Boarding Pass / Flight Card */}
           <GlassCard
-            className="rounded-2xl p-0 overflow-hidden mb-6 border-0 shadow-lg relative group"
+            className="rounded-2xl p-0 overflow-hidden mb-6 border-0 shadow-lg relative group cursor-pointer transition-transform hover:scale-[1.01]" // Added cursor-pointer
             variant={isStress ? 'error' : 'success'}
+            onClick={() => setShowFlightModal(true)} // Added onClick
           >
             {/* Top Section: Flight Info */}
             <div className={`p-5 ${isStress ? 'bg-red-50/50' : 'bg-emerald-50/50'}`}>
@@ -378,33 +381,40 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
                   <React.Fragment key={step.id}>
                     {/* Special AI Recommendation Card (Scenario B) */}
                     {isStress && index === 2 && (
-                      <div className="relative pl-0 md:pl-0 mb-6 animate-slide-up">
-                        <div className="bg-gradient-to-br from-orange-50 via-yellow-50/50 to-red-50 backdrop-blur-xl border border-orange-200/60 rounded-2xl p-6 shadow-[0_8px_30px_rgba(234,88,12,0.1)] relative overflow-hidden group">
-                          {/* Glow */}
-                          <div className="absolute inset-0 bg-gradient-to-r from-orange-400/5 via-transparent to-red-400/5 opacity-50"></div>
+                      <div className="relative pl-0 md:pl-0 mb-8 animate-slide-up">
+                        {/* Connector Line through the recommendation */}
+                        <div className="absolute left-[27px] -top-10 -bottom-10 w-[3px] bg-red-200 -z-10"></div>
 
-                          <div className="relative z-10">
-                            <div className="flex items-center gap-3 mb-4">
-                              <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center border border-orange-200">
-                                <Sparkles size={20} className="text-orange-600" />
+                        <div className="bg-[#FFF8F0] border border-orange-200 rounded-2xl p-6 shadow-sm relative overflow-hidden group">
+                          {/* Left Accent Bar */}
+                          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-orange-500"></div>
+
+                          <div className="relative z-10 pl-2">
+                            <div className="flex items-center gap-3 mb-3">
+                              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                                <Sparkles size={16} className="text-orange-600" />
                               </div>
                               <h3 className="text-orange-900 font-bold text-lg">AURA Recommendation</h3>
                             </div>
 
-                            <div className="space-y-3 pl-13">
-                              <p className="text-stone-800 font-medium">High congestion detected at Terminal 1 Drop-off.</p>
-                              <div className="bg-white/60 p-3 rounded-lg border border-orange-100/50">
-                                <p className="font-bold text-stone-900 text-sm mb-1">Alternate Route Available:</p>
-                                <p className="text-sm text-stone-600">→ Reroute to Terminal 2 Entrance (connected via walkway)</p>
+                            <div className="space-y-3">
+                              <p className="text-stone-800 font-medium text-sm">High congestion detected at Terminal 1 Drop-off.</p>
+
+                              <div className="bg-white p-3 rounded-lg border border-orange-100 shadow-sm">
+                                <p className="font-bold text-stone-900 text-xs uppercase tracking-wide mb-1 text-opacity-60">Alternate Route Available</p>
+                                <p className="text-sm text-stone-700 font-semibold">→ Reroute to Terminal 2 Entrance <span className="text-stone-400 font-normal">(connected via walkway)</span></p>
                               </div>
-                              <p className="text-emerald-700 font-bold flex items-center gap-2 text-sm bg-emerald-50 w-fit px-3 py-1 rounded-full border border-emerald-100">
-                                <span>⏱️</span> Time Saved: 15 minutes
-                              </p>
+
+                              <div className="flex items-center gap-2">
+                                <span className="bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md border border-emerald-200 flex items-center gap-1">
+                                  <span className="animate-pulse">⏱️</span> Time Saved: 15 minutes
+                                </span>
+                              </div>
                             </div>
 
                             <button
                               onClick={() => onNavigate('scenario-c')}
-                              className="mt-5 w-full bg-gradient-to-r from-orange-500 to-red-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 active:scale-95 transition-all hover:shadow-orange-500/30"
+                              className="mt-4 w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 hover:shadow-orange-500/30 transition-all active:scale-[0.98]"
                             >
                               View Alternate Entrance Map 🗺️
                             </button>
@@ -420,13 +430,15 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
                     >
                       {/* Connector Line */}
                       {index < data.steps.length - 1 && (
-                        <div className={`absolute left-[27px] top-16 bottom-[-16px] w-[3px] rounded-full z-0 ${isCompleted ? 'bg-emerald-500/50' : 'bg-neutral-100'
+                        <div className={`absolute left-[27px] top-16 bottom-[-16px] w-[3px] rounded-full z-0 ${isCompleted ? 'bg-emerald-500' :
+                          isCritical ? 'bg-red-200' : 'bg-neutral-100'
                           } transition-colors duration-500`}></div>
                       )}
 
-                      <GlassCard className={`p-5 transition-all duration-300 ${isCurrent ? 'ring-2 ring-red-500 ring-offset-2 shadow-lg scale-[1.01]' : 'hover:shadow-md'
-                        } ${isCritical ? 'border-red-200 bg-red-50/30' : ''}`}>
-                        <div className="flex items-start gap-5">
+                      <GlassCard className={`p-0 overflow-hidden transition-all duration-300 ${isCurrent ? 'ring-2 ring-red-500 ring-offset-2 shadow-lg scale-[1.01]' : 'hover:shadow-md'
+                        } ${isCritical ? 'border-red-500 bg-red-50' : 'border-neutral-200'}`}>
+
+                        <div className={`p-5 flex items-start gap-5 ${isCritical ? 'bg-red-50' : ''}`}>
                           {/* Icon Circle */}
                           <div className={`flex-shrink-0 w-14 h-14 rounded-full border-[3px] flex items-center justify-center z-10 relative bg-white transition-all duration-300 ${getStatusColor()}`}>
                             {isCompleted ? (
@@ -440,26 +452,27 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
                           <div className="flex-1 min-w-0 pt-1">
                             <div className="flex items-start justify-between gap-4 mb-2">
                               <div>
-                                <h3 className={`font-bold text-lg leading-tight ${isCurrent || isCritical ? 'text-red-900' : 'text-neutral-900'}`}>
+                                <h3 className={`font-bold text-lg leading-tight ${isCritical ? 'text-red-700' : isCurrent ? 'text-neutral-900' : 'text-neutral-900'}`}>
                                   {step.title}
                                 </h3>
                                 {step.description && (
-                                  <p className="text-sm text-neutral-500 mt-1 font-medium">{step.description}</p>
+                                  <p className={`text-sm mt-1 font-medium ${isCritical ? 'text-red-600/80' : 'text-neutral-500'}`}>{step.description}</p>
                                 )}
                               </div>
                               {step.time && (
                                 <div className="text-right shrink-0">
-                                  <span className={`block font-bold text-lg ${isCritical ? 'text-red-600' :
+                                  <span className={`block font-bold text-lg ${isCritical ? 'text-red-700' :
                                     isCompleted ? 'text-emerald-600' :
                                       'text-neutral-900'
                                     }`}>
                                     {step.time}
                                   </span>
                                   {step.badge && (
-                                    <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 ${step.badgeColor === 'red' ? 'bg-red-100 text-red-700' :
-                                      'bg-neutral-100 text-neutral-600'
+                                    <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 ${step.badge === '🔴 Accident' ? 'bg-red-200 text-red-800' :
+                                        step.badgeColor === 'red' ? 'bg-red-100 text-red-700' :
+                                          'bg-neutral-100 text-neutral-600'
                                       }`}>
-                                      {step.badge}
+                                      {step.badge.replace('🔴 ', '')}
                                     </span>
                                   )}
                                 </div>
@@ -468,9 +481,9 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
 
                             {/* "YOU ARE HERE" Indicator */}
                             {isCurrent && (
-                              <div className="mt-3 flex items-center gap-2 text-sm font-bold text-red-700 animate-pulse">
-                                <MapPin size={16} className="fill-red-600" />
-                                <span>YOU ARE HERE</span>
+                              <div className="mt-3 flex items-center gap-2 text-xs font-bold text-red-600 animate-pulse uppercase tracking-wider">
+                                <MapPin size={14} className="fill-red-600" />
+                                <span>You are here</span>
                               </div>
                             )}
                           </div>
@@ -507,6 +520,15 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
           />
         )
       }
+
+      {/* Flight Details Modal - NEW */}
+      <FlightDetailsModal
+        isOpen={showFlightModal}
+        onClose={() => setShowFlightModal(false)}
+        flightNumber={flightNumber}
+        isDelayed={isStress}
+        travelerContext={travelerContext}
+      />
     </div >
   );
 };

@@ -59,59 +59,75 @@ const ChatScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
     <div className="flex flex-col h-full relative">
 
       {/* Sticky Header - Stays at top of flex container */}
-      <div className="sticky top-0 z-30 p-4 pt-safe border-b border-red-100 bg-white/95 backdrop-blur shrink-0">
-        <div className="flex items-center gap-3">
-          <button onClick={() => onNavigate('scenario-b')} className="text-stone-500 text-2xl hover:text-red-600 transition-colors p-2 -ml-2 rounded-full hover:bg-red-50" aria-label="Go Back">
-            <ArrowLeft size={24} aria-hidden="true" />
-          </button>
-          <div>
-            <h2 className="font-bold bg-clip-text text-transparent bg-gradient-to-r from-red-600 to-red-800">AURA Assistant</h2>
-            <div className="flex items-center gap-1.5">
-              <span className="w-2 h-2 bg-emerald-500 rounded-full animate-pulse"></span>
-              <span className="text-xs text-stone-500">Online</span>
+      <div className="sticky top-0 z-30 px-6 py-4 pt-safe border-b border-stone-100 bg-white/95 backdrop-blur shrink-0">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <button onClick={() => onNavigate('scenario-b')} className="text-stone-500 hover:text-stone-900 transition-colors" aria-label="Go Back">
+              <ArrowLeft size={20} />
+            </button>
+            <div>
+              <h2 className="font-bold text-red-700 text-base leading-tight">AURA Assistant</h2>
+              <div className="flex items-center gap-1.5 mt-0.5">
+                <span className="w-1.5 h-1.5 bg-emerald-400 rounded-full"></span>
+                <span className="text-[11px] font-medium text-stone-400">Online</span>
+              </div>
             </div>
           </div>
-          <div className="flex-1"></div>
 
-          {/* Emergency / Support Call */}
+          {/* Support Call */}
           <button
             onClick={() => setIsCalling(true)}
-            className="p-2 text-stone-400 hover:text-red-500 hover:bg-red-50 rounded-full transition-colors"
-            title="Emergency Help"
-            aria-label="Call Support"
+            className="text-stone-400 hover:text-stone-600 transition-colors"
+            title="Call Support"
           >
-            <PhoneCall size={20} aria-hidden="true" />
+            <PhoneCall size={20} />
           </button>
         </div>
       </div>
 
       {/* Messages - Grows to fill available space */}
-      <div className="flex-1 overflow-y-auto p-4 pb-6 space-y-4">
+      <div className="flex-1 overflow-y-auto px-6 py-6 space-y-6">
         {messages.map((msg, index) => {
           if (msg.type === 'context') {
             return (
-              <GlassCard key={msg.id} className="rounded-lg p-3 mb-4 text-xs flex justify-between items-center border border-red-200 bg-red-50/50">
-                <span className="text-stone-600">{msg.text}</span>
-                <span className="text-red-600 font-bold flex items-center gap-1">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></span>
-                  {msg.priority}
+              <div key={msg.id} className="w-full bg-white border border-stone-100 rounded-lg p-3 flex justify-between items-center shadow-sm mb-6">
+                <span className="text-stone-400 text-xs font-medium">{msg.text}</span>
+                <span className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                  <span className="text-red-500 text-[10px] font-bold uppercase tracking-wider">{msg.priority}</span>
                 </span>
-              </GlassCard>
+              </div>
             );
           }
           if (msg.type === 'ai') {
             return (
-              <div key={msg.id} className="max-w-[85%] mr-auto flex items-start gap-2 animate-slide-up" style={{ animationDelay: `${index * 0.05}s` }}>
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center text-white font-bold text-sm shrink-0">
+              <div key={msg.id} className="max-w-[90%] mr-auto flex items-start gap-3 animate-slide-up" style={{ animationDelay: `${index * 0.05}s` }}>
+                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center text-white font-bold text-[10px] shrink-0 shadow-lg shadow-red-500/20">
                   AI
                 </div>
                 <div>
-                  <div className="bg-white border border-stone-100 border-l-4 border-l-red-500 text-neutral-800 px-4 py-3 rounded-2xl rounded-tl-none shadow-sm whitespace-pre-wrap">
-                    <p className="text-stone-800 text-sm leading-relaxed whitespace-pre-line">{msg.text}</p>
+                  <div className="bg-white border border-stone-100 text-stone-600 px-5 py-3.5 rounded-2xl rounded-tl-none shadow-sm relative overflow-hidden">
+                    {/* Left Accent Line - Refined */}
+                    <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#d32f2f]"></div>
+
+                    {/* Formatted Text Content */}
+                    <div className="text-sm leading-relaxed pl-2">
+                      {msg.text.split('\n').map((line, i) => (
+                        <div key={i} className={`${line.trim().startsWith('•') ? 'pl-3 my-0.5' : 'my-0.5'} min-h-[1.25em]`}>
+                          {line.split(/(\*\*.*?\*\*)/g).map((part, j) => {
+                            if (part.startsWith('**') && part.endsWith('**')) {
+                              return <strong key={j} className="font-bold text-stone-800">{part.slice(2, -2)}</strong>;
+                            }
+                            return <span key={j}>{part}</span>;
+                          })}
+                        </div>
+                      ))}
+                    </div>
+
                     {msg.quickActions && (
-                      <div className="mt-3 flex flex-wrap gap-2">
+                      <div className="mt-3 flex flex-wrap gap-2 pl-2">
                         {msg.quickActions.map((action, i) => (
-                          <button key={i} onClick={() => handleChipClick(action)} className="bg-white border-2 border-red-100 text-red-600 text-sm px-4 py-2 rounded-lg hover:bg-red-50 transition-colors font-medium">
+                          <button key={i} onClick={() => handleChipClick(action)} className="bg-white border border-red-100 text-red-600 text-xs font-semibold px-3 py-1.5 rounded-lg hover:bg-red-50 transition-colors">
                             {action}
                           </button>
                         ))}
@@ -125,8 +141,8 @@ const ChatScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
           if (msg.type === 'user') {
             return (
               <div key={msg.id} className="flex justify-end animate-slide-up" style={{ animationDelay: `${index * 0.05}s` }}>
-                <div className="max-w-[85%] bg-gradient-to-br from-red-600 to-red-700 text-white px-4 py-3 rounded-2xl rounded-tr-none shadow-sm">
-                  <p className="text-white text-sm leading-relaxed">{msg.text}</p>
+                <div className="max-w-[85%] bg-gradient-to-br from-red-600 to-red-700 text-white px-5 py-3 rounded-2xl rounded-tr-none shadow-md shadow-red-500/10">
+                  <p className="text-sm leading-relaxed font-medium whitespace-pre-wrap">{msg.text}</p>
                 </div>
               </div>
             );
@@ -136,23 +152,26 @@ const ChatScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
 
         {/* Typing Indicator */}
         {isTyping && (
-          <div className="flex gap-2 max-w-[85%] animate-slide-up">
-            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-600 to-red-800 flex items-center justify-center text-white font-bold text-sm shrink-0">
+          <div className="flex gap-3 max-w-[90%] animate-slide-up">
+            <div className="w-8 h-8 rounded-full bg-gradient-to-br from-red-600 to-red-700 flex items-center justify-center text-white font-bold text-[10px] shrink-0 shadow-lg shadow-red-500/20">
               AI
             </div>
-            <div className="bg-white border border-l-4 border-l-red-500 rounded-2xl rounded-tl-none p-4 flex items-center gap-1.5 h-[54px] w-16 justify-center shadow-sm">
-              <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
-              <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
-              <span className="w-1.5 h-1.5 bg-red-500 rounded-full animate-bounce"></span>
+            <div className="bg-white border border-stone-100 rounded-2xl rounded-tl-none px-4 py-3 flex items-center gap-1 shadow-sm relative h-12 overflow-hidden">
+              <div className="absolute left-0 top-0 bottom-0 w-[4px] bg-[#d32f2f]"></div>
+              <div className="flex gap-1 pl-2">
+                <span className="w-1.5 h-1.5 bg-stone-300 rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+                <span className="w-1.5 h-1.5 bg-stone-300 rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+                <span className="w-1.5 h-1.5 bg-stone-300 rounded-full animate-bounce"></span>
+              </div>
             </div>
           </div>
         )}
       </div>
 
       {/* Input Area - Sticky at bottom of flex container */}
-      <div className="sticky bottom-0 z-40 p-4 pb-safe bg-white/95 backdrop-blur border-t border-neutral-200 mt-auto mb-20 md:mb-0">
-        {/* Chips - Placed here or above input? Above input looks better in flow, but sticking them here ensures visibility */}
-        <div className="flex gap-3 mb-4 overflow-x-auto pb-2 scrollbar-hide px-1">
+      <div className="sticky bottom-0 z-40 p-6 pt-2 pb-8 bg-white border-t border-stone-50 mt-auto">
+        {/* Chips */}
+        <div className="flex gap-3 mb-5 overflow-x-auto pb-1 scrollbar-hide">
           {[
             { label: 'Translate instructions', icon: Languages, action: 'Translate instructions' },
             { label: 'Prohibited Items?', icon: Ban, action: 'Prohibited Items?' },
@@ -161,26 +180,31 @@ const ChatScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
             <button
               key={idx}
               onClick={() => handleChipClick(chip.action)}
-              className="flex items-center gap-2 whitespace-nowrap bg-gradient-to-br from-white to-red-50/50 border border-red-100 text-red-900 text-xs font-semibold px-4 py-2.5 rounded-xl hover:bg-white hover:border-red-200 hover:shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all duration-200 shadow-sm group"
+              className="flex items-center gap-2 whitespace-nowrap bg-red-50 border border-red-100 text-[#881337] text-[11px] font-bold px-4 py-2.5 rounded-xl hover:bg-red-100 transition-all duration-200 active:scale-95"
             >
-              <span className="w-6 h-6 rounded-full bg-red-100 flex items-center justify-center group-hover:bg-red-200 transition-colors">
-                <chip.icon size={14} className="text-red-600" />
-              </span>
+              <div className="w-5 h-5 rounded-full bg-red-100 flex items-center justify-center">
+                <chip.icon size={10} className="text-red-600" />
+              </div>
               {chip.label}
             </button>
           ))}
         </div>
 
-        <div className="relative">
+        <div className="relative group">
           <input
             type="text"
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             placeholder="Type a message..."
-            className="w-full bg-white border border-stone-200 rounded-full pl-4 pr-12 py-3 text-sm text-stone-900 focus:border-red-500 focus:outline-none placeholder:text-stone-400 shadow-sm"
+            className="w-full bg-white border-2 border-red-50 rounded-full pl-6 pr-14 py-3.5 text-sm text-stone-700 placeholder:text-stone-300 focus:border-red-200 focus:outline-none focus:ring-4 focus:ring-red-50/50 transition-all font-medium shadow-sm"
             aria-label="Message Input"
           />
-          <button className="absolute right-1 top-1 w-10 h-10 bg-gradient-to-r from-red-600 to-red-700 rounded-full flex items-center justify-center shadow-lg text-sm text-white hover:scale-105 transition-transform" aria-label="Send Message">➤</button>
+          <button className="absolute right-2 top-2 w-10 h-10 bg-[#d32f2f] rounded-full flex items-center justify-center shadow-md shadow-red-500/20 text-white hover:bg-red-700 hover:scale-105 active:scale-95 transition-all" aria-label="Send Message">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className="-ml-0.5">
+              <path d="m22 2-7 20-4-9-9-4Z" />
+              <path d="M22 2 11 13" />
+            </svg>
+          </button>
         </div>
       </div>
 

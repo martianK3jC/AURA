@@ -133,7 +133,7 @@ const TransportationOptionsScreen: React.FC<Props> = ({ onNavigate }) => {
     };
 
     return (
-        <div className="h-full min-h-screen bg-gradient-to-br from-orange-50/30 via-white to-yellow-50/20 overflow-y-auto pb-32 relative">
+        <div className="h-full min-h-screen bg-gradient-to-br from-orange-50/10 via-white to-orange-50/30 overflow-y-auto pb-32 relative">
             {/* Decorative Background Pattern */}
             <div className="fixed inset-0 pointer-events-none z-0 overflow-hidden">
                 <div className="absolute top-20 right-10 w-64 h-64 bg-yellow-200/10 rounded-full blur-3xl"></div>
@@ -141,7 +141,7 @@ const TransportationOptionsScreen: React.FC<Props> = ({ onNavigate }) => {
             </div>
 
             {/* Header - Warm Yellow/Orange for Arrival */}
-            <div className={`fixed top-0 w-full z-20 bg-gradient-to-br from-yellow-500 to-orange-600 text-white px-6 pt-6 pb-8 shadow-xl transition-all duration-300 ease-out ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
+            <div className={`fixed top-0 w-full z-20 bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-500 text-white px-6 pt-6 pb-8 shadow-xl transition-all duration-300 ease-out ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-5'
                 }`}>
                 <div className="max-w-2xl mx-auto">
                     <button
@@ -169,7 +169,7 @@ const TransportationOptionsScreen: React.FC<Props> = ({ onNavigate }) => {
                 {/* Destination Info Banner */}
                 <div className={`mb-6 transition-all duration-300 ease-out delay-100 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'
                     }`}>
-                    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-200">
+                    <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100">
                         <div className="flex items-center gap-2 mb-1">
                             <MapPin size={16} className="text-teal-600" />
                             <span className="text-sm text-gray-600">Going to</span>
@@ -208,7 +208,7 @@ const TransportationOptionsScreen: React.FC<Props> = ({ onNavigate }) => {
 
                                 <div className="flex items-start gap-4">
                                     {/* Icon */}
-                                    <div className={`flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl ${isSelected ? 'bg-gradient-to-br from-red-500 to-rose-600 text-white shadow-lg' : 'bg-gray-100'
+                                    <div className={`flex-shrink-0 w-16 h-16 rounded-2xl flex items-center justify-center text-3xl ${isSelected ? 'bg-gradient-to-br from-red-500 to-rose-600 text-white shadow-lg' : 'bg-slate-100 text-slate-500'
                                         }`}>
                                         {option.icon}
                                     </div>
@@ -251,7 +251,7 @@ const TransportationOptionsScreen: React.FC<Props> = ({ onNavigate }) => {
                                             {option.features.map((feature, idx) => (
                                                 <span
                                                     key={idx}
-                                                    className="text-xs bg-white border border-gray-200 text-gray-700 px-2 py-1 rounded-md"
+                                                    className="text-xs bg-white border border-gray-200 text-gray-600 px-2.5 py-1 rounded-lg"
                                                 >
                                                     {feature}
                                                 </span>
@@ -318,14 +318,14 @@ const TransportationOptionsScreen: React.FC<Props> = ({ onNavigate }) => {
 
                         <button
                             onClick={handleBook}
-                            className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 active:scale-[0.98] transition-all flex items-center justify-center gap-3 group"
+                            className="w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-4 rounded-xl shadow-lg shadow-orange-500/30 hover:shadow-xl hover:shadow-orange-500/40 transition-shadow flex items-center justify-center gap-3"
                         >
                             <span className="text-lg">
                                 {selectedOption.bookingMethod === 'app' ? 'Open Grab App' :
                                     selectedOption.bookingMethod === 'call' ? 'Call to Book' :
                                         'Go to Counter'}
                             </span>
-                            <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
+                            <ArrowRight size={20} />
                         </button>
 
                         <p className="text-center text-xs text-gray-500 mt-2">
@@ -337,57 +337,57 @@ const TransportationOptionsScreen: React.FC<Props> = ({ onNavigate }) => {
 
             {/* Confirmation Modal */}
             {showConfirmModal && selectedOption && (
-                <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-6 z-50 animate-fade-in">
-                    <GlassCard className="max-w-md w-full p-6">
-                        <h2 className="text-2xl font-bold text-gray-900 mb-4">Confirm Your Booking</h2>
+                <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-6 z-50">
+                    <div className="bg-white/90 backdrop-blur-xl rounded-3xl p-8 max-w-sm w-full shadow-2xl border border-white/20">
+                        <h2 className="text-2xl font-black text-gray-900 mb-6 text-center tracking-tight">Confirm Your Booking</h2>
 
-                        <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 mb-4">
-                            <div className="flex items-center gap-3 mb-3">
-                                <div className="text-3xl">{selectedOption.icon}</div>
+                        <div className="bg-[#FFF9F0] border border-orange-100 rounded-2xl p-5 mb-6 shadow-inner">
+                            <div className="flex items-center gap-4 mb-5">
+                                <div className="text-4xl bg-white p-2 rounded-xl shadow-sm border border-orange-100">{selectedOption.icon}</div>
                                 <div>
-                                    <h3 className="font-bold text-gray-900">{selectedOption.name}</h3>
-                                    <p className="text-sm text-gray-600">{selectedOption.description}</p>
+                                    <h3 className="font-bold text-gray-900 text-lg">{selectedOption.name}</h3>
+                                    <p className="text-sm text-gray-500">{selectedOption.description}</p>
                                 </div>
                             </div>
 
-                            <div className="border-t border-orange-200 pt-3 space-y-2">
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-gray-600">Estimated Cost:</span>
-                                    <span className="font-bold text-orange-700">
+                            <div className="space-y-3">
+                                <div className="flex justify-between text-sm items-center">
+                                    <span className="text-gray-500 font-medium">Estimated Cost:</span>
+                                    <span className="font-bold text-red-600 text-lg">
                                         {selectedOption.priceRange.currency}{selectedOption.priceRange.min}
                                         {selectedOption.priceRange.min !== selectedOption.priceRange.max && `-${selectedOption.priceRange.max}`}
                                     </span>
                                 </div>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-gray-600">Pickup Location:</span>
-                                    <span className="font-semibold text-gray-900">{selectedOption.pickupLocation}</span>
+                                <div className="flex justify-between text-sm items-center">
+                                    <span className="text-gray-500 font-medium">Pickup Location:</span>
+                                    <span className="font-bold text-gray-900">{selectedOption.pickupLocation}</span>
                                 </div>
-                                <div className="flex justify-between text-sm">
-                                    <span className="text-gray-600">Estimated Time:</span>
-                                    <span className="font-semibold text-gray-900">{selectedOption.estimatedDuration} min</span>
+                                <div className="flex justify-between text-sm items-center">
+                                    <span className="text-gray-500 font-medium">Estimated Time:</span>
+                                    <span className="font-bold text-gray-900">{selectedOption.estimatedDuration} min</span>
                                 </div>
                             </div>
                         </div>
 
-                        <p className="text-sm text-gray-600 mb-6">
+                        <p className="text-sm text-gray-500 mb-8 text-center font-medium">
                             Are you sure you want to proceed with this booking?
                         </p>
 
-                        <div className="flex gap-3">
+                        <div className="flex gap-4">
                             <button
                                 onClick={() => setShowConfirmModal(false)}
-                                className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-bold py-3 rounded-xl transition-colors"
+                                className="flex-1 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 font-bold py-3.5 rounded-xl transition-colors shadow-sm"
                             >
                                 Cancel
                             </button>
                             <button
                                 onClick={confirmBooking}
-                                className="flex-1 bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold py-4 px-6 tracking-wide rounded-xl shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 active:scale-[0.98] transition-all"
+                                className="flex-1 bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 active:scale-[0.98] transition-all"
                             >
                                 Confirm Booking
                             </button>
                         </div>
-                    </GlassCard>
+                    </div>
                 </div>
             )}
 

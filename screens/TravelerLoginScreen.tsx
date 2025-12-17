@@ -59,24 +59,17 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
 
     const handleContinue = () => {
         if (!travelDirection) {
-            setError('Please select your travel direction');
+            setError('Please select your journey type');
             return;
         }
 
-        const isNameEmpty = !userName.trim();
+        // Name is now OPTIONAL (UX Fix)
         const isFlightEmpty = !flightNumber.trim();
 
-        // Case 1: Both fields are empty
-        if (isNameEmpty && isFlightEmpty) {
-            setError('Please complete all required fields to continue');
-            setErrorField('both');
-            return;
-        }
-
-        // Case 2: Only Name is empty
-        if (isNameEmpty) {
-            setError('Please fill out name');
-            setErrorField('name');
+        // Case 1: Only Flight is empty (Name is optional)
+        if (isFlightEmpty) {
+            setError('Please fill out the flight number');
+            setErrorField('flight');
             return;
         }
 
@@ -100,7 +93,7 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
 
         const context: TravelerContext = {
             travelDirection,
-            userName: userName.trim(),
+            userName: userName.trim() || 'Traveler', // Default if empty
             flightNumber: flightNumber || undefined,
             isGuest: false, // Guest mode removed, always personalized
         };
@@ -121,7 +114,7 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
     };
 
     return (
-        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-y-auto font-sans bg-gradient-to-br from-red-50 via-white to-rose-50 py-10 px-4 pb-safe scrollbar-hide">
+        <div className="h-[100dvh] w-full flex flex-col items-center relative overflow-y-auto font-sans bg-[#FFF5F5] py-10 px-4 pb-safe scrollbar-hide">
 
             {/* Background Elements */}
             <div className="fixed inset-0 pointer-events-none z-0">
@@ -137,24 +130,26 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
                     <div className="flex justify-center mb-4">
                         <img src={auraLogo} alt="AURA Logo" className="w-20 h-20 rounded-3xl object-contain drop-shadow-2xl animate-float-slow" />
                     </div>
-                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Welcome to AURA</h1>
-                    <p className="text-gray-600 text-sm">Your AI Travel Companion</p>
+                    <h1 className="text-4xl font-black text-gray-900 mb-2 tracking-tight">Let's get you there.</h1>
+                    <p className="text-gray-500 font-medium">Start your AURA journey</p>
                 </div>
 
                 {/* Card Container */}
                 <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 p-8 space-y-6">
 
-                    {/* Step Indicator */}
+
+
+                    {/* Step Indicator - Fixed Colors (Brand Red) */}
                     <div className="flex items-center justify-center gap-2 mb-4">
-                        <div className={`h-2 w-2 rounded-full transition-all ${step === 'direction' ? 'bg-red-600 w-8' : 'bg-gray-300'}`}></div>
-                        <div className={`h-2 w-2 rounded-full transition-all ${step === 'details' ? 'bg-red-600 w-8' : 'bg-gray-300'}`}></div>
+                        <div className={`h-2 rounded-full transition-all ${step === 'direction' ? 'bg-red-600 w-8' : 'w-2 bg-gray-200'}`}></div>
+                        <div className={`h-2 rounded-full transition-all ${step === 'details' ? 'bg-red-600 w-8' : 'w-2 bg-gray-200'}`}></div>
                     </div>
 
                     {/* Step 1: Travel Direction Selection */}
                     {step === 'direction' && (
                         <div className="space-y-4 animate-fade-in">
                             <h2 className="text-xl font-bold text-gray-900 text-center mb-6">
-                                How are you traveling today?
+                                Select your Journey
                             </h2>
 
                             {/* Arrival Option */}
@@ -174,20 +169,20 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
                                 </div>
                             </button>
 
-                            {/* Departure Option */}
+                            {/* Departure Option - BLUE/SLATE (UX Fix: Safe/Professional vs Red/Danger) */}
                             <button
                                 onClick={() => handleDirectionSelect('departure')}
-                                className="w-full bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 hover:border-red-400 rounded-2xl p-6 transition-all hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] group text-left"
+                                className="w-full bg-gradient-to-r from-slate-50 to-blue-50 border-2 border-slate-200 hover:border-blue-400 rounded-2xl p-6 transition-all hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] group text-left"
                             >
                                 <div className="flex items-center gap-4">
-                                    <div className="bg-red-600 rounded-full p-3 group-hover:scale-110 transition-transform">
+                                    <div className="bg-slate-700 rounded-full p-3 group-hover:scale-110 transition-transform">
                                         <Plane className="text-white transform rotate-45" size={24} />
                                     </div>
                                     <div className="flex-1">
                                         <h3 className="font-bold text-gray-900 text-lg">Going to the Airport</h3>
                                         <p className="text-gray-600 text-sm">Navigate to MCIA for your departing flight</p>
                                     </div>
-                                    <ChevronRight className="text-red-500 group-hover:translate-x-1 transition-transform" size={24} />
+                                    <ChevronRight className="text-slate-500 group-hover:translate-x-1 transition-transform" size={24} />
                                 </div>
                             </button>
 
@@ -214,7 +209,7 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
                                 </button>
                                 <div className={`px-3 py-1 rounded-full text-xs font-bold ${travelDirection === 'arrival'
                                     ? 'bg-yellow-100 text-yellow-700'
-                                    : 'bg-purple-100 text-purple-700'
+                                    : 'bg-slate-100 text-slate-700'
                                     }`}>
                                     {travelDirection === 'arrival' ? '✈️ Arrival' : '🛫 Departure'}
                                 </div>
@@ -225,7 +220,7 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
                             </h2>
 
                             <div className="space-y-2">
-                                <label className="text-sm font-semibold text-gray-700">Your Name</label>
+                                <label className="text-sm font-semibold text-gray-700">Name (Optional)</label>
                                 <div className="relative group">
                                     <div className="absolute inset-0 bg-red-500/10 rounded-xl blur opacity-0 group-hover:opacity-100 transition-opacity"></div>
                                     <div className={`relative bg-white border-2 ${(errorField === 'name' || errorField === 'both') ? 'border-red-500 animate-shake' : 'border-gray-200'} focus-within:border-red-500 rounded-xl px-4 py-3 flex items-center gap-3 transition-all`}>
@@ -241,7 +236,7 @@ const TravelerLoginScreen: React.FC<Props> = ({ onNavigate }) => {
                                                     setErrorField(null);
                                                 }
                                             }}
-                                            placeholder="e.g., Anna"
+                                            placeholder="What should we call you?"
                                             className="w-full bg-transparent text-gray-900 placeholder:text-gray-400 focus:outline-none"
                                         />
                                     </div>

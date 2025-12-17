@@ -70,6 +70,16 @@ const App: React.FC = () => {
         return <TransportationOptionsScreen onNavigate={handleNavigate} />;
       case 'route-tracking':
         return <RouteTrackingScreen onNavigate={handleNavigate} />;
+      case 'operator-dashboard':
+        return (
+          <div className="flex items-center justify-center h-full bg-slate-50">
+            <div className="text-center p-8">
+              <h1 className="text-2xl font-bold text-slate-800 mb-2">Operator Dashboard</h1>
+              <p className="text-slate-600">This dashboard is hosted on a separate secure portal.</p>
+            </div>
+          </div>
+        );
+
       default:
         return <LandingScreen onNavigate={handleNavigate} />;
     }
