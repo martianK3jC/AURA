@@ -202,7 +202,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
       <div className={`flex-1 relative flex flex-col h-[100dvh] overflow-hidden transition-all duration-300 ${!isOnboardingFlow ? (isCollapsed ? 'md:ml-20' : 'md:ml-64') : ''}`}>
 
         {/* Scrollable Content Wrapper */}
-        <main className={`flex-1 w-full relative flex flex-col overflow-hidden ${currentScreen === 'landing' ? 'h-full' : ''}`}>
+        <main className={`flex-1 w-full relative flex flex-col overflow-hidden ${currentScreen === 'landing' ? 'h-full' : ''} ${!isOnboardingFlow ? 'pb-20 md:pb-0' : ''}`}>
           {children}
         </main>
 
