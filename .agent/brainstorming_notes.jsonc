@@ -1,0 +1,353 @@
+{
+    // AURA App Brainstorming & Design Changes
+    // Created: 2026-01-22
+    "designChanges": {
+        "landingPage": {
+            "issue": "Flight status, Live Route, Boarding in 25 min design may be redundant",
+            "proposedChange": "Replace with login/sign up section (flight number input)",
+            "openQuestion": "Should we keep the name field as well? (Currently in 'Select Your Journey' card -> 'Enter Your Details')",
+            "status": "pending_decision"
+        },
+        "auraConcierge": {
+            "chatIcon": {
+                "issue": "Floating/pulse animation on chat icon in each screen",
+                "proposedChange": "Remove animation",
+                "status": "to_implement"
+            },
+            "textFormatting": {
+                "issue": "Chat bot responses use asterisk explicitly (**style**) instead of rendering bold",
+                "proposedChange": "Parse markdown/asterisks and display as actual bold fonts",
+                "status": "to_implement"
+            },
+            "dynamicData": {
+                "issue": "Chat responses about user's current situation need to use actual user data",
+                "requirements": [
+                    "Use flight number from user input",
+                    "If no departure time indicated, generate random time but use consistently throughout user journey",
+                    "Maintain data consistency across entire user session"
+                ],
+                "status": "to_implement"
+            },
+            "floatingChatIcon": {
+                "issue": "Chat icon floats far off the ground, looks out of place",
+                "proposedChange": "Remove floating chat icon",
+                "status": "to_implement"
+            }
+        },
+        "sideNavigation": {
+            "collapseAnimation": {
+                "issue": "Animation of collapse icon in side navigation bar",
+                "proposedChange": "Remove animation",
+                "status": "to_implement"
+            },
+            "logo": {
+                "issue": "AURA logo not found in side navigation bar",
+                "proposedChange": "Add AURA logo to side navigation",
+                "status": "to_implement"
+            },
+            "colorScheme": {
+                "issue": "Sidebar needs darker shade for better visual hierarchy",
+                "proposedChange": "Use darker shade of color for sidebar navigation",
+                "designReferences": [
+                    "Linear.app - light mode sidebar with increased contrast",
+                    "Apple.com - clean, high-contrast navigation with white space"
+                ],
+                "designPrinciples": {
+                    "linearInspired": {
+                        "contrast": "Darker text and neutral icons against lighter background for better readability",
+                        "hierarchy": "Reduced visual noise, clear separation of current view and available actions",
+                        "subtleStates": "Minimum effective dose of styling - subtle selected states, clean aesthetic",
+                        "divider": "Light-colored divider separating sidebar from main workspace (not heavy background color variation)",
+                        "customization": "Reorderable items, hideable elements, favorited views"
+                    },
+                    "appleInspired": {
+                        "clarity": "Intentional use of color, typography, and ample white space",
+                        "contrast": "High-contrast text with purposeful information hierarchy",
+                        "navigation": "Intuitive, clear, purposeful interactions that guide users naturally",
+                        "minimalism": "Streamlined top navigation, subtle animations/transitions",
+                        "consistency": "Familiar patterns creating predictable user experience"
+                    }
+                },
+                "implementationNotes": [
+                    "Use LCH color space for consistent visual lightness",
+                    "Darker sidebar background (but still light mode appropriate)",
+                    "High contrast for text and icons",
+                    "Subtle shadows or light dividers instead of heavy borders",
+                    "Clean, uncluttered layout with strategic white space"
+                ],
+                "status": "to_implement"
+            }
+        },
+        "iconSystem": {
+            "issue": "Emojis used as icons - inconsistent and unprofessional",
+            "proposedChange": "Use consistent modern icon style for all screens/pages",
+            "iconStyleOptions": [
+                "Lucide Icons (minimal, consistent)",
+                "Heroicons (clean, modern)",
+                "Phosphor Icons (versatile, geometric)",
+                "Feather Icons (simple, elegant)"
+            ],
+            "recommendedStyle": "TBD - needs team decision",
+            "status": "pending_decision"
+        },
+        "gamification": {
+            "streakBadge": {
+                "issue": "Streak badge present",
+                "proposedChange": "Remove streak badge",
+                "rationale": "Not aligned with core airport experience concept",
+                "status": "to_implement"
+            }
+        },
+        "profileSettings": {
+            "issue": "Current profile design is not appealing or modern",
+            "proposedChange": "Complete redesign of profile/settings section",
+            "rationale": "More appropriate for airport app context - focus on Settings rather than social Profile",
+            "designReferences": [
+                "Airbnb.app - profile section with clear visual hierarchy and trust signals",
+                "Modern mobile app UI trends 2024"
+            ],
+            "airbnbInspiredElements": {
+                "visualHierarchy": {
+                    "profilePhoto": "Centered, circular profile photo (consider 800x800px optimal size)",
+                    "userInfo": "Name and location prominently displayed",
+                    "travelStats": "Key statistics (trips, reviews, years on platform) - adapt to flight history",
+                    "trustSignals": "Verification badges, identity confirmation (TSA PreCheck, etc.)"
+                },
+                "layout": {
+                    "structure": "Card-based layout for different settings categories",
+                    "spacing": "Ample white space, clean organization",
+                    "navigation": "Easy access to edit profile, view history, manage preferences"
+                },
+                "aesthetic": {
+                    "style": "Soft, curved edges with smooth animations",
+                    "colors": "Playful yet professional color palette",
+                    "icons": "Consistent modern icon system (not emojis)"
+                }
+            },
+            "modernUITrends2024": {
+                "minimalism": {
+                    "description": "Clean layouts, ample white space, limited color palette, crisp typography",
+                    "priority": "Content over visual clutter",
+                    "implementation": "Ensure essential user info and actions are easily accessible"
+                },
+                "neumorphism": {
+                    "description": "Subtle shadows and gradients for soft, realistic, tactile appearance",
+                    "application": "Settings buttons, input fields, card-like elements",
+                    "effect": "Sense of depth, intuitive interactions"
+                },
+                "cardLayouts": {
+                    "description": "Information organized into card-like structures",
+                    "benefits": "Clean, organized, easily readable categories",
+                    "usage": "Group related settings (Account, Preferences, Travel History, Notifications)"
+                },
+                "microinteractions": {
+                    "description": "Small, engaging animations and feedback",
+                    "purpose": "Acknowledge user actions, provide delightful feedback, guide through tasks",
+                    "examples": "Toggle switches, save confirmations, setting updates"
+                },
+                "roundedCorners": {
+                    "description": "Soft shadows and rounded corners",
+                    "effect": "Welcoming, visually pleasing, contemporary aesthetic"
+                },
+                "darkModeSupport": {
+                    "description": "Offer dark mode option for comfortable viewing",
+                    "benefits": "Low-light comfort, battery conservation (OLED)",
+                    "aesthetic": "Sleek and modern"
+                },
+                "gestureBased": {
+                    "description": "Fluid, intuitive gesture-based navigation where appropriate",
+                    "application": "Swipe to navigate between settings sections"
+                }
+            },
+            "settingsCategories": [
+                {
+                    "category": "Account",
+                    "items": [
+                        "Personal Information",
+                        "Travel Documents",
+                        "TSA PreCheck/Global Entry",
+                        "Verification"
+                    ]
+                },
+                {
+                    "category": "Preferences",
+                    "items": [
+                        "Language",
+                        "Notifications",
+                        "Accessibility",
+                        "Dark Mode"
+                    ]
+                },
+                {
+                    "category": "Travel History",
+                    "items": [
+                        "Past Flights",
+                        "Favorite Routes",
+                        "Travel Stats"
+                    ]
+                },
+                {
+                    "category": "App Settings",
+                    "items": [
+                        "Privacy",
+                        "Data Usage",
+                        "About",
+                        "Help & Support"
+                    ]
+                }
+            ],
+            "keyDesignPrinciples": [
+                "Clear visual hierarchy (most important info first)",
+                "High contrast for readability",
+                "Consistent spacing and alignment",
+                "Accessible touch targets (minimum 44x44px)",
+                "Smooth transitions between sections",
+                "Trust signals prominently displayed",
+                "Personalization options where relevant"
+            ],
+            "implementationNotes": [
+                "Use card-based layout with subtle neumorphic shadows",
+                "Implement circular profile photo at top (centered)",
+                "Display user name, flight number, and verification status",
+                "Group settings into collapsible card sections",
+                "Use consistent modern icon library (Lucide/Heroicons)",
+                "Add microinteractions for toggle switches and saves",
+                "Ensure dark mode compatibility",
+                "Keep layout clean with strategic white space",
+                "Use rounded corners (8-12px border radius)",
+                "Implement smooth scroll and section transitions"
+            ],
+            "status": "to_implement"
+        }
+    },
+    "conceptAlignment": {
+        "question": "Do tell me if I am straying off the supposed concept",
+        "coreConceptReminder": "AURA is a predictive operations engine connecting AOCC operations (David) with passenger experience (Anna)",
+        "keyPrinciples": [
+            "Real-time decision support for operations",
+            "Clear guidance and expectations for passengers",
+            "Seamless integration of AI-driven insights",
+            "Stress-free travel experience"
+        ]
+    },
+    "pitchScript": {
+        "metadata": {
+            "team": "Hackarambolas",
+            "institution": "CIT-U",
+            "presenter": "Hermoine",
+            "totalDuration": "3:00",
+            "productName": "AURA"
+        },
+        "slides": [
+            {
+                "slideNumber": 1,
+                "title": "Hook",
+                "timeRange": "0:00–0:15",
+                "script": "Every day at MCIA, two journeys begin. [pause]\nOne belongs to a traveler. [smile]\nOne belongs to operations. [pause]",
+                "speakerNotes": "Set up the dual narrative - traveler vs operations"
+            },
+            {
+                "slideNumber": 2,
+                "title": "Story",
+                "timeRange": "0:15–0:35",
+                "script": "Meet Anna—first time in Cebu. She's excited… but unsure. [smile]\nWill her airport experience be smooth—or stressful? [look around]\nAnd meet David, an AOCC manager responsible for safety and flow. [nod]\nThey never meet, [pause] but David's decisions shape Anna's entire experience.\nMaayong buntag! I'm Hermoine from Team Hackarambolas of CIT-U. [smile to judges]",
+                "speakerNotes": "Introduce personas - Anna (traveler) and David (operations)",
+                "characters": {
+                    "anna": "First-time traveler to Cebu, excited but unsure",
+                    "david": "AOCC manager responsible for safety and flow"
+                }
+            },
+            {
+                "slideNumber": 3,
+                "title": "Problem",
+                "timeRange": "0:35–0:55",
+                "script": "At peak hours, problems don't show up one at a time. [slow]\nQueues get long, congestion spreads, and staff are pulled from one hotspot to the next. [gesture moving]\nMany decisions still happen after the issue is already visible—so the system reacts late. [serious pause]",
+                "speakerNotes": "Highlight reactive vs proactive problem",
+                "keyPoints": [
+                    "Multiple simultaneous problems at peak hours",
+                    "Congestion spreads quickly",
+                    "Reactive decision-making causes delays"
+                ]
+            },
+            {
+                "slideNumber": 4,
+                "title": "Opportunity",
+                "timeRange": "0:55–1:10",
+                "script": "But the airport already has signals everywhere: CCTV, flight timing, and operational data. [gesture to screen]\nThe gap is not data. [pause] The gap is turning data into real-time decision support. [lean forward]",
+                "speakerNotes": "Reframe problem as opportunity",
+                "keyInsight": "Data exists, but needs to be transformed into actionable intelligence"
+            },
+            {
+                "slideNumber": 5,
+                "title": "Solution",
+                "timeRange": "1:10–1:25",
+                "script": "This is where AURA comes in. [smile]\nAURA is a predictive operations engine with two views: [gesture left/right]\nan AOCC view for David to anticipate and coordinate responses, and\na passenger view for Anna to get clearer guidance and expectations. [nod]",
+                "speakerNotes": "Introduce AURA as the solution",
+                "productOverview": {
+                    "name": "AURA",
+                    "type": "Predictive operations engine",
+                    "views": [
+                        "AOCC view (for operations/David)",
+                        "Passenger view (for travelers/Anna)"
+                    ]
+                }
+            },
+            {
+                "slideNumber": 6,
+                "title": "Prototype Showcase and AI Role",
+                "timeRange": "1:25–2:10",
+                "script": "Let's do a quick demo of AURA in action, shall we? [pause, click]\nStarting with David, on AURA's dashboard, Vertex AI Vision analyzes live CCTV feeds — understanding passenger movement, crowd density, and space usage in real time. [point to screen]\nThe system combines that with flight schedules, and Gemini's AI models predict a surge near security 30 minutes ahead. [raise eyebrows] AURA recommends opening two more lanes and deploying staff.\nDavid then radios his team and reassigns officers before the crowd even arrives. [confident]\nBehind the scenes, Gemini turns camera data and flight data into clear, human-readable actions instead of raw numbers. [slow, clear]\nNow, we shift to Anna. [soft tone]\nBecause David already handled the situation, Anna's AURA app shows a short wait time instead of a long line. [smile]\nAURA updates her route and queue levels in real time. [gesture outward] Since she has time, Anna decides to find a place to eat and explores the terminal stress-free. [relaxed smile]\nSame AI brain, two users — [pause] smarter operations for David, calmer travel for Anna. [nod]",
+                "speakerNotes": "Demo both views - show cause and effect",
+                "technicalHighlights": {
+                    "vertexAIVision": "Analyzes live CCTV feeds for passenger movement, crowd density, space usage",
+                    "geminiAI": "Predicts surges 30 minutes ahead, converts data into human-readable actions",
+                    "realTimeUpdates": "Route and queue levels updated in real time for passengers"
+                },
+                "demoFlow": [
+                    "David sees prediction of security surge 30 min ahead",
+                    "AURA recommends opening 2 more lanes + staff deployment",
+                    "David acts proactively before crowd arrives",
+                    "Anna sees short wait time (because David already handled it)",
+                    "Anna explores terminal stress-free"
+                ]
+            },
+            {
+                "slideNumber": 7,
+                "title": "Impact",
+                "timeRange": "2:10–2:30",
+                "script": "For MCIA, this means faster decisions and a better use of existing infrastructure. [count on fingers]\nFor travelers, less stress and a better first impression of Cebu. [smile]\nFor Cebu tourism, it provides happier visitors. [nod]\nAnd for airport businesses, they get calmer passengers who are more likely to shop, explore, and eat. [gesture outward]",
+                "speakerNotes": "Show multi-stakeholder value",
+                "stakeholderBenefits": {
+                    "mcia": "Faster decisions, better use of existing infrastructure",
+                    "travelers": "Less stress, better first impression of Cebu",
+                    "cebuTourism": "Happier visitors",
+                    "airportBusinesses": "Calmer passengers more likely to shop, explore, and eat"
+                }
+            },
+            {
+                "slideNumber": 8,
+                "title": "Implementation & Scaling",
+                "timeRange": "2:30–2:55",
+                "script": "We can start AURA with a pilot in one high-traffic area.\nFrom there, we track key signals like reduced congestion time, faster staff response, and smoother passenger flow during rush periods. [pause]\nThese insights guide what is next, allowing AURA to scale across terminals based on real performance. [confident nod]",
+                "speakerNotes": "Show practical rollout plan",
+                "implementationStrategy": {
+                    "phase1": "Pilot in one high-traffic area",
+                    "metrics": [
+                        "Reduced congestion time",
+                        "Faster staff response",
+                        "Smoother passenger flow during rush periods"
+                    ],
+                    "scaling": "Scale across terminals based on real performance data"
+                }
+            },
+            {
+                "slideNumber": 9,
+                "title": "Closing",
+                "timeRange": "2:55–3:00",
+                "script": "[Pause.]\nAnna may never meet David—but with AURA, she feels his decisions. [hold eye contact, smile]\nThank you. [small nod]",
+                "speakerNotes": "Circle back to opening narrative - emotional close",
+                "closingMessage": "Connection between operations and passenger experience through AURA"
+            }
+        ]
+    }
+}

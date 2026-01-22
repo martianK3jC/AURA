@@ -33,6 +33,9 @@ const ChatScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
       aiResponse = `Sure! Here's what you can tell your driver in Cebuano:\n\n"Boss, likay ta sa Fernan Bridge kay naay aksidente. Adto ta agi sa Terminal 2 entrance instead."\n\n(Translation: "Boss, let's avoid Fernan Bridge because there's an accident. Let's go through Terminal 2 entrance instead.")`;
     } else if (action.toLowerCase().includes('prohibited')) {
       aiResponse = "Here are the key prohibited items:\n\n✈️ Carry-on only:\n• Power banks (max 100Wh)\n• Laptop batteries\n• Lighters (1 per person)\n\n🚫 Completely banned:\n• Flammable liquids\n• Explosives\n• Sharp objects in carry-on\n\n💧 Liquids: Max 100ml per container, all in 1 clear bag.\n\nNeed more details on a specific item?";
+    } else if (action.toLowerCase().includes('emergency') || action.toLowerCase().includes('help')) {
+      aiResponse = "🚨 **EMERGENCY ASSISTANCE DETECTED**\n\nI am connecting you to the MCIA Emergency Hotline. Please stay on the line.\n\nAlso notifying Airport Security of your location (Terminal 1, Check-in Area).";
+      setTimeout(() => setIsCalling(true), 2500); // Auto trigger call after message
     } else if (action.toLowerCase().includes('driver') || action.toLowerCase().includes('call')) {
       aiResponse = "📞 I've prepared emergency contacts for you:\n\n**Your Driver:** 0917-XXX-XXXX\n**Airport Hotline:** (032) 340-2486\n**Emergency Services:** 911\n\nWould you like me to initiate a call through your phone?";
     } else {
@@ -73,15 +76,6 @@ const ChatScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
               </div>
             </div>
           </div>
-
-          {/* Support Call */}
-          <button
-            onClick={() => setIsCalling(true)}
-            className="text-stone-400 hover:text-stone-600 transition-colors"
-            title="Call Support"
-          >
-            <PhoneCall size={20} />
-          </button>
         </div>
       </div>
 
@@ -175,7 +169,7 @@ const ChatScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
           {[
             { label: 'Translate instructions', icon: Languages, action: 'Translate instructions' },
             { label: 'Prohibited Items?', icon: Ban, action: 'Prohibited Items?' },
-            { label: 'Call my driver', icon: Phone, action: 'Call my driver' }
+            { label: 'Emergency Help!', icon: Phone, action: 'Emergency Help!' }
           ].map((chip, idx) => (
             <button
               key={idx}

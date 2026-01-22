@@ -93,67 +93,20 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
           </div>
         </div>
 
-        {/* TABLET VISUALIZATION (Visible on Tablet 'md' AND Small Laptops 'lg', Hidden on Desktop 'xl') */}
-        <div className="hidden md:flex xl:hidden w-full h-[600px] items-start justify-center relative mt-20 mb-10 perspective-[2000px]">
-          <div className={`relative w-[480px] h-[600px] scale-100 origin-top transition-all duration-1000 ease-out delay-300 transform-style-3d ${isAnimated ? 'opacity-100 rotate-y-[-12deg] rotate-x-[5deg] translate-y-[-50px]' : 'opacity-0 translate-y-20'}`}>
-            {/* Card 1: Flight Status (Back) */}
-            <div className="absolute top-[-40px] right-[-50px] w-80 p-6 bg-white/40 backdrop-blur-xl border border-white/40 rounded-3xl shadow-2xl transform translate-z-[-50px] animate-float-slow">
-              <div className="flex justify-between items-center mb-5">
-                <span className="text-sm font-bold text-neutral-500 tracking-wider">FLIGHT STATUS</span>
-                <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-xs font-bold">ON TIME</span>
-              </div>
-              <div className="flex items-center gap-5">
-                <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
-                  <Plane className="text-red-500" size={24} />
-                </div>
-                <div>
-                  <p className="font-bold text-2xl text-neutral-800">PR 2849</p>
-                  <p className="text-base text-neutral-500 font-medium">To Manila (MNL)</p>
-                </div>
-              </div>
-            </div>
-
-            {/* Card 2: Main Map (Center) */}
-            <div className="absolute top-[110px] left-0 right-0 h-[400px] bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-2xl border border-white/60 rounded-[40px] shadow-[0_30px_60px_rgba(0,0,0,0.12)] p-8 transform translate-z-[20px] animate-float">
-              <div className="flex items-center justify-between mb-8">
-                <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
-                    <MapPin className="text-red-600" size={24} />
-                  </div>
-                  <div>
-                    <p className="font-bold text-2xl text-neutral-900 leading-tight">Live Route</p>
-                    <p className="text-sm text-neutral-500 font-bold uppercase tracking-wide">Optimal path found</p>
-                  </div>
-                </div>
-                <div className="w-14 h-10 rounded-full bg-red-600 flex items-center justify-center shadow-lg shadow-red-500/30">
-                  <ArrowRight className="text-white" size={20} />
-                </div>
-              </div>
-              <div className="w-full h-52 bg-neutral-100/80 rounded-3xl overflow-hidden relative mb-6 border border-white/50">
-                <div className="absolute inset-0 opacity-50" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #cbd5e1 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
-                <svg className="absolute inset-0 w-full h-full">
-                  <path d="M 50 150 Q 100 50 200 80 T 360 100" fill="none" stroke="#DC2626" strokeWidth="4" strokeDasharray="8 6" />
-                  <circle cx="360" cy="100" r="8" fill="#DC2626" />
-                  <circle cx="360" cy="100" r="20" fill="#DC2626" opacity="0.2" className="animate-ping" />
-                </svg>
-              </div>
-              <div className="flex justify-between items-center text-sm font-bold text-neutral-600 uppercase tracking-widest px-1">
-                <span>Security Check A</span>
-                <span className="text-emerald-600">12 min wait</span>
-              </div>
-            </div>
-
-            {/* Card 3: Notification (Front) */}
-            <div className="absolute bottom-0 left-[-40px] w-80 p-6 bg-red-600 text-white backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl shadow-red-900/30 transform translate-z-[60px] animate-float-fast">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-inner">
-                  <Clock size={24} className="text-white" />
-                </div>
-                <div>
-                  <p className="font-bold text-xl leading-tight">Boarding in 25m</p>
-                  <p className="text-red-100 text-sm font-medium mt-0.5">Gate 4 • Terminal 1</p>
-                </div>
-              </div>
+        {/* TABLET LOGIN FORM (Visible on Tablet 'md' AND Small Laptops 'lg', Hidden on Desktop 'xl') */}
+        <div className="hidden md:flex xl:hidden w-full items-center justify-center relative mt-12 mb-10">
+          <div className={`w-full max-w-md transition-all duration-700 ease-out ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+            {/* Login Card */}
+            <div className="bg-white/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/50 p-8">
+              <h2 className="text-2xl font-bold text-neutral-900 mb-6 text-center">Quick Access</h2>
+              <button
+                onClick={handleStart}
+                className="w-full bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold py-4 rounded-xl shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transition-all flex items-center justify-center gap-3 group"
+              >
+                <span>Enter Flight Number</span>
+                <ArrowRight className="group-hover:translate-x-1 transition-transform" size={20} />
+              </button>
+              <p className="text-center text-sm text-neutral-500 mt-4">Sign in to access your personalized journey</p>
             </div>
           </div>
         </div>
@@ -174,79 +127,45 @@ const LandingScreen: React.FC<Props> = ({ onNavigate }) => {
         </div>
       </div>
 
-      {/* RIGHT SECTION: HERO VISUALIZATION (Levitating Cards) */}
-      <div className="hidden xl:flex w-full xl:w-[55%] min-h-[600px] xl:h-full relative items-center justify-center z-10 perspective-[2000px] pb-20 xl:pb-0">
+      {/* RIGHT SECTION: LOGIN FORM */}
+      <div className="hidden xl:flex w-full xl:w-[55%] min-h-[600px] xl:h-full relative items-center justify-center z-10 pb-20 xl:pb-0">
 
         {/* Orb Glow Behind */}
         <div className="absolute w-[600px] h-[600px] bg-gradient-to-br from-orange-200 to-rose-200 rounded-full blur-[100px] opacity-60 animate-pulse-slow"></div>
 
-        {/* Floating Glass UI Stack - Scale Updated */}
-        <div className={`relative w-[480px] h-[600px] md:scale-75 lg:scale-90 xl:scale-100 transition-all duration-1000 ease-out delay-300 transform-style-3d ${isAnimated ? 'opacity-100 rotate-y-[-12deg] rotate-x-[5deg] translate-y-12' : 'opacity-0 translate-y-20'}`}>
-
-          {/* Card 1: Flight Status (Back) - Enlarged */}
-          <div className="absolute top-0 right-[-50px] w-80 p-6 bg-white/40 backdrop-blur-xl border border-white/40 rounded-3xl shadow-2xl transform translate-z-[-50px] animate-float-slow">
-            <div className="flex justify-between items-center mb-5">
-              <span className="text-xs font-bold text-neutral-500 tracking-wider">FLIGHT STATUS</span>
-              <span className="px-3 py-1 rounded-full bg-emerald-100 text-emerald-700 text-[10px] font-bold">ON TIME</span>
-            </div>
-            <div className="flex items-center gap-5">
-              <div className="w-12 h-12 rounded-full bg-white flex items-center justify-center shadow-sm">
-                <Plane className="text-red-500" size={24} />
-              </div>
-              <div>
-                <p className="font-bold text-xl text-neutral-800">PR 2849</p>
-                <p className="text-sm text-neutral-500 font-medium">To Manila (MNL)</p>
-              </div>
-            </div>
-          </div>
-
-          {/* Card 2: Main Map (Center) - Enlarged */}
-          <div className="absolute top-[110px] left-0 right-0 h-[400px] bg-gradient-to-br from-white/80 to-white/40 backdrop-blur-2xl border border-white/60 rounded-[40px] shadow-[0_30px_60px_rgba(0,0,0,0.12)] p-8 transform translate-z-[20px] animate-float">
-            <div className="flex items-center justify-between mb-8">
-              <div className="flex items-center gap-4">
-                <div className="w-12 h-12 rounded-full bg-red-50 flex items-center justify-center">
-                  <MapPin className="text-red-600" size={24} />
-                </div>
-                <div>
-                  <p className="font-bold text-lg text-neutral-900 leading-tight">Live Route</p>
-                  <p className="text-sm text-neutral-500 font-bold uppercase tracking-wide">Optimal path found</p>
-                </div>
-              </div>
-              <div className="w-14 h-10 rounded-full bg-red-600 flex items-center justify-center shadow-lg shadow-red-500/30">
-                <ArrowRight className="text-white" size={20} />
-              </div>
+        {/* Login Card */}
+        <div className={`relative w-full max-w-md transition-all duration-1000 ease-out delay-300 ${isAnimated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-20'}`}>
+          <div className="bg-white/80 backdrop-blur-2xl rounded-[40px] shadow-[0_30px_60px_rgba(0,0,0,0.12)] border border-white/60 p-10">
+            <div className="text-center mb-8">
+              <h2 className="text-3xl font-bold text-neutral-900 mb-3">Welcome to AURA</h2>
+              <p className="text-neutral-600">Enter your flight details to begin your journey</p>
             </div>
 
-            {/* Abstract Map UI */}
-            <div className="w-full h-52 bg-neutral-100/80 rounded-3xl overflow-hidden relative mb-6 border border-white/50">
-              <div className="absolute inset-0 opacity-50" style={{ backgroundImage: 'radial-gradient(circle at 2px 2px, #cbd5e1 1px, transparent 0)', backgroundSize: '16px 16px' }}></div>
-              <svg className="absolute inset-0 w-full h-full">
-                <path d="M 50 150 Q 100 50 200 80 T 360 100" fill="none" stroke="#DC2626" strokeWidth="4" strokeDasharray="8 6" />
-                <circle cx="360" cy="100" r="8" fill="#DC2626" />
-                <circle cx="360" cy="100" r="20" fill="#DC2626" opacity="0.2" className="animate-ping" />
-              </svg>
-            </div>
+            <button
+              onClick={handleStart}
+              className="w-full bg-gradient-to-r from-red-600 to-rose-700 text-white font-bold py-5 rounded-2xl shadow-lg shadow-red-500/30 hover:shadow-xl hover:shadow-red-500/40 transition-all flex items-center justify-center gap-3 group mb-6"
+            >
+              <span className="text-lg">Enter Flight Number</span>
+              <ArrowRight className="group-hover:translate-x-1 transition-transform" size={22} />
+            </button>
 
-            <div className="flex justify-between items-center text-xs font-bold text-neutral-600 uppercase tracking-widest px-1">
-              <span>Security Check A</span>
-              <span className="text-emerald-600">12 min wait</span>
-            </div>
-          </div>
-
-          {/* Card 3: Notification (Front) - Enlarged */}
-          <div className="absolute bottom-12 left-[-40px] w-72 p-5 bg-red-600 text-white backdrop-blur-xl border border-white/20 rounded-2xl shadow-2xl shadow-red-900/30 transform translate-z-[60px] animate-float-fast">
-            <div className="flex items-center gap-4">
-              <div className="w-10 h-10 rounded-full bg-white/20 flex items-center justify-center backdrop-blur-sm shadow-inner">
-                <Clock size={20} className="text-white" />
+            <div className="space-y-4">
+              <div className="flex items-center gap-3 text-sm text-neutral-600">
+                <ShieldCheck size={18} className="text-red-600" />
+                <span>Secure and personalized experience</span>
               </div>
-              <div>
-                <p className="font-bold text-base leading-tight">Boarding in 25m</p>
-                <p className="text-red-100 text-xs font-medium mt-0.5">Gate 4 • Terminal 1</p>
+              <div className="flex items-center gap-3 text-sm text-neutral-600">
+                <Activity size={18} className="text-red-600" />
+                <span>Real-time flight tracking</span>
+              </div>
+              <div className="flex items-center gap-3 text-sm text-neutral-600">
+                <Globe size={18} className="text-red-600" />
+                <span>AI-powered navigation assistance</span>
               </div>
             </div>
           </div>
-
         </div>
+
       </div>
     </div>
   );

@@ -13,9 +13,9 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
     const [pushEnabled, setPushEnabled] = useState(true);
     const [suggestionsEnabled, setSuggestionsEnabled] = useState(true);
 
-    // Hardcoded user info to match screenshot
-    const userName = 'gff';
-    const userEmail = 'gff@aura.app';
+    // Use traveler context or fallback to defaults
+    const userName = travelerContext?.userName || 'Traveler';
+    const userEmail = `${userName.toLowerCase().replace(/\s+/g, '')}@aura.app`;
 
     return (
         <div className="flex flex-col h-full bg-[#f2f2f7] relative text-neutral-900 font-sans">
@@ -70,7 +70,7 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
                 <div className="max-w-xl mx-auto px-5 space-y-8">
 
                     {/* Stats Row - Clean White Cards with Red Accents */}
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-2 gap-3">
                         <div className="bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex flex-col items-center justify-center gap-1 group hover:border-red-200 transition-colors">
                             <span className="text-2xl font-bold text-neutral-900 tracking-tight group-hover:text-red-600 transition-colors">12</span>
                             <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Trips</span>
@@ -78,13 +78,6 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
                         <div className="bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex flex-col items-center justify-center gap-1 group hover:border-red-200 transition-colors">
                             <span className="text-2xl font-bold text-neutral-900 tracking-tight group-hover:text-red-600 transition-colors">3.5<span className="text-sm font-semibold text-neutral-400 ml-0.5">h</span></span>
                             <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Saved</span>
-                        </div>
-                        <div className="bg-white p-4 rounded-2xl shadow-sm border border-neutral-100 flex flex-col items-center justify-center gap-1 group hover:border-red-200 transition-colors">
-                            <div className="flex items-center gap-1 text-red-500">
-                                <Flame size={18} fill="currentColor" />
-                                <span className="text-2xl font-bold text-neutral-900 tracking-tight">8</span>
-                            </div>
-                            <span className="text-[10px] font-bold text-neutral-400 uppercase tracking-widest">Streak</span>
                         </div>
                     </div>
 
@@ -132,45 +125,6 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
                         </div>
                     </div>
 
-
-                    {/* Section: Settings */}
-                    <div>
-                        <h3 className="text-[13px] font-bold text-neutral-400 uppercase tracking-widest px-1 mb-2">Settings</h3>
-
-                        <div className="bg-white rounded-2xl overflow-hidden shadow-sm border border-neutral-200/60 divide-y divide-neutral-100">
-                            {/* Push Toggle */}
-                            <div className="p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors">
-                                <div className="flex items-center gap-3.5">
-                                    <div className="w-8 h-8 rounded-lg bg-red-500 flex items-center justify-center text-white shadow-sm shadow-red-500/30">
-                                        <Bell size={16} fill="currentColor" />
-                                    </div>
-                                    <span className="font-medium text-neutral-900 text-[15px]">Push Notifications</span>
-                                </div>
-                                <button
-                                    onClick={() => setPushEnabled(!pushEnabled)}
-                                    className={`w-11 h-[22px] rounded-full transition-colors duration-300 focus:outline-none shadow-inner relative ${pushEnabled ? 'bg-red-600' : 'bg-neutral-200'}`}
-                                >
-                                    <div className={`absolute top-[2px] w-[18px] h-[18px] bg-white rounded-full shadow-sm transform transition-transform duration-300 ${pushEnabled ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}></div>
-                                </button>
-                            </div>
-
-                            {/* Suggestions Toggle */}
-                            <div className="p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors">
-                                <div className="flex items-center gap-3.5">
-                                    <div className="w-8 h-8 rounded-lg bg-red-400 flex items-center justify-center text-white shadow-sm shadow-red-400/30">
-                                        <Zap size={16} fill="currentColor" />
-                                    </div>
-                                    <span className="font-medium text-neutral-900 text-[15px]">Proactive Suggestions</span>
-                                </div>
-                                <button
-                                    onClick={() => setSuggestionsEnabled(!suggestionsEnabled)}
-                                    className={`w-11 h-[22px] rounded-full transition-colors duration-300 focus:outline-none shadow-inner relative ${suggestionsEnabled ? 'bg-red-600' : 'bg-neutral-200'}`}
-                                >
-                                    <div className={`absolute top-[2px] w-[18px] h-[18px] bg-white rounded-full shadow-sm transform transition-transform duration-300 ${suggestionsEnabled ? 'translate-x-[24px]' : 'translate-x-[2px]'}`}></div>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
 
                     {/* Logout Action - More subtle but accessible */}
                     <button
