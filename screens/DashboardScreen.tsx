@@ -100,45 +100,13 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
   } : {
     id: 'A',
     flightStatus: 'ontime',
-    totalTime: '1h 10m',
+    totalTime: '3h 45m',
     steps: [
-      { id: '1', icon: 'home', title: 'Home - Lahug', status: 'current', time: 'Depart Now', isCurrent: true },
-      {
-        id: '2',
-        icon: 'car',
-        title: 'Travel to MCIA',
-        status: 'upcoming',
-        time: '35 mins',
-        badge: 'Light Traffic',
-        badgeColor: 'emerald',
-        subtext: 'Via Google Maps API'
-      },
-      {
-        id: '3',
-        icon: 'bag',
-        title: 'Security Checkpoint',
-        status: 'upcoming',
-        time: '10 mins',
-        badge: 'Low Density',
-        badgeColor: 'emerald',
-        subtext: 'Queue Time • Cam 04'
-      },
-      {
-        id: '4',
-        icon: 'shield',
-        title: 'Security Check',
-        status: 'upcoming',
-        time: '5 mins',
-        subtext: 'Queue Time • Cam 08'
-      },
-      {
-        id: '5',
-        icon: 'door',
-        title: 'Boarding Gate 5',
-        status: 'upcoming',
-        time: '5 mins',
-        subtext: 'Walking Time • 80m Distance'
-      },
+      { id: '1', icon: 'home', title: 'Home - Lahug', status: 'completed', time: 'Departed 4h ago' },
+      { id: '2', icon: 'car', title: 'Arrived at MCIA', status: 'completed', time: 'Arrived 3h ago' },
+      { id: '3', icon: 'passport', title: 'Check-In Complete', status: 'completed', time: '2h 50m ago' },
+      { id: '4', icon: 'shield', title: 'Security Cleared', status: 'completed', time: 'Just now', isCurrent: true },
+      { id: '5', icon: 'plane', title: 'Relax & Wait', status: 'upcoming', time: 'Boarding in 3h 45m' },
     ]
   };
 
@@ -188,7 +156,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
 
             <div className="flex justify-between items-start mb-2">
               <span className={`text-[10px] font-bold uppercase tracking-widest ${isStress ? 'text-red-500' : 'text-emerald-600'}`}>
-                {isStress ? '⚠ Tight Schedule' : 'Total Time'}
+                {isStress ? '⚠ Tight Schedule' : '✨ Relaxed Schedule'}
               </span>
               {/* Scenario Toggles */}
               <div className="bg-stone-100/80 p-0.5 rounded-full flex gap-0.5">
@@ -203,8 +171,8 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
             <p className="text-sm font-medium text-stone-500">{isStress ? 'to Gate Closing' : 'until boarding'}</p>
           </GlassCard>
 
-          {/* BENTO BOX: Delay Opportunities (Only Scenario B) */}
-          {isStress && (
+          {/* BENTO BOX: Opportunities (Only Scenario A - Relaxed) */}
+          {!isStress && (
             <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
               <div className="flex items-center justify-between mb-2 px-1">
                 <h3 className="text-sm font-bold text-stone-900 uppercase tracking-widest">AURA Recommendations</h3>
