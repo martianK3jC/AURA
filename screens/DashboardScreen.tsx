@@ -17,7 +17,46 @@ interface Props {
 const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScenario, onLogout, travelerContext }) => {
   const isStress = scenarioType === 'B';
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' | 'error' } | null>(null);
-  const [showFlightModal, setShowFlightModal] = useState(false); // NEW
+  const [showFlightModal, setShowFlightModal] = useState(false);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null); // For bento box details
+
+  // Bottom Sheet Logic for Dashboard
+  const [sheetHeight, setSheetHeight] = useState(12); // Percentage: Default to minimum (collapsed)
+  const [isDraggingSheet, setIsDraggingSheet] = useState(false);
+  const [dragStartY, setDragStartY] = useState(0);
+  const [dragStartHeight, setDragStartHeight] = useState(0);
+
+  const handleSheetDragStart = (e: React.MouseEvent | React.TouchEvent) => {
+    setIsDraggingSheet(true);
+    // clientY is either in touches[0] or directly on the event for mouse
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    setDragStartY(clientY);
+    setDragStartHeight(sheetHeight);
+  };
+
+  const handleSheetDragMove = (e: React.MouseEvent | React.TouchEvent) => {
+    if (!isDraggingSheet) return;
+    const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+    const deltaY = clientY - dragStartY;
+    const windowHeight = window.innerHeight;
+    const deltaPercentage = (deltaY / windowHeight) * 100;
+
+    // Inverted because dragging down (positive deltaY) decreases height (bottom based)
+    const newHeight = dragStartHeight - deltaPercentage;
+
+    // Clamp between 12% and 92%
+    if (newHeight > 12 && newHeight < 92) {
+      setSheetHeight(newHeight);
+    }
+  };
+
+  const handleSheetDragEnd = () => {
+    setIsDraggingSheet(false);
+    // Snap logic
+    if (sheetHeight > 75) setSheetHeight(90);
+    else if (sheetHeight > 40) setSheetHeight(58); // Default rest
+    else setSheetHeight(12); // Collapsed
+  };
 
   const showToast = (message: string, type: 'success' | 'info' | 'warning' | 'error' = 'success') => {
     setToast({ message, type });
@@ -49,7 +88,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
       {
         id: '3',
         icon: 'bag',
-        title: 'Check-In Queue',
+        title: 'Security Checkpoint',
         status: 'warning',
         time: '35 mins',
         badge: 'High Density',
@@ -77,7 +116,7 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
       {
         id: '3',
         icon: 'bag',
-        title: 'Check-In Queue',
+        title: 'Security Checkpoint',
         status: 'upcoming',
         time: '10 mins',
         badge: 'Low Density',
@@ -104,7 +143,14 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
   };
 
   return (
-    <div className="flex flex-col h-full relative">
+    <div
+      className="flex flex-col h-full relative select-none"
+      onMouseMove={handleSheetDragMove}
+      onTouchMove={handleSheetDragMove}
+      onMouseUp={handleSheetDragEnd}
+      onTouchEnd={handleSheetDragEnd}
+      onMouseLeave={handleSheetDragEnd}
+    >
 
       {/* Personalized Greeting Header */}
       {travelerContext && (
@@ -117,11 +163,6 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
                   Welcome back, {userName}!
                 </span>
               </div>
-              <p className="text-xs text-gray-600">
-                {isStress
-                  ? 'Tight schedule detected. Follow AURA recommendations.'
-                  : 'On time for check-in. Have a safe trip!'}
-              </p>
             </div>
 
             {/* Weather Widget */}
@@ -132,164 +173,69 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
                 <span className="block text-sm font-bold text-stone-800">32°C</span>
               </div>
             </div>
-            <div className="text-right">
-              <p className="text-xs text-gray-600">Flight</p>
-              <p className="text-sm font-bold text-red-600">{flightNumber}</p>
-            </div>
+
           </div>
         </div>
       )}
 
-      {/* Sticky Header Info - RESTRUCTURED FOR HERO NUMBER */}
-      <div className="sticky top-0 z-30 bg-white/95 backdrop-blur-xl px-10 md:px-16 py-6 pt-safe border-b border-neutral-200 shrink-0 transition-all shadow-sm">
-        <div className="flex justify-between items-start">
-          <div>
-            <div className="flex items-center gap-2 mb-1">
-              <span className={`text-xs font-bold uppercase tracking-wider ${isStress ? 'text-red-500 animate-pulse' : 'text-emerald-600'}`}>
-                {isStress ? '⚠ Tight Schedule' : 'Total Time to Gate'}
+      {/* Content Container - Top Section */}
+      <div className="relative z-10 px-6 pt-4 pb-4">
+        <div className="max-w-md mx-auto w-full space-y-3">
+
+          {/* BOXED CARD: Tight Schedule / Timer */}
+          <GlassCard className={`p-6 rounded-3xl text-center relative overflow-hidden transition-all duration-500 transform ${isStress ? 'border-red-200 bg-white shadow-xl shadow-red-500/10' : 'border-emerald-200 bg-white shadow-lg'}`}>
+            <div className={`absolute top-0 left-0 right-0 h-1.5 ${isStress ? 'bg-gradient-to-r from-red-500 to-orange-500 animate-pulse' : 'bg-gradient-to-r from-emerald-500 to-teal-500'}`}></div>
+
+            <div className="flex justify-between items-start mb-2">
+              <span className={`text-[10px] font-bold uppercase tracking-widest ${isStress ? 'text-red-500' : 'text-emerald-600'}`}>
+                {isStress ? '⚠ Tight Schedule' : 'Total Time'}
               </span>
+              {/* Scenario Toggles */}
+              <div className="bg-stone-100/80 p-0.5 rounded-full flex gap-0.5">
+                <button aria-label="Switch to Scenario A" onClick={() => onSetScenario('A')} className={`w-6 h-6 rounded-full text-[10px] font-bold transition-all ${!isStress ? 'bg-white shadow-sm text-emerald-700' : 'text-stone-400 hover:bg-white/50'}`}>A</button>
+                <button aria-label="Switch to Scenario B" onClick={() => onSetScenario('B')} className={`w-6 h-6 rounded-full text-[10px] font-bold transition-all ${isStress ? 'bg-white shadow-sm text-red-600' : 'text-stone-400 hover:bg-white/50'}`}>B</button>
+              </div>
             </div>
-            <h2 className={`text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r ${isStress ? 'from-red-600 to-orange-600' : 'from-emerald-600 to-teal-500'}`}>
+
+            <h2 className={`text-6xl font-black tracking-tighter mb-1 mt-2 bg-clip-text text-transparent bg-gradient-to-b ${isStress ? 'from-red-600 to-orange-600' : 'from-emerald-600 to-teal-600'}`}>
               {data.totalTime}
             </h2>
-          </div>
+            <p className="text-sm font-medium text-stone-500">{isStress ? 'to Gate Closing' : 'until boarding'}</p>
+          </GlassCard>
 
-          <div className="flex gap-2">
-            {/* Demo Toggles - Clean Modern */}
-            <div className="bg-white border border-neutral-200 rounded-full p-1 flex gap-1 shadow-sm">
-              <button aria-label="Switch to Scenario A" onClick={() => onSetScenario('A')} className={`w-8 h-8 rounded-full text-xs font-bold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 ${!isStress ? 'bg-emerald-600 text-white shadow-sm' : 'text-neutral-400 hover:bg-neutral-100 hover:text-neutral-900'}`}>A</button>
-              <button aria-label="Switch to Scenario B" onClick={() => onSetScenario('B')} className={`w-8 h-8 rounded-full text-xs font-bold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500/50 focus:ring-offset-2 ${isStress ? 'bg-red-600 text-white shadow-sm' : 'text-neutral-400 hover:bg-neutral-100 hover:text-neutral-900'}`}>B</button>
-            </div>
-
-
-          </div>
-        </div>
-      </div>
-
-      {/* Scrollable Content Container with margins */}
-      <div className="flex-1 overflow-y-auto px-10 md:px-16 py-8 pb-32">
-        <div className="max-w-7xl mx-auto">
-          {/* Critical Alert Banner (Only Scenario B) */}
+          {/* BENTO BOX: Delay Opportunities (Only Scenario B) */}
           {isStress && (
-            <div className="bg-gradient-to-r from-red-600 to-orange-600 animate-pulse p-4 rounded-2xl mb-4 shadow-[0_0_30px_rgba(239,68,68,0.5)] flex items-start gap-3 relative z-20">
-              <span className="text-3xl animate-pulse">⚠️</span>
-              <div>
-                <h2 className="text-white font-bold text-xl leading-tight">CRITICAL DELAY DETECTED</h2>
-                <p className="text-red-100 text-sm mt-1">Traffic accident reported on Fernan Bridge (+40 mins)</p>
+            <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
+              <div className="flex items-center justify-between mb-2 px-1">
+                <h3 className="text-sm font-bold text-stone-900 uppercase tracking-widest">AURA Recommendations</h3>
+                <span className="text-[10px] font-bold bg-white text-stone-500 px-2.5 py-1 rounded-full border border-stone-200 whitespace-nowrap">+40m Available</span>
+              </div>
+
+              <div className="grid grid-cols-4 gap-2">
+                {[
+                  { id: 'lounge', icon: '☕', color: 'bg-rose-50 text-rose-600', title: 'PAGSS Lounge', desc: 'Relax nearby' },
+                  { id: 'food', icon: '🍽️', color: 'bg-orange-50 text-orange-600', title: 'Quick Meal', desc: 'Jollibee nearby' },
+                  { id: 'tasks', icon: '✅', color: 'bg-blue-50 text-blue-600', title: 'Tasks', desc: 'Clear inbox' },
+                  { id: 'shop', icon: '🛍️', color: 'bg-purple-50 text-purple-600', title: 'Shopping', desc: 'Duty Free' },
+                ].map((item, idx) => (
+                  <button
+                    key={item.id}
+                    onClick={() => setSelectedOpportunity(item)}
+                    className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 hover:scale-105 shadow-sm border border-stone-100 ${item.color} bg-white`}
+                  >
+                    <span className="text-lg filter drop-shadow-sm">{item.icon}</span>
+                  </button>
+                ))}
               </div>
             </div>
           )}
 
-          {/* Delay Opportunities (Only Scenario B) - Phase 3.3 */}
-          {isStress && (
-            <div className="mb-6">
-              <div className="flex items-center gap-2 mb-3">
-                <span className="text-2xl">💡</span>
-                <h3 className="text-lg font-bold text-neutral-900">Delay Opportunities</h3>
-                <span className="text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded-full font-semibold">+40 min available</span>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                {/* Lounge Access */}
-                <GlassCard
-                  onClick={() => showToast("☕ PAGSS Lounge added to your itinerary!", "success")}
-                  className="p-4 rounded-xl border border-rose-200 bg-white shadow-md hover:shadow-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all group"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-rose-100/50 flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
-                      <span className="text-2xl drop-shadow-sm">☕</span>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-neutral-900 mb-1 group-hover:text-red-700 transition-colors">Visit PAGSS Lounge</h4>
-                      <p className="text-xs text-neutral-500 mb-2 font-medium">Priority Pass accepted • 2nd Floor</p>
-                      <div className="flex items-center gap-2 text-xs">
-                        <span className="text-red-600 font-bold bg-red-50 px-2 py-0.5 rounded-full">25 min</span>
-                        <span className="text-neutral-300">•</span>
-                        <span className="text-neutral-500">Relax before flight</span>
-                      </div>
-                    </div>
-                  </div>
-                </GlassCard>
-
-                {/* Dining Option */}
-                <GlassCard
-                  onClick={() => showToast("🍽️ Reminder set for 15 minutes prior!", "info")}
-                  className="p-4 rounded-xl border border-rose-200 bg-white shadow-md hover:shadow-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all group"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-rose-100/50 flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
-                      <span className="text-2xl drop-shadow-sm">🍽️</span>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-neutral-900 mb-1 group-hover:text-red-700 transition-colors">Grab a Meal</h4>
-                      <p className="text-xs text-neutral-500 mb-2 font-medium">Nearest: Jollibee Pre-Departure</p>
-                      <div className="flex items-center gap-2 text-xs">
-                        <span className="text-red-600 font-bold bg-red-50 px-2 py-0.5 rounded-full">20 min</span>
-                        <span className="text-neutral-300">•</span>
-                        <span className="text-neutral-500">Before security</span>
-                      </div>
-                    </div>
-                  </div>
-                </GlassCard>
-
-                {/* Last Minute Tasks */}
-                <GlassCard
-                  onClick={() => showToast("✅ Task list opened. Focus mode enabled.", "success")}
-                  className="p-4 rounded-xl border border-rose-200 bg-white shadow-md hover:shadow-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all group"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-rose-100/50 flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
-                      <span className="text-2xl drop-shadow-sm">✅</span>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-neutral-900 mb-1 group-hover:text-red-700 transition-colors">Complete Tasks</h4>
-                      <p className="text-xs text-neutral-500 mb-2 font-medium">Check emails, work items</p>
-                      <div className="flex items-center gap-2 text-xs">
-                        <span className="text-red-600 font-bold bg-red-50 px-2 py-0.5 rounded-full">30 min</span>
-                        <span className="text-neutral-300">•</span>
-                        <span className="text-neutral-500">Use time wisely</span>
-                      </div>
-                    </div>
-                  </div>
-                </GlassCard>
-
-                {/* Duty Free Shopping */}
-                <GlassCard
-                  onClick={() => showToast("🛍️ Duty Free map location saved.", "success")}
-                  className="p-4 rounded-xl border border-rose-200 bg-white shadow-md hover:shadow-xl cursor-pointer hover:scale-[1.02] active:scale-[0.98] transition-all group"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="w-12 h-12 rounded-2xl bg-rose-100/50 flex items-center justify-center shrink-0 group-hover:bg-red-100 transition-colors">
-                      <span className="text-2xl drop-shadow-sm">🛍️</span>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-bold text-neutral-900 mb-1 group-hover:text-red-700 transition-colors">Browse Duty Free</h4>
-                      <p className="text-xs text-neutral-500 mb-2 font-medium">After security checkpoint</p>
-                      <div className="flex items-center gap-2 text-xs">
-                        <span className="text-red-600 font-bold bg-red-50 px-2 py-0.5 rounded-full">15 min</span>
-                        <span className="text-neutral-300">•</span>
-                        <span className="text-neutral-500">Get souvenirs</span>
-                      </div>
-                    </div>
-                  </div>
-                </GlassCard>
-              </div>
-
-              {/* Quick Tip */}
-              <div className="mt-3 bg-gradient-to-r from-amber-50 to-yellow-50 border border-amber-200 rounded-xl p-3">
-                <p className="text-xs text-amber-900 flex items-start gap-2">
-                  <span className="text-base shrink-0">💡</span>
-                  <span><strong>Pro Tip:</strong> AURA will notify you 15 minutes before you need to head to security. Relax and make the most of this unexpected time!</span>
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Smart Boarding Pass / Flight Card */}
+          {/* Smart Boarding Pass / Flight Card - Moved outside bottom sheet */}
           <GlassCard
-            className="rounded-2xl p-0 overflow-hidden mb-6 border-0 shadow-lg relative group cursor-pointer transition-transform hover:scale-[1.01]" // Added cursor-pointer
+            className="rounded-2xl p-0 overflow-hidden border-0 shadow-lg relative group cursor-pointer transition-transform hover:scale-[1.01] ring-1 ring-stone-100 animate-slide-up"
             variant={isStress ? 'error' : 'success'}
-            onClick={() => setShowFlightModal(true)} // Added onClick
+            onClick={() => setShowFlightModal(true)}
+            style={{ animationDelay: isStress ? '200ms' : '100ms' }}
           >
             {/* Top Section: Flight Info */}
             <div className={`p-5 ${isStress ? 'bg-red-50/50' : 'bg-emerald-50/50'}`}>
@@ -297,7 +243,6 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
                 <div>
                   <div className="flex items-center gap-2">
                     <span className="text-2xl font-black text-neutral-900 tracking-tight">{flightNumber}</span>
-                    {isStress && <span className="animate-ping w-2 h-2 bg-red-500 rounded-full"></span>}
                   </div>
                   <span className="text-sm font-medium text-neutral-500 flex items-center gap-1">
                     Cebu (MCIA) <ArrowRight size={14} /> Narita (NRT)
@@ -333,193 +278,217 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
               </div>
             </div>
 
-            {/* Bottom Section: AI Insight */}
-            <div className={`px-5 py-3 flex items-center gap-3 ${isStress ? 'bg-red-100/50' : 'bg-emerald-100/50'}`}>
-              <Sparkles size={16} className={isStress ? 'text-red-600' : 'text-emerald-600'} />
-              <p className={`text-xs font-semibold ${isStress ? 'text-red-800' : 'text-emerald-800'} flex-1`}>
-                {isStress
-                  ? "GATE CHANGE: Proactively rerouted via Walkway B to avoid congestion."
-                  : "Scanning AIDX: Boarding is on schedule. You have time for the lounge."}
-              </p>
-            </div>
+            {/* Bottom Section: AURA Insight */}
+
           </GlassCard>
+        </div>
+      </div>
 
-          {/* Unified Journey Timeline (Arrival Style) */}
-          <div className="relative pl-1">
-            <div className="space-y-4">
-              {data.steps.map((step, index) => {
-                // Icon Mapping
-                const getStepIcon = (iconName: string) => {
-                  switch (iconName) {
-                    case 'home': return Home;
-                    case 'car': return Car;
-                    case 'bag': return CheckSquare;
-                    case 'shield': return ShieldCheck;
-                    case 'passport': return DoorOpen; // Immigration/Gate
-                    case 'door': return Plane;
-                    default: return MapPin;
-                  }
-                };
-                const Icon = getStepIcon(step.icon);
+      {/* BOTTOM SHEET: Routes & Flight Info */}
+      <div
+        className="absolute bottom-0 left-0 right-0 z-20 flex flex-col pointer-events-none transition-[height] duration-75 ease-out"
+        style={{ height: `${sheetHeight}%` }}
+      >
+        <div className="bg-white rounded-t-[2.5rem] shadow-[0_-10px_40px_rgba(0,0,0,0.15)] w-full h-full pointer-events-auto flex flex-col animate-slide-up border-t border-stone-100">
 
-                // Status Logic
-                const isCompleted = step.status === 'completed';
-                const isCurrent = step.isCurrent;
-                const isCritical = step.status === 'critical';
-                const isWarning = step.status === 'warning';
+          {/* Drag Handle */}
+          <div
+            className="w-full flex justify-center pt-4 pb-2 shrink-0 cursor-grab active:cursor-grabbing hover:bg-stone-50 transition-colors rounded-t-[2.5rem]"
+            onMouseDown={handleSheetDragStart}
+            onTouchStart={handleSheetDragStart}
+          >
+            <div className="w-12 h-1.5 bg-stone-200 rounded-full"></div>
+          </div>
 
-                // Status Colors
-                const getStatusColor = () => {
-                  if (isCritical) return 'border-red-500 bg-red-50 text-red-600';
-                  if (isWarning) return 'border-orange-500 bg-orange-50 text-orange-600';
-                  if (isCurrent) return 'border-red-600 bg-red-100 text-red-700'; // Active Red
-                  if (isCompleted) return 'border-emerald-500 bg-emerald-50 text-emerald-600';
-                  return 'border-neutral-200 bg-white text-neutral-400';
-                };
+          <div className="flex-1 overflow-y-auto px-6 pb-24 pt-2">
 
-                return (
-                  <React.Fragment key={step.id}>
-                    {/* Special AI Recommendation Card (Scenario B) */}
-                    {isStress && index === 2 && (
-                      <div className="relative pl-0 md:pl-0 mb-8 animate-slide-up">
-                        {/* Connector Line through the recommendation */}
-                        <div className="absolute left-[27px] -top-10 -bottom-10 w-[3px] bg-red-200 -z-10"></div>
+            {/* Unified Journey Timeline (Arrival Style) */}
+            <div className="relative pl-1">
+              <h3 className="text-sm font-bold text-stone-900 uppercase tracking-widest mb-6">Your Journey</h3>
+              <div className="space-y-4">
+                {data.steps.map((step, index) => {
+                  // Icon Mapping
+                  const getStepIcon = (iconName: string) => {
+                    switch (iconName) {
+                      case 'home': return Home;
+                      case 'car': return Car;
+                      case 'bag': return CheckSquare;
+                      case 'shield': return ShieldCheck;
+                      case 'passport': return DoorOpen; // Immigration/Gate
+                      case 'door': return Plane;
+                      default: return MapPin;
+                    }
+                  };
+                  const Icon = getStepIcon(step.icon);
 
-                        <div className="bg-[#FFF8F0] border border-orange-200 rounded-2xl p-6 shadow-sm relative overflow-hidden group">
-                          {/* Left Accent Bar */}
-                          <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-orange-500"></div>
+                  // Status Logic
+                  const isCompleted = step.status === 'completed';
+                  const isCurrent = step.isCurrent;
+                  const isCritical = step.status === 'critical';
+                  const isWarning = step.status === 'warning';
 
-                          <div className="relative z-10 pl-2">
-                            <div className="flex items-center gap-3 mb-3">
-                              <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
-                                <Sparkles size={16} className="text-orange-600" />
+                  // Status Colors
+                  const getStatusColor = () => {
+                    if (isCritical) return 'border-red-500 bg-red-50 text-red-600';
+                    if (isWarning) return 'border-orange-500 bg-orange-50 text-orange-600';
+                    if (isCurrent) return 'border-red-600 bg-red-100 text-red-700'; // Active Red
+                    if (isCompleted) return 'border-emerald-500 bg-emerald-50 text-emerald-600';
+                    return 'border-neutral-200 bg-white text-neutral-400';
+                  };
+
+                  return (
+                    <React.Fragment key={step.id}>
+                      {/* Special AI Recommendation Card (Scenario B) */}
+                      {isStress && index === 2 && (
+                        <div className="relative pl-0 md:pl-0 mb-8 animate-slide-up">
+                          {/* Connector Line through the recommendation */}
+                          <div className="absolute left-[27px] -top-10 -bottom-10 w-[3px] bg-red-200 -z-10"></div>
+
+                          <div className="bg-[#FFF8F0] border border-orange-200 rounded-2xl p-6 shadow-sm relative overflow-hidden group">
+                            {/* Left Accent Bar */}
+                            <div className="absolute left-0 top-0 bottom-0 w-1.5 bg-orange-500"></div>
+
+                            <div className="relative z-10 pl-2">
+                              <div className="flex items-center gap-3 mb-3">
+                                <div className="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center">
+                                  <Sparkles size={16} className="text-orange-600" />
+                                </div>
+                                <h3 className="text-orange-900 font-bold text-lg">AURA Recommendation</h3>
                               </div>
-                              <h3 className="text-orange-900 font-bold text-lg">AURA Recommendation</h3>
+
+                              <div className="space-y-3">
+                                <p className="text-stone-800 font-medium text-sm">⚠️ High congestion detected at Security Checkpoint</p>
+
+                                <div className="bg-white p-3 rounded-lg border border-orange-100 shadow-sm">
+                                  <p className="font-bold text-stone-900 text-xs uppercase tracking-wide mb-1 text-opacity-60">Alternative Available</p>
+                                  <p className="text-sm text-stone-700 font-semibold">→ Go to Security Checkpoint 2 <span className="text-emerald-600 font-bold">(Clear)</span></p>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                  <span className="bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md border border-emerald-200 flex items-center gap-1">
+                                    <span className="animate-pulse">⏱️</span> Time Saved: 15 minutes
+                                  </span>
+                                </div>
+                              </div>
+
+                              <button
+                                onClick={() => onNavigate('map')}
+                                className="mt-4 w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 hover:shadow-orange-500/30 transition-all active:scale-[0.98]"
+                              >
+                                <MapPin size={18} />
+                                View Map
+                              </button>
                             </div>
-
-                            <div className="space-y-3">
-                              <p className="text-stone-800 font-medium text-sm">High congestion detected at Terminal 1 Drop-off.</p>
-
-                              <div className="bg-white p-3 rounded-lg border border-orange-100 shadow-sm">
-                                <p className="font-bold text-stone-900 text-xs uppercase tracking-wide mb-1 text-opacity-60">Alternate Route Available</p>
-                                <p className="text-sm text-stone-700 font-semibold">→ Reroute to Terminal 2 Entrance <span className="text-stone-400 font-normal">(connected via walkway)</span></p>
-                              </div>
-
-                              <div className="flex items-center gap-2">
-                                <span className="bg-emerald-100 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-md border border-emerald-200 flex items-center gap-1">
-                                  <span className="animate-pulse">⏱️</span> Time Saved: 15 minutes
-                                </span>
-                              </div>
-                            </div>
-
-                            <button
-                              onClick={() => onNavigate('scenario-c')}
-                              className="mt-4 w-full bg-gradient-to-r from-orange-600 to-red-600 text-white font-bold py-3 rounded-xl shadow-lg shadow-orange-500/20 flex items-center justify-center gap-2 hover:shadow-orange-500/30 transition-all active:scale-[0.98]"
-                            >
-                              View Alternate Entrance Map 🗺️
-                            </button>
                           </div>
                         </div>
-                      </div>
-                    )}
-
-                    {/* Standard Step Card */}
-                    <div
-                      className="relative animate-slide-up"
-                      style={{ animationDelay: `${index * 150}ms` }}
-                    >
-                      {/* Connector Line */}
-                      {index < data.steps.length - 1 && (
-                        <div className={`absolute left-[27px] top-16 bottom-[-16px] w-[3px] rounded-full z-0 ${isCompleted ? 'bg-emerald-500' :
-                          isCritical ? 'bg-red-200' : 'bg-neutral-100'
-                          } transition-colors duration-500`}></div>
                       )}
 
-                      <GlassCard className={`p-0 overflow-hidden transition-all duration-300 ${isCurrent ? 'ring-2 ring-red-500 ring-offset-2 shadow-lg scale-[1.01]' : 'hover:shadow-md'
-                        } ${isCritical ? 'border-red-500 bg-red-50' : 'border-neutral-200'}`}>
+                      {/* Standard Step Card */}
+                      <div
+                        className="relative animate-slide-up"
+                        style={{ animationDelay: `${index * 150}ms` }}
+                      >
+                        {/* Connector Line */}
+                        {index < data.steps.length - 1 && (
+                          <div className={`absolute left-[27px] top-16 bottom-[-16px] w-[3px] rounded-full -z-10 ${isCompleted ? 'bg-emerald-500' :
+                            isCritical ? 'bg-red-200' : 'bg-neutral-100'
+                            } transition-colors duration-500`}></div>
+                        )}
 
-                        <div className={`p-5 flex items-start gap-5 ${isCritical ? 'bg-red-50' : ''}`}>
-                          {/* Icon Circle */}
-                          <div className={`flex-shrink-0 w-14 h-14 rounded-full border-[3px] flex items-center justify-center z-10 relative bg-white transition-all duration-300 ${getStatusColor()}`}>
-                            {isCompleted ? (
-                              <CheckCircle size={24} />
-                            ) : (
-                              <Icon size={24} />
-                            )}
-                          </div>
+                        <GlassCard className={`p-0 overflow-hidden transition-all duration-300 ${isCurrent ? 'ring-2 ring-red-500 ring-offset-2 shadow-lg scale-[1.01]' : 'hover:shadow-md'
+                          } ${isCritical ? 'border-red-500 bg-red-50' : 'border-neutral-200'}`}>
 
-                          {/* Content */}
-                          <div className="flex-1 min-w-0 pt-1">
-                            <div className="flex items-start justify-between gap-4 mb-2">
-                              <div>
-                                <h3 className={`font-bold text-lg leading-tight ${isCritical ? 'text-red-700' : isCurrent ? 'text-neutral-900' : 'text-neutral-900'}`}>
-                                  {step.title}
-                                </h3>
-                                {step.description && (
-                                  <p className={`text-sm mt-1 font-medium ${isCritical ? 'text-red-600/80' : 'text-neutral-500'}`}>{step.description}</p>
-                                )}
-                              </div>
-                              {step.time && (
-                                <div className="text-right shrink-0">
-                                  <span className={`block font-bold text-lg ${isCritical ? 'text-red-700' :
-                                    isCompleted ? 'text-emerald-600' :
-                                      'text-neutral-900'
-                                    }`}>
-                                    {step.time}
-                                  </span>
-                                  {step.badge && (
-                                    <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 ${step.badge === '🔴 Accident' ? 'bg-red-200 text-red-800' :
-                                        step.badgeColor === 'red' ? 'bg-red-100 text-red-700' :
-                                          'bg-neutral-100 text-neutral-600'
-                                      }`}>
-                                      {step.badge.replace('🔴 ', '')}
-                                    </span>
-                                  )}
-                                </div>
+                          <div className={`p-4 flex items-start gap-3 ${isCritical ? 'bg-red-50' : ''}`}>
+                            {/* Icon Circle */}
+                            <div className={`flex-shrink-0 w-12 h-12 rounded-full border-[3px] flex items-center justify-center z-10 relative bg-white transition-all duration-300 ${getStatusColor()}`}>
+                              {isCompleted ? (
+                                <CheckCircle size={20} />
+                              ) : (
+                                <Icon size={20} />
                               )}
                             </div>
 
-                            {/* "YOU ARE HERE" Indicator */}
-                            {isCurrent && (
-                              <div className="mt-3 flex items-center gap-2 text-xs font-bold text-red-600 animate-pulse uppercase tracking-wider">
-                                <MapPin size={14} className="fill-red-600" />
-                                <span>You are here</span>
+                            {/* Content */}
+                            <div className="flex-1 min-w-0 pt-1">
+                              <div className="flex items-start justify-between gap-2 mb-2">
+                                <div className="flex-1 min-w-0">
+                                  <h3 className={`font-bold text-base leading-tight ${isCritical ? 'text-red-700' : isCurrent ? 'text-neutral-900' : 'text-neutral-900'}`}>
+                                    {step.title}
+                                  </h3>
+                                  {step.description && (
+                                    <p className={`text-xs mt-0.5 font-medium ${isCritical ? 'text-red-600/80' : 'text-neutral-500'}`}>{step.description}</p>
+                                  )}
+                                </div>
+                                {step.time && (
+                                  <div className="text-right flex-shrink-0">
+                                    <span className={`block font-bold text-sm whitespace-nowrap ${isCritical ? 'text-red-700' :
+                                      isCompleted ? 'text-emerald-600' :
+                                        'text-neutral-900'
+                                      }`}>
+                                      {step.time}
+                                    </span>
+                                    {step.badge && (
+                                      <span className={`inline-block text-[10px] font-bold px-2 py-0.5 rounded-full mt-1 ${step.badge === '🔴 Accident' ? 'bg-red-200 text-red-800' :
+                                        step.badgeColor === 'red' ? 'bg-red-100 text-red-700' :
+                                          'bg-neutral-100 text-neutral-600'
+                                        }`}>
+                                        {step.badge.replace('🔴 ', '')}
+                                      </span>
+                                    )}
+                                  </div>
+                                )}
                               </div>
-                            )}
+
+                              {/* "YOU ARE HERE" Indicator */}
+                              {isCurrent && (
+                                <div className="mt-3 flex items-center gap-2 text-xs font-bold text-red-600 animate-pulse uppercase tracking-wider">
+                                  <MapPin size={14} className="fill-red-600" />
+                                  <span>You are here</span>
+                                </div>
+                              )}
+                            </div>
                           </div>
-                        </div>
-                      </GlassCard>
-                    </div>
-                  </React.Fragment>
-                );
-              })}
+                        </GlassCard>
+                      </div>
+                    </React.Fragment>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
-
-        {/* Floating Chat Button (Bottom Right) */}
-        <div className="fixed bottom-24 md:bottom-8 right-4 md:right-8 z-50">
-          <button
-            onClick={() => onNavigate('chat')}
-            className="w-14 h-14 bg-gradient-to-br from-orange-500 to-red-600 rounded-full shadow-[0_8px_25px_rgba(234,88,12,0.5)] flex items-center justify-center text-white hover:scale-110 active:scale-95 transition-all text-3xl border-2 border-white/20"
-            aria-label="Open AI Assistant and Emergency Help"
-          >
-            <MessageSquare size={24} aria-hidden="true" />
-            {/* Unread badge */}
-            <span className="absolute top-0 right-0 w-4 h-4 rounded-full bg-red-500 border-2 border-white"></span>
-          </button>
-        </div>
       </div>
+
       {/* Toast Notification */}
-      {
-        toast && (
-          <Toast
-            message={toast.message}
-            type={toast.type}
-            onClose={() => setToast(null)}
-          />
-        )
-      }
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
+
+      {/* Modal for Bento Box Selection */}
+      {selectedOpportunity && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-6" onClick={() => setSelectedOpportunity(null)}>
+          <div className="bg-white rounded-3xl p-6 w-full max-w-sm shadow-2xl animate-in zoom-in-95 duration-200 text-center relative" onClick={e => e.stopPropagation()}>
+            <div className="w-16 h-16 mx-auto bg-stone-50 rounded-full flex items-center justify-center text-4xl mb-4 shadow-sm border border-stone-100">
+              {selectedOpportunity.icon}
+            </div>
+            <h3 className="text-xl font-bold text-stone-900 mb-1">{selectedOpportunity.title}</h3>
+            <p className="text-stone-500 mb-6">{selectedOpportunity.desc}</p>
+            <button
+              onClick={() => {
+                showToast(`${selectedOpportunity.title} selected!`, "success");
+                setSelectedOpportunity(null);
+              }}
+              className="w-full bg-stone-900 text-white font-bold py-3.5 rounded-xl hover:bg-stone-800 transition-colors"
+            >
+              Go Here
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* Flight Details Modal - NEW */}
       <FlightDetailsModal

@@ -108,7 +108,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
 
       {/* DESKTOP SIDEBAR (Hidden on Mobile, Hidden during Onboarding Flow) */}
       {!isOnboardingFlow && (
-        <aside className={`hidden md:flex flex-col h-[100dvh] z-50 fixed left-0 top-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] backdrop-blur-xl ${isCollapsed ? 'w-20 items-center px-2 py-6' : 'w-64 px-6 py-6'} ${isOperator ? 'border-r border-neutral-800 bg-neutral-900/95' : 'border-r border-stone-100 bg-white/95'}`}>
+        <aside className={`hidden md:flex flex-col h-[100dvh] z-50 fixed left-0 top-0 transition-all duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] backdrop-blur-xl ${isCollapsed ? 'w-20 items-center px-2 py-6' : 'w-64 px-6 py-6'} ${isOperator ? 'border-r border-neutral-800 bg-neutral-900/95' : 'border-r border-stone-200 bg-stone-50/95 shadow-sm'}`}>
 
 
 
@@ -134,7 +134,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
                   onClick={() => onNavigate(item.target as any)}
                   className={`
                         group flex items-center gap-3.5 px-3 py-3 rounded-xl transition-all duration-200 relative w-full
-                        ${isActive ? 'bg-red-50 text-red-600 font-semibold' : 'text-stone-500 hover:text-stone-900 hover:bg-stone-50/80'}
+                        ${isActive ? 'bg-red-50 text-red-600 font-semibold shadow-sm' : 'text-stone-700 hover:text-stone-900 hover:bg-stone-100/80'}
                         ${isCollapsed ? 'justify-center' : ''}
                      `}
                   title={isCollapsed ? item.label : undefined}
@@ -142,7 +142,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
                   <div className="relative shrink-0">
                     <item.icon
                       size={22}
-                      className={`transition-colors duration-200 ${isActive ? 'text-red-600' : 'text-stone-400 group-hover:text-stone-600'}`}
+                      className={`transition-colors duration-200 ${isActive ? 'text-red-600' : 'text-stone-500 group-hover:text-stone-700'}`}
                       strokeWidth={isActive ? 2.5 : 2}
                     />
                     {item.id === 'chat' && (
@@ -164,16 +164,16 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
           </div>
 
           {/* 4. Footer Area (Toggle + Logout) */}
-          <div className="mt-auto flex flex-col gap-2 w-full pt-4 border-t border-stone-100">
+          <div className="mt-auto flex flex-col gap-2 w-full pt-4 border-t border-stone-200">
 
             {/* Collapse Toggle */}
             <button
               onClick={() => setIsCollapsed(!isCollapsed)}
-              className={`flex items-center gap-3.5 px-3 py-3 rounded-xl text-stone-400 hover:text-stone-900 hover:bg-stone-50 transition-all duration-200 w-full ${isCollapsed ? 'justify-center' : ''}`}
+              className={`flex items-center gap-3.5 px-3 py-3 rounded-xl text-stone-500 hover:text-stone-900 hover:bg-stone-100 transition-all duration-200 w-full ${isCollapsed ? 'justify-center' : ''}`}
               title={isCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
             >
               <div className="relative shrink-0">
-                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className={`transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`}>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
                   <line x1="9" x2="9" y1="3" y2="21" />
                 </svg>
@@ -215,7 +215,7 @@ const Layout: React.FC<LayoutProps> = ({ children, currentScreen, onNavigate }) 
                 <button key={item.id} onClick={() => onNavigate(item.target as any)} className={`flex flex-col items-center justify-center w-full h-full transition-colors ${isOperator ? 'text-neutral-400 hover:text-white' : 'text-neutral-500 hover:text-neutral-900'}`}>
                   <div className="relative">
                     <item.icon size={24} className={currentScreen === item.target || (item.target === 'scenario-b' && (currentScreen === 'scenario-a' || currentScreen === 'scenario-b')) ? (isOperator ? "text-red-500" : "text-red-600") : ""} />
-                    {item.id === 'chat' && <span className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full animate-pulse ${isOperator ? 'bg-red-500' : 'bg-red-600'}`} />}
+                    {item.id === 'chat' && <span className={`absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full ${isOperator ? 'bg-red-500' : 'bg-red-600'}`} />}
                   </div>
                   <span className={`text-[10px] mt-1 font-medium ${currentScreen === item.target || (item.target === 'scenario-b' && (currentScreen === 'scenario-a' || currentScreen === 'scenario-b')) ? (isOperator ? "text-red-500" : "text-red-600") : ""}`}>{item.label}</span>
                 </button>
