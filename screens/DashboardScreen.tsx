@@ -7,15 +7,13 @@ import FlightDetailsModal from '../components/FlightDetailsModal'; // NEW
 import { ScreenId, ScenarioData, TravelerContext } from '../types';
 
 interface Props {
-  scenarioType: 'A' | 'B';
   onNavigate: (screen: ScreenId) => void;
-  onSetScenario: (type: 'A' | 'B') => void;
   onLogout: () => void;
   travelerContext?: TravelerContext;
 }
 
-const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScenario, onLogout, travelerContext }) => {
-  const isStress = scenarioType === 'B';
+const DashboardScreen: React.FC<Props> = ({ onNavigate, onLogout, travelerContext }) => {
+  const isStress = false; // Always relaxed scenario (Scenario B removed)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' | 'error' } | null>(null);
   const [showFlightModal, setShowFlightModal] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null); // For bento box details
@@ -158,11 +156,6 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
               <span className={`text-[10px] font-bold uppercase tracking-widest ${isStress ? 'text-red-500' : 'text-emerald-600'}`}>
                 {isStress ? '⚠ Tight Schedule' : '✨ Relaxed Schedule'}
               </span>
-              {/* Scenario Toggles */}
-              <div className="bg-stone-100/80 p-0.5 rounded-full flex gap-0.5">
-                <button aria-label="Switch to Scenario A" onClick={() => onSetScenario('A')} className={`w-6 h-6 rounded-full text-[10px] font-bold transition-all ${!isStress ? 'bg-white shadow-sm text-emerald-700' : 'text-stone-400 hover:bg-white/50'}`}>A</button>
-                <button aria-label="Switch to Scenario B" onClick={() => onSetScenario('B')} className={`w-6 h-6 rounded-full text-[10px] font-bold transition-all ${isStress ? 'bg-white shadow-sm text-red-600' : 'text-stone-400 hover:bg-white/50'}`}>B</button>
-              </div>
             </div>
 
             <h2 className={`text-6xl font-black tracking-tighter mb-1 mt-2 bg-clip-text text-transparent bg-gradient-to-b ${isStress ? 'from-red-600 to-orange-600' : 'from-emerald-600 to-teal-600'}`}>
@@ -172,31 +165,30 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
           </GlassCard>
 
           {/* BENTO BOX: Opportunities (Only Scenario A - Relaxed) */}
-          {!isStress && (
-            <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
-              <div className="flex items-center justify-between mb-2 px-1">
-                <h3 className="text-sm font-bold text-stone-900 uppercase tracking-widest">AURA Recommendations</h3>
-                <span className="text-[10px] font-bold bg-white text-stone-500 px-2.5 py-1 rounded-full border border-stone-200 whitespace-nowrap">+40m Available</span>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                {[
-                  { id: 'lounge', icon: '☕', color: 'bg-rose-50 text-rose-600', title: 'PAGSS Lounge', desc: 'Relax nearby' },
-                  { id: 'food', icon: '🍽️', color: 'bg-orange-50 text-orange-600', title: 'Quick Meal', desc: 'Jollibee nearby' },
-                  { id: 'tasks', icon: '✅', color: 'bg-blue-50 text-blue-600', title: 'Tasks', desc: 'Clear inbox' },
-                  { id: 'shop', icon: '🛍️', color: 'bg-purple-50 text-purple-600', title: 'Shopping', desc: 'Duty Free' },
-                ].map((item, idx) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setSelectedOpportunity(item)}
-                    className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 hover:scale-105 shadow-sm border border-stone-100 ${item.color} bg-white`}
-                  >
-                    <span className="text-lg filter drop-shadow-sm">{item.icon}</span>
-                  </button>
-                ))}
-              </div>
+          {/* BENTO BOX: AURA Recommendations */}
+          <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
+            <div className="flex items-center justify-between mb-2 px-1">
+              <h3 className="text-sm font-bold text-stone-900 uppercase tracking-widest">AURA Recommendations</h3>
+              <span className="text-[10px] font-bold bg-white text-stone-500 px-2.5 py-1 rounded-full border border-stone-200 whitespace-nowrap">+40m Available</span>
             </div>
-          )}
+
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { id: 'lounge', icon: '☕', color: 'bg-rose-50 text-rose-600', title: 'PAGSS Lounge', desc: 'Relax nearby' },
+                { id: 'food', icon: '🍽️', color: 'bg-orange-50 text-orange-600', title: 'Quick Meal', desc: 'Jollibee nearby' },
+                { id: 'tasks', icon: '✅', color: 'bg-blue-50 text-blue-600', title: 'Tasks', desc: 'Clear inbox' },
+                { id: 'shop', icon: '🛍️', color: 'bg-purple-50 text-purple-600', title: 'Shopping', desc: 'Duty Free' },
+              ].map((item, idx) => (
+                <button
+                  key={item.id}
+                  onClick={() => setSelectedOpportunity(item)}
+                  className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 hover:scale-105 shadow-sm border border-stone-100 ${item.color} bg-white`}
+                >
+                  <span className="text-lg filter drop-shadow-sm">{item.icon}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Smart Boarding Pass / Flight Card - Moved outside bottom sheet */}
           <GlassCard

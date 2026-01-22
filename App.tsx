@@ -19,25 +19,13 @@ import { ScreenId, TravelerContext } from './types';
 const App: React.FC = () => {
   // Default to Landing Page as requested
   const [currentScreen, setCurrentScreen] = useState<ScreenId>('landing');
-  const [scenarioType, setScenarioType] = useState<'A' | 'B'>('B');
   const [travelerContext, setTravelerContext] = useState<TravelerContext | null>(null);
-
-  // Sync scenario type with screen if navigating via internal links
-  useEffect(() => {
-    if (currentScreen === 'scenario-a') setScenarioType('A');
-    if (currentScreen === 'scenario-b') setScenarioType('B');
-  }, [currentScreen]);
 
   const handleNavigate = (screen: ScreenId, context?: TravelerContext) => {
     if (context) {
       setTravelerContext(context);
     }
     setCurrentScreen(screen);
-  };
-
-  const handleSetScenario = (type: 'A' | 'B') => {
-    setScenarioType(type);
-    setCurrentScreen(type === 'A' ? 'scenario-a' : 'scenario-b');
   };
 
   const handleLogout = () => {
@@ -55,7 +43,7 @@ const App: React.FC = () => {
         return <OnboardingScreen onNavigate={handleNavigate} travelerContext={travelerContext || undefined} />;
       case 'scenario-a':
       case 'scenario-b':
-        return <DashboardScreen scenarioType={scenarioType} onNavigate={handleNavigate} onSetScenario={handleSetScenario} onLogout={handleLogout} travelerContext={travelerContext || undefined} />;
+        return <DashboardScreen onNavigate={handleNavigate} onLogout={handleLogout} travelerContext={travelerContext || undefined} />;
       case 'scenario-c':
         return <MapScreen onNavigate={handleNavigate} />;
       case 'chat':
