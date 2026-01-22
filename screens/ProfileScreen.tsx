@@ -13,9 +13,9 @@ const ProfileScreen: React.FC<Props> = ({ onNavigate, travelerContext }) => {
     const [pushEnabled, setPushEnabled] = useState(true);
     const [suggestionsEnabled, setSuggestionsEnabled] = useState(true);
 
-    // Hardcoded user info to match screenshot
-    const userName = 'gff';
-    const userEmail = 'gff@aura.app';
+    // Use traveler context or fallback to defaults
+    const userName = travelerContext?.userName || 'Traveler';
+    const userEmail = `${userName.toLowerCase().replace(/\s+/g, '')}@aura.app`;
 
     return (
         <div className="flex flex-col h-full bg-[#f2f2f7] relative text-neutral-900 font-sans">
