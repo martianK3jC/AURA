@@ -7,15 +7,13 @@ import FlightDetailsModal from '../components/FlightDetailsModal'; // NEW
 import { ScreenId, ScenarioData, TravelerContext } from '../types';
 
 interface Props {
-  scenarioType: 'A' | 'B';
   onNavigate: (screen: ScreenId) => void;
-  onSetScenario: (type: 'A' | 'B') => void;
   onLogout: () => void;
   travelerContext?: TravelerContext;
 }
 
-const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScenario, onLogout, travelerContext }) => {
-  const isStress = scenarioType === 'B';
+const DashboardScreen: React.FC<Props> = ({ onNavigate, onLogout, travelerContext }) => {
+  const isStress = false; // Always relaxed scenario (Scenario B removed)
   const [toast, setToast] = useState<{ message: string; type: 'success' | 'info' | 'warning' | 'error' } | null>(null);
   const [showFlightModal, setShowFlightModal] = useState(false);
   const [selectedOpportunity, setSelectedOpportunity] = useState<any>(null); // For bento box details
@@ -100,45 +98,13 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
   } : {
     id: 'A',
     flightStatus: 'ontime',
-    totalTime: '1h 10m',
+    totalTime: '3h 45m',
     steps: [
-      { id: '1', icon: 'home', title: 'Home - Lahug', status: 'current', time: 'Depart Now', isCurrent: true },
-      {
-        id: '2',
-        icon: 'car',
-        title: 'Travel to MCIA',
-        status: 'upcoming',
-        time: '35 mins',
-        badge: 'Light Traffic',
-        badgeColor: 'emerald',
-        subtext: 'Via Google Maps API'
-      },
-      {
-        id: '3',
-        icon: 'bag',
-        title: 'Security Checkpoint',
-        status: 'upcoming',
-        time: '10 mins',
-        badge: 'Low Density',
-        badgeColor: 'emerald',
-        subtext: 'Queue Time • Cam 04'
-      },
-      {
-        id: '4',
-        icon: 'shield',
-        title: 'Security Check',
-        status: 'upcoming',
-        time: '5 mins',
-        subtext: 'Queue Time • Cam 08'
-      },
-      {
-        id: '5',
-        icon: 'door',
-        title: 'Boarding Gate 5',
-        status: 'upcoming',
-        time: '5 mins',
-        subtext: 'Walking Time • 80m Distance'
-      },
+      { id: '1', icon: 'home', title: 'Home - Lahug', status: 'completed', time: 'Departed 4h ago' },
+      { id: '2', icon: 'car', title: 'Arrived at MCIA', status: 'completed', time: 'Arrived 3h ago' },
+      { id: '3', icon: 'passport', title: 'Check-In Complete', status: 'completed', time: '2h 50m ago' },
+      { id: '4', icon: 'shield', title: 'Security Cleared', status: 'completed', time: 'Just now', isCurrent: true },
+      { id: '5', icon: 'plane', title: 'Relax & Wait', status: 'upcoming', time: 'Boarding in 3h 45m' },
     ]
   };
 
@@ -188,13 +154,8 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
 
             <div className="flex justify-between items-start mb-2">
               <span className={`text-[10px] font-bold uppercase tracking-widest ${isStress ? 'text-red-500' : 'text-emerald-600'}`}>
-                {isStress ? '⚠ Tight Schedule' : 'Total Time'}
+                {isStress ? '⚠ Tight Schedule' : '✨ Relaxed Schedule'}
               </span>
-              {/* Scenario Toggles */}
-              <div className="bg-stone-100/80 p-0.5 rounded-full flex gap-0.5">
-                <button aria-label="Switch to Scenario A" onClick={() => onSetScenario('A')} className={`w-6 h-6 rounded-full text-[10px] font-bold transition-all ${!isStress ? 'bg-white shadow-sm text-emerald-700' : 'text-stone-400 hover:bg-white/50'}`}>A</button>
-                <button aria-label="Switch to Scenario B" onClick={() => onSetScenario('B')} className={`w-6 h-6 rounded-full text-[10px] font-bold transition-all ${isStress ? 'bg-white shadow-sm text-red-600' : 'text-stone-400 hover:bg-white/50'}`}>B</button>
-              </div>
             </div>
 
             <h2 className={`text-6xl font-black tracking-tighter mb-1 mt-2 bg-clip-text text-transparent bg-gradient-to-b ${isStress ? 'from-red-600 to-orange-600' : 'from-emerald-600 to-teal-600'}`}>
@@ -203,32 +164,31 @@ const DashboardScreen: React.FC<Props> = ({ scenarioType, onNavigate, onSetScena
             <p className="text-sm font-medium text-stone-500">{isStress ? 'to Gate Closing' : 'until boarding'}</p>
           </GlassCard>
 
-          {/* BENTO BOX: Delay Opportunities (Only Scenario B) */}
-          {isStress && (
-            <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
-              <div className="flex items-center justify-between mb-2 px-1">
-                <h3 className="text-sm font-bold text-stone-900 uppercase tracking-widest">AURA Recommendations</h3>
-                <span className="text-[10px] font-bold bg-white text-stone-500 px-2.5 py-1 rounded-full border border-stone-200 whitespace-nowrap">+40m Available</span>
-              </div>
-
-              <div className="grid grid-cols-4 gap-2">
-                {[
-                  { id: 'lounge', icon: '☕', color: 'bg-rose-50 text-rose-600', title: 'PAGSS Lounge', desc: 'Relax nearby' },
-                  { id: 'food', icon: '🍽️', color: 'bg-orange-50 text-orange-600', title: 'Quick Meal', desc: 'Jollibee nearby' },
-                  { id: 'tasks', icon: '✅', color: 'bg-blue-50 text-blue-600', title: 'Tasks', desc: 'Clear inbox' },
-                  { id: 'shop', icon: '🛍️', color: 'bg-purple-50 text-purple-600', title: 'Shopping', desc: 'Duty Free' },
-                ].map((item, idx) => (
-                  <button
-                    key={item.id}
-                    onClick={() => setSelectedOpportunity(item)}
-                    className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 hover:scale-105 shadow-sm border border-stone-100 ${item.color} bg-white`}
-                  >
-                    <span className="text-lg filter drop-shadow-sm">{item.icon}</span>
-                  </button>
-                ))}
-              </div>
+          {/* BENTO BOX: Opportunities (Only Scenario A - Relaxed) */}
+          {/* BENTO BOX: AURA Recommendations */}
+          <div className="animate-slide-up" style={{ animationDelay: '100ms' }}>
+            <div className="flex items-center justify-between mb-2 px-1">
+              <h3 className="text-sm font-bold text-stone-900 uppercase tracking-widest">AURA Recommendations</h3>
+              <span className="text-[10px] font-bold bg-white text-stone-500 px-2.5 py-1 rounded-full border border-stone-200 whitespace-nowrap">+40m Available</span>
             </div>
-          )}
+
+            <div className="grid grid-cols-4 gap-2">
+              {[
+                { id: 'lounge', icon: '☕', color: 'bg-rose-50 text-rose-600', title: 'PAGSS Lounge', desc: 'Relax nearby' },
+                { id: 'food', icon: '🍽️', color: 'bg-orange-50 text-orange-600', title: 'Quick Meal', desc: 'Jollibee nearby' },
+                { id: 'tasks', icon: '✅', color: 'bg-blue-50 text-blue-600', title: 'Tasks', desc: 'Clear inbox' },
+                { id: 'shop', icon: '🛍️', color: 'bg-purple-50 text-purple-600', title: 'Shopping', desc: 'Duty Free' },
+              ].map((item, idx) => (
+                <button
+                  key={item.id}
+                  onClick={() => setSelectedOpportunity(item)}
+                  className={`aspect-square rounded-2xl flex flex-col items-center justify-center gap-1 transition-all active:scale-95 hover:scale-105 shadow-sm border border-stone-100 ${item.color} bg-white`}
+                >
+                  <span className="text-lg filter drop-shadow-sm">{item.icon}</span>
+                </button>
+              ))}
+            </div>
+          </div>
 
           {/* Smart Boarding Pass / Flight Card - Moved outside bottom sheet */}
           <GlassCard
