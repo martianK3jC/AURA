@@ -8,7 +8,7 @@ interface Props {
   onNavigate: (screen: ScreenId) => void;
 }
 
-import airportMap from '../img/airport.png';
+import airportMap from '../img/map_v2.png';
 
 // Standalone Map Component - Interactive
 const MapVisualization = ({
